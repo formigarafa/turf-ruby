@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Turf
   def self.feature(geom, properties = nil, options = {})
     feat = {
@@ -5,16 +7,14 @@ module Turf
       geometry: geom,
       properties: properties || {},
     }
-    if options[:id]
-      feat[:id] = options[:id]
-    end
+    feat[:id] = options[:id] if options[:id]
 
-    if options[:bbox]
-      feat[:bbox] = options[:bbox]
-    end
+    feat[:bbox] = options[:bbox] if options[:bbox]
 
     feat
   end
+
+  def self.line_string(*args); end
 
   def self.point(coordinates, properties = nil, options = {})
     geom = {
