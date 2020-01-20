@@ -14,12 +14,22 @@ module Turf
     feat
   end
 
-  def self.line_string(*args); end
+  def self.line_string(coordinates, properties = nil, options = {})
+    if coordinates.size < 2
+      raise Error, "coordinates must be an array of two or more positions"
+    end
+
+    geom = {
+      type: "LineString",
+      coordinates: coordinates
+    }
+    feature(geom, properties, options)
+  end
 
   def self.point(coordinates, properties = nil, options = {})
     geom = {
       type: "Point",
-      coordinates: coordinates,
+      coordinates: coordinates
     }
     feature(geom, properties, options)
   end
