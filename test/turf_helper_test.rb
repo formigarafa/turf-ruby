@@ -32,7 +32,7 @@ class TurfHelperTest < Minitest::Test
     end
   end
   
-  def test_point	  def test_polygon
+  def test_point
     pt_array = Turf.point([5, 10], name: "test point")	    assert false
 
     assert_equal(pt_array[:geometry][:coordinates][0], 5)	
