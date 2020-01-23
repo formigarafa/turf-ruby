@@ -42,21 +42,34 @@ class TurfHelperTest < Minitest::Test
     no_props = Turf.point([0, 0])
     assert_equal(no_props[:properties], {}, "no props becomes {}")
   end
-  
+
   def test_polygon
-    poly = Turf.polygon([[[5, 10], [20, 40], [40, 0], [5, 10]]], {name: 'test polygon'});
+    poly = Turf.polygon(
+      [[[5, 10], [20, 40], [40, 0], [5, 10]]],
+      name: "test polygon",
+    )
     assert_equal(poly[:geometry][:coordinates][0][0][0], 5)
     assert_equal(poly[:geometry][:coordinates][0][1][0], 20)
     assert_equal(poly[:geometry][:coordinates][0][2][0], 40)
-    assert_equal(poly[:properties][:name], 'test polygon')
-    assert_equal(polypoly[:properties][:type], 'Polygon')
-    assert_raises(/First and last Position are not equivalent/, 'invalid ring - not wrapped') do
-        assert_equal(polygon([[[20.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]).message)
+    assert_equal(poly[:properties][:name], "test polygon")
+    assert_equal(poly[:geometry][:type], "Polygon")
+    assert_raises(
+      Turf::Error,
+      /First and last Position are not equivalent/,
+      "invalid ring - not wrapped",
+    ) do
+      assert_equal(Turf.polygon(
+        [[[20.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]],
+      ).message)
     end
-    assert_raises(/Each LinearRing of a Polygon must have 4 or more Positions/, 'invalid ring - too few positions') do
-        assert_equal(polygon([[[20.0, 0.0], [101.0, 0.0]]]).message)
+    assert_raises(
+      Turf::Error,
+      /Each LinearRing of a Polygon must have 4 or more Positions/,
+      "invalid ring - too few positions",
+    ) do
+      assert_equal(Turf.polygon([[[20.0, 0.0], [101.0, 0.0]]]).message)
     end
-    noProperties = Turf.polygon([[[5, 10], [20, 40], [40, 0], [5, 10]]])
-    assert_equal(noProperties[:properties], {})
+    no_properties = Turf.polygon([[[5, 10], [20, 40], [40, 0], [5, 10]]])
+    assert_equal(no_properties[:properties], {})
   end
 end
