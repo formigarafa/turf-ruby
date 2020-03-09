@@ -1,6 +1,25 @@
 # frozen_string_literal: true
 
 module Turf
+  EARTH_RADIUS = 6371008.8
+  FACTORS = {
+    "centimeters" => EARTH_RADIUS * 100,
+    "centimetres" => EARTH_RADIUS * 100,
+    "degrees" => EARTH_RADIUS / 111325,
+    "feet" => EARTH_RADIUS * 3.28084,
+    "inches" => EARTH_RADIUS * 39.370,
+    "kilometers" => EARTH_RADIUS / 1000,
+    "kilometres" => EARTH_RADIUS / 1000,
+    "meters" => EARTH_RADIUS,
+    "metres" => EARTH_RADIUS,
+    "miles" => EARTH_RADIUS / 1609.344,
+    "millimeters" => EARTH_RADIUS * 1000,
+    "millimetres" => EARTH_RADIUS * 1000,
+    "nauticalmiles" => EARTH_RADIUS / 1852,
+    "radians" => 1,
+    "yards" => EARTH_RADIUS / 1.0936,
+  }.freeze
+
   def self.feature(geom, properties = nil, options = {})
     feat = {
       type: "Feature",
@@ -21,7 +40,7 @@ module Turf
 
     geom = {
       type: "LineString",
-      coordinates: coordinates
+      coordinates: coordinates,
     }
     feature(geom, properties, options)
   end
@@ -29,8 +48,38 @@ module Turf
   def self.point(coordinates, properties = nil, options = {})
     geom = {
       type: "Point",
-      coordinates: coordinates
+      coordinates: coordinates,
     }
     feature(geom, properties, options)
+  end
+
+  def self.units(units)
+    raise Error, "invalid units: #{units}" \
+      unless [
+        "meters", "millimeters", "centimeters",
+        "kilometers", "acres", "miles", "nauticalmiles",
+        "inches", "yards", "feet", "radians", "degrees"
+      ].include?(units)
+
+    units
+  end
+
+  def self.degrees_to_radians(degrees)
+    radians = degrees.remainder(360)
+    radians * Math::PI / 180
+  end
+
+  def self.radians_to_length(radians, units = "kilometers")
+    factor = FACTORS[units(units)]
+    raise "#{units} units is invalid" unless factor
+
+    radians * factor
+  end
+
+  def self.length_to_radians(distance, units = "kilometers")
+    factor = FACTORS[units(units)]
+    raise "#{units} units is invalid" unless factor
+
+    distance / factor
   end
 end
