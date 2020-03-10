@@ -72,32 +72,21 @@ module Turf
     feature(geom, properties, options)
   end
 
-  def self.units(units)
-    raise Error, "invalid units: #{units}" \
-      unless [
-        "meters", "millimeters", "centimeters",
-        "kilometers", "acres", "miles", "nauticalmiles",
-        "inches", "yards", "feet", "radians", "degrees"
-      ].include?(units)
-
-    units
-  end
-
   def self.degrees_to_radians(degrees)
     radians = degrees.remainder(360)
     radians * Math::PI / 180
   end
 
   def self.radians_to_length(radians, units = "kilometers")
-    factor = FACTORS[units(units)]
-    raise "#{units} units is invalid" unless factor
+    factor = FACTORS[units]
+    raise Error, "#{units} units is invalid" unless factor
 
     radians * factor
   end
 
   def self.length_to_radians(distance, units = "kilometers")
-    factor = FACTORS[units(units)]
-    raise "#{units} units is invalid" unless factor
+    factor = FACTORS[units]
+    raise Error, "#{units} units is invalid" unless factor
 
     distance / factor
   end
