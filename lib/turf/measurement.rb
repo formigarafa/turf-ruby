@@ -20,7 +20,7 @@ module Turf
       2 * Math.atan2(
         Math.sqrt(a),
         Math.sqrt(1 - a),
-      )
+      ),
     ]
     if options[:units]
       call_args << options[:units]

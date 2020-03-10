@@ -6,7 +6,7 @@ module Turf
       raise Error, "coord is required"
     end
 
-    if coord.is_a?(Array) && coord.length >= 2 && coord.all?{|i| i.is_a? Numeric }
+    if coord.is_a?(Array) && coord.length >= 2 && coord.all? { |i| i.is_a? Numeric }
       return coord
     end
 

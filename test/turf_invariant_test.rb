@@ -20,14 +20,14 @@ class TurfInvariantTest < Minitest::Test
 
     assert_raises(Turf::Error) do
       Turf.get_coord(
-        type: 'LineString',
+        type: "LineString",
         coordinates: [[1, 2], [3, 4]],
       )
     end
 
-    assert_raises(Turf::Error, 'false should throw Error') { Turf.get_coord(false) }
-    assert_raises(Turf::Error, 'null should throw Error') { Turf.get_coord(nil) }
-    assert_raises(Turf::Error, 'LineString is not a Point') { Turf.get_coord(Turf.line_string([[1, 2], [3, 4]])) }
-    assert_raises(Turf::Error, 'Single number Array should throw Error') { Turf.get_coord([10]) }
+    assert_raises(Turf::Error, "false should throw Error") { Turf.get_coord(false) }
+    assert_raises(Turf::Error, "null should throw Error") { Turf.get_coord(nil) }
+    assert_raises(Turf::Error, "LineString is not a Point") { Turf.get_coord(Turf.line_string([[1, 2], [3, 4]])) }
+    assert_raises(Turf::Error, "Single number Array should throw Error") { Turf.get_coord([10]) }
   end
 end
