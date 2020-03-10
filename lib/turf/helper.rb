@@ -53,6 +53,25 @@ module Turf
     feature(geom, properties, options)
   end
 
+  def self.polygon(coordinates, properties = nil, options = {})
+    coordinates.each do |ring|
+      if ring.size < 4
+        raise Error, "Each LinearRing of a Polygon must have 4 or more Positions."
+      end
+
+      ring.last.each_with_index do |number, idx|
+        if ring.first[idx] != number
+          raise Error, "First and last Position are not equivalent."
+        end
+      end
+    end
+    geom = {
+      type: "Polygon",
+      coordinates: coordinates,
+    }
+    feature(geom, properties, options)
+  end
+
   def self.units(units)
     raise Error, "invalid units: #{units}" \
       unless [
