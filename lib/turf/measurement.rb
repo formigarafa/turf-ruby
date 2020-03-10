@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module Turf
-  def self.distance(from, to, units: "kilometers")
-    units = self.units(units)
-
+  def self.distance(from, to, **options)
     coordinates1 = get_coord from
     coordinates2 = get_coord to
 
@@ -18,12 +16,15 @@ module Turf
         (Math.sin(d_lon / 2)**2) * Math.cos(lat1) * Math.cos(lat2)
       )
 
-    radians_to_length(
+    call_args = [
       2 * Math.atan2(
         Math.sqrt(a),
         Math.sqrt(1 - a),
-      ),
-      units,
-    )
+      )
+    ]
+    if options[:units]
+      call_args << options[:units]
+    end
+    public_send(:radians_to_length, *call_args)
   end
 end
