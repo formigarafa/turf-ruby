@@ -71,15 +71,6 @@ class TurfHelperTest < Minitest::Test
     assert_equal(no_properties[:properties], {})
   end
 
-  def test_units
-    units = Turf.units("kilometers")
-    assert_equal(units, "kilometers")
-
-    assert_raises(Turf::Error, "invalid units: kilograms") do
-      Turf.units("kilograms")
-    end
-  end
-
   def test_degrees_to_radians
     [
       [60, Math::PI / 3],
@@ -98,6 +89,10 @@ class TurfHelperTest < Minitest::Test
     ].each do |radians, units, length|
       assert_equal length, Turf.radians_to_length(radians, units)
     end
+
+    assert_raises(Turf::Error) do
+      Turf.radians_to_length(1, "kilograms")
+    end
   end
 
   def test_length_to_radians
@@ -107,6 +102,10 @@ class TurfHelperTest < Minitest::Test
       [Turf::EARTH_RADIUS / 1609.344, "miles", 1],
     ].each do |length, units, radians|
       assert_equal radians, Turf.length_to_radians(length, units)
+    end
+
+    assert_raises(Turf::Error) do
+      Turf.length_to_radians(1, "kilograms")
     end
   end
 end

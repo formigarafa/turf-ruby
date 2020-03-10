@@ -6,13 +6,16 @@ module Turf
       raise Error, "coord is required"
     end
 
-    if coord.is_a?(Array) && coord.length >= 2 && coord.all?{|i| i.is_a? Numeric }
+    is_numeric = ->(i) { i.is_a? Numeric }
+    if coord.is_a?(Array) && coord.length >= 2 && coord.all?(&is_numeric)
       return coord
     end
 
     if coord.is_a? Hash
       coord = deep_symbolize_keys(coord)
-      if coord[:type] == "Feature" && coord.fetch(:geometry, {})[:type] === "Point"
+
+      is_feature = coord[:type] == "Feature"
+      if is_feature && coord.fetch(:geometry, {})[:type] == "Point"
         return coord[:geometry][:coordinates]
       end
 
