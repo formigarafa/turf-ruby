@@ -2,19 +2,25 @@
 
 module Turf
   def self.get_coord(coord)
-    coord = deep_symbolize_keys(coord)
-    return coord \
-      if coord.is_a?(Array) && \
-        coord.length >= 2 && \
-        !coord[0].is_a?(Array) && \
-        !coord[1].is_a?(Array)
+    if !coord
+      raise Error, "coord is required"
+    end
 
-    return coord.fetch(:geometry).fetch(:coordinates) \
-      if coord[:type] == "Feature" && \
-        coord.fetch(:geometry)[:type] === "Point"
+    if coord.is_a?(Array) && coord.length >= 2 && coord.all?{|i| i.is_a? Numeric }
+      return coord
+    end
 
-    return coord.fetch(:coordinates) if coord[:type] == "Point"
+    if coord.is_a? Hash
+      coord = deep_symbolize_keys(coord)
+      if coord[:type] == "Feature" && coord.fetch(:geometry, {})[:type] === "Point"
+        return coord[:geometry][:coordinates]
+      end
 
-    raise "coord must be GeoJSON Point or an Array of numbers"
+      if coord[:type] == "Point"
+        return coord[:coordinates]
+      end
+    end
+
+    raise Error, "coord must be GeoJSON Point or an Array of numbers"
   end
 end
