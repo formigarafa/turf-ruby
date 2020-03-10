@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module Turf
-  EARTH_RADIUS = 6371008.8
+  EARTH_RADIUS = 6_371_008.8
   FACTORS = {
     "centimeters" => EARTH_RADIUS * 100,
     "centimetres" => EARTH_RADIUS * 100,
-    "degrees" => EARTH_RADIUS / 111325,
+    "degrees" => EARTH_RADIUS / 111_325,
     "feet" => EARTH_RADIUS * 3.28084,
     "inches" => EARTH_RADIUS * 39.370,
     "kilometers" => EARTH_RADIUS / 1000,
@@ -17,14 +17,14 @@ module Turf
     "millimetres" => EARTH_RADIUS * 1000,
     "nauticalmiles" => EARTH_RADIUS / 1852,
     "radians" => 1,
-    "yards" => EARTH_RADIUS / 1.0936,
+    "yards" => EARTH_RADIUS / 1.0936
   }.freeze
 
   def self.feature(geom, properties = nil, options = {})
     feat = {
       type: "Feature",
       geometry: geom,
-      properties: properties || {},
+      properties: properties || {}
     }
     feat[:id] = options[:id] if options[:id]
 
@@ -40,7 +40,7 @@ module Turf
 
     geom = {
       type: "LineString",
-      coordinates: coordinates,
+      coordinates: coordinates
     }
     feature(geom, properties, options)
   end
@@ -48,7 +48,7 @@ module Turf
   def self.point(coordinates, properties = nil, options = {})
     geom = {
       type: "Point",
-      coordinates: coordinates,
+      coordinates: coordinates
     }
     feature(geom, properties, options)
   end
@@ -56,7 +56,10 @@ module Turf
   def self.polygon(coordinates, properties = nil, options = {})
     coordinates.each do |ring|
       if ring.size < 4
-        raise Error, "Each LinearRing of a Polygon must have 4 or more Positions."
+        raise(
+          Error,
+          "Each LinearRing of a Polygon must have 4 or more Positions.",
+        )
       end
 
       ring.last.each_with_index do |number, idx|
@@ -67,7 +70,7 @@ module Turf
     end
     geom = {
       type: "Polygon",
-      coordinates: coordinates,
+      coordinates: coordinates
     }
     feature(geom, properties, options)
   end
