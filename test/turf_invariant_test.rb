@@ -2,6 +2,7 @@
 
 require "test_helper"
 
+# https://github.com/Turfjs/turf/blob/master/packages/turf-invariant/test.js
 class TurfInvariantTest < Minitest::Test
   def test_get_coord
     assert_raises(
@@ -45,5 +46,17 @@ class TurfInvariantTest < Minitest::Test
     assert_raises(Turf::Error, "Single number Array should throw Error") do
       Turf.get_coord([10])
     end
+  end
+
+  def test_geot_geom
+    pt = Turf.point([1, 1])
+    line = Turf.line_string([[0, 1], [1, 1]])
+    # collection = featureCollection([pt, line])
+    # geomCollection = geometryCollection([pt.geometry, line.geometry])
+
+    assert_equal(Turf.get_geom(pt), pt[:geometry], "Point")
+    assert_equal(Turf.get_geom(line[:geometry]), line[:geometry], "LineString")
+    # t.deepEqual(invariant.getGeom(geomCollection), geomCollection.geometry, "GeometryCollection")
+    # t.deepEqual(invariant.getGeom(geomCollection.geometry), geomCollection.geometry, "GeometryCollection")
   end
 end
