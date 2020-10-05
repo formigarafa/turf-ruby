@@ -33,6 +33,15 @@ module Turf
     feat
   end
 
+  def self.feature_collection(features, options = {})
+    fc = { type: "FeatureCollection" }
+    fc[:id] = options[:id] if options[:id]
+    fc[:bbox] = options[:bbox] if options[:bbox]
+    fc[:features] = features
+
+    fc
+  end
+
   def self.line_string(coordinates, properties = nil, options = {})
     if coordinates.size < 2
       raise Error, "coordinates must be an array of two or more positions"
