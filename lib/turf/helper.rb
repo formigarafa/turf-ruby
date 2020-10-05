@@ -75,6 +75,11 @@ module Turf
     feature(geom, properties, options)
   end
 
+  def self.radians_to_degrees(radians)
+    degrees = radians.remainder(2 * Math::PI)
+    degrees * 180 / Math::PI
+  end
+
   def self.degrees_to_radians(degrees)
     radians = degrees.remainder(360)
     radians * Math::PI / 180
