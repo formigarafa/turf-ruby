@@ -31,7 +31,7 @@ class TurfHelperTest < Minitest::Test
   end
 
   def test_feature_collection
-    p1 = Turf.point([0, 0], { name: "first point" })
+    p1 = Turf.point([0, 0], name: "first point")
     p2 = Turf.point([0, 10])
     p3 = Turf.point([10, 10])
     p4 = Turf.point([10, 0])
