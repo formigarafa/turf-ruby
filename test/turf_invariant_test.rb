@@ -2,6 +2,7 @@
 
 require "test_helper"
 
+# https://github.com/Turfjs/turf/blob/master/packages/turf-invariant/test.js
 class TurfInvariantTest < Minitest::Test
   def test_get_coord
     assert_raises(
@@ -14,9 +15,13 @@ class TurfInvariantTest < Minitest::Test
       Turf::Error,
       "coord must be GeoJSON Point or an Array of numbers",
     ) do
-      Turf.get_coord(Turf.polygon([
-        [[-75, 40], [-80, 50], [-70, 50], [-75, 40]],
-      ]))
+      Turf.get_coord(
+        Turf.polygon(
+          [
+            [[-75, 40], [-80, 50], [-70, 50], [-75, 40]],
+          ],
+        ),
+      )
     end
 
     assert_equal [1, 2], Turf.get_coord([1, 2])
@@ -48,11 +53,16 @@ class TurfInvariantTest < Minitest::Test
   end
 
   def test_get_geom
-    pt = Turf.point [1, 1]
-    line = Turf.line_string [[0, 1], [1, 1]]
+    pt = Turf.point([1, 1])
+    line = Turf.line_string([[0, 1], [1, 1]])
+    # collection = featureCollection([pt, line])
+    # geomCollection = geometryCollection([pt.geometry, line.geometry])
 
-    assert_equal pt[:geometry], Turf.get_geom(pt)
-    assert_equal line[:geometry], Turf.get_geom(line)
-    assert_equal pt[:geometry], Turf.get_geom(pt[:geometry])
+    assert_equal(Turf.get_geom(pt), pt[:geometry], "Point")
+    assert_equal(Turf.get_geom(line[:geometry]), line[:geometry], "LineString")
+    # t.deepEqual(invariant.getGeom(geomCollection), geomCollection.geometry,
+    # "GeometryCollection")
+    # t.deepEqual(invariant.getGeom(geomCollection.geometry),
+    # geomCollection.geometry, "GeometryCollection")
   end
 end
