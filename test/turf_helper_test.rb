@@ -30,6 +30,21 @@ class TurfHelperTest < Minitest::Test
     end
   end
 
+  def test_feature_collection
+    p1 = Turf.point([0, 0], name: "first point")
+    p2 = Turf.point([0, 10])
+    p3 = Turf.point([10, 10])
+    p4 = Turf.point([10, 0])
+    fc = Turf.feature_collection([p1, p2, p3, p4])
+
+    assert_equal fc[:features].length, 4
+    assert_equal fc[:features][0][:properties][:name], "first point"
+    assert_equal fc[:type], "FeatureCollection"
+    assert_equal fc[:features][1][:geometry][:type], "Point"
+    assert_equal fc[:features][1][:geometry][:coordinates][0], 0
+    assert_equal fc[:features][1][:geometry][:coordinates][1], 10
+  end
+
   def test_point
     pt_array = Turf.point([5, 10], name: "test point")
 

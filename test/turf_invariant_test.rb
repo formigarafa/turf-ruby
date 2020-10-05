@@ -52,7 +52,7 @@ class TurfInvariantTest < Minitest::Test
     end
   end
 
-  def test_geot_geom
+  def test_get_geom
     pt = Turf.point([1, 1])
     line = Turf.line_string([[0, 1], [1, 1]])
     # collection = featureCollection([pt, line])

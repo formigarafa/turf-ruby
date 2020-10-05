@@ -28,7 +28,7 @@ module Turf
   end
 
   def self.get_geom(geojson)
-    return geojson.fetch(:geometry) if geojson.fetch(:type) == "Feature"
+    return geojson[:geometry] if geojson[:type] == "Feature"
 
     geojson
   end
