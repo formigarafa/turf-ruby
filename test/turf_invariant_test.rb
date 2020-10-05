@@ -15,9 +15,13 @@ class TurfInvariantTest < Minitest::Test
       Turf::Error,
       "coord must be GeoJSON Point or an Array of numbers",
     ) do
-      Turf.get_coord(Turf.polygon([
-        [[-75, 40], [-80, 50], [-70, 50], [-75, 40]],
-      ]))
+      Turf.get_coord(
+        Turf.polygon(
+          [
+            [[-75, 40], [-80, 50], [-70, 50], [-75, 40]],
+          ],
+        ),
+      )
     end
 
     assert_equal [1, 2], Turf.get_coord([1, 2])
@@ -56,7 +60,9 @@ class TurfInvariantTest < Minitest::Test
 
     assert_equal(Turf.get_geom(pt), pt[:geometry], "Point")
     assert_equal(Turf.get_geom(line[:geometry]), line[:geometry], "LineString")
-    # t.deepEqual(invariant.getGeom(geomCollection), geomCollection.geometry, "GeometryCollection")
-    # t.deepEqual(invariant.getGeom(geomCollection.geometry), geomCollection.geometry, "GeometryCollection")
+    # t.deepEqual(invariant.getGeom(geomCollection), geomCollection.geometry,
+    # "GeometryCollection")
+    # t.deepEqual(invariant.getGeom(geomCollection.geometry),
+    # geomCollection.geometry, "GeometryCollection")
   end
 end

@@ -10,7 +10,9 @@ end
 
 def in_ring(point, ring, ignore_boundary)
   is_inside = false
-  if ring[0][0] == ring[ring.size - 1][0] && ring[0][1] == ring[ring.size - 1][1]
+  is_ring_valid = ring[0][0] == ring[ring.size - 1][0]
+  is_ring_valid &&= ring[0][1] == ring[ring.size - 1][1]
+  if is_ring_valid
     ring = ring.slice(0, ring.size - 1)
   end
   ring.each_with_index do |ring_pt, ring_pt_index|
@@ -21,9 +23,11 @@ def in_ring(point, ring, ignore_boundary)
     xj = ring_pt2[0]
     yj = ring_pt2[1]
 
-    on_boundary =
-      (point[1] * (xi - xj) + yi * (xj - point[0]) + yj * (point[0] - xi)).zero? &&
-      ((xi - point[0]) * (xj - point[0]) <= 0) && ((yi - point[1]) * (yj - point[1]) <= 0)
+    on_boundary = (
+      point[1] * (xi - xj) + yi * (xj - point[0]) + yj * (point[0] - xi)
+    ).zero?
+    on_boundary &&= ((xi - point[0]) * (xj - point[0]) <= 0)
+    on_boundary &&= ((yi - point[1]) * (yj - point[1]) <= 0)
     if on_boundary
       return !ignore_boundary
     end
