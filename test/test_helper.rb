@@ -7,6 +7,7 @@ require "json"
 def load_geojson(name)
   JSON.parse(
     File.read(File.expand_path("geojson/#{name}", __dir__)),
+    symbolize_names: true,
   )
 end
 
