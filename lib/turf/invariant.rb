@@ -26,4 +26,10 @@ module Turf
 
     raise Error, "coord must be GeoJSON Point or an Array of numbers"
   end
+
+  def self.get_geom(geojson)
+    return geojson.fetch(:geometry) if geojson.fetch(:type) == "Feature"
+
+    geojson
+  end
 end

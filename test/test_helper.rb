@@ -11,3 +11,4 @@ def load_geojson(name)
 end
 
 require "minitest/autorun"
+require "minitest/focus"
