@@ -46,4 +46,13 @@ class TurfInvariantTest < Minitest::Test
       Turf.get_coord([10])
     end
   end
+
+  def test_get_geom
+    pt = Turf.point [1, 1]
+    line = Turf.line_string [[0, 1], [1, 1]]
+
+    assert_equal pt[:geometry], Turf.get_geom(pt)
+    assert_equal line[:geometry], Turf.get_geom(line)
+    assert_equal pt[:geometry], Turf.get_geom(pt[:geometry])
+  end
 end
