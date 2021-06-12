@@ -8,3 +8,4 @@ gemspec
 gem "minitest", "~> 5.0"
 gem "minitest-focus"
 gem "rake", "~> 12.0"
+gem "yard"

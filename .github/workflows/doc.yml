@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+      - "master"
+jobs:
+  doc:
+    name: Generate and upload documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+          bundler-cache: true
+      - run: bundle exec yard
+      - uses: crazy-max/ghaction-github-pages@v2
+        with:
+          build_dir: doc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
