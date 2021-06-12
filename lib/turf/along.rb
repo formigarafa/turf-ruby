@@ -15,10 +15,10 @@ module Turf
         return point(coord) if overshot.zero?
 
         direction = bearing(coord, coords[i - 1]) - 180
-        interpolated = destination(coord, overshot, direction, options)
+        interpolated = destination(coord, overshot, direction, **options)
         return interpolated
       else
-        travelled += distance(coords[i], coords[i + 1], options)
+        travelled += distance(coords[i], coords[i + 1], **options)
       end
     end
 
