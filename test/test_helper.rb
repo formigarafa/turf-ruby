@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# These two lines must go first
+require "simplecov"
+SimpleCov.start
+
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "turf_ruby"
 require "json"
