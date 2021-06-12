@@ -37,19 +37,20 @@ You can view all methods here: [https://layerssss.github.io/turf-ruby/](https://
 
 Currently not all functions are available, feel free to fork the repo and port missing functions you need by reading [source code of Turf.js](https://github.com/Turfjs/turf/tree/master/packages/). And don't forget to open a pull-request afterward.
 
+This list should be updated from [https://github.com/Turfjs/turf/blob/master/documentation.yml](https://github.com/Turfjs/turf/blob/master/documentation.yml).
 
 Measurement
 
-- [ ] along
+- [x] along
 - [ ] area
 - [ ] bbox
 - [ ] bboxPolygon
-- [ ] bearing
+- [x] bearing
 - [ ] center
 - [ ] centerOfMass
 - [ ] centroid
-- [ ] destination
-- [ ] distance
+- [x] destination
+- [x] distance
 - [ ] envelope
 - [ ] length
 - [ ] midpoint
@@ -120,15 +121,15 @@ Misc
 
 Helper
 
-- [ ] featureCollection
-- [ ] feature
+- [x] featureCollection
+- [x] feature
 - [ ] geometryCollection
-- [ ] lineString
+- [x] lineString
 - [ ] multiLineString
 - [ ] multiPoint
 - [ ] multiPolygon
-- [ ] point
-- [ ] polygon
+- [x] point
+- [x] polygon
 
 Random
 
@@ -180,9 +181,9 @@ Meta
 - [ ] featureReduce
 - [ ] flattenEach
 - [ ] flattenReduce
-- [ ] getCoord
+- [x] getCoord
 - [ ] getCoords
-- [ ] getGeom
+- [x] getGeom
 - [ ] getType
 - [ ] geomEach
 - [ ] geomReduce
@@ -212,7 +213,7 @@ Booleans
 - [ ] booleanIntersects
 - [ ] booleanOverlap
 - [ ] booleanParallel
-- [ ] booleanPointInPolygon
+- [x] booleanPointInPolygon
 - [ ] booleanPointOnLine
 - [ ] booleanWithin
 
@@ -222,10 +223,10 @@ Unit Conversion
 - [ ] convertArea
 - [ ] convertLength
 - [ ] degreesToRadians
-- [ ] lengthToRadians
-- [ ] lengthToDegrees
-- [ ] radiansToLength
-- [ ] radiansToDegrees
+- [x] lengthToRadians
+- [x] lengthToDegrees
+- [x] radiansToLength
+- [x] radiansToDegrees
 - [ ] toMercator
 - [ ] toWgs84
 
