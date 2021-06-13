@@ -2,8 +2,17 @@
 
 module Turf
   module Measurement
-    def bearing(from, to, **options)
-      return calculate_final_bearing(from, to) if options[:final] == true
+    # Takes two points and finds the geographic bearing between them, i.e. the angle measured in degrees from the north
+    # line (0 degrees)
+    #
+    # See: http://turfjs.org/docs/#bearing
+    #
+    # @param from [Coord] starting Point
+    # @param to [Coord] ending Point
+    # @param final boolean calculates the final bearing if true
+    # @return [number] bearing in decimal degrees, between -180 and 180 degrees (positive clockwise)
+    def bearing(from, to, final: false)
+      return calculate_final_bearing(from, to) if final
 
       coordinates1 = get_coord from
       coordinates2 = get_coord to
