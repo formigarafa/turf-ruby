@@ -123,16 +123,30 @@ module Turf
 
   # @!group Unit Conversion
 
+  # Converts an angle in radians to degrees
+  # @see https://turfjs.org/docs/#radiansToDegrees
+  # @param radians [number] angle in radians
+  # @return [number] degrees between 0 and 360 degrees
   def radians_to_degrees(radians)
     degrees = radians.remainder(2 * Math::PI)
     degrees * 180 / Math::PI
   end
 
+  # Converts an angle in degrees to radians
+  # @see https://turfjs.org/docs/#degreesToRadians
+  # @param degrees [number] angle between 0 and 360 degrees
+  # @return [number] angle in radians
   def degrees_to_radians(degrees)
     radians = degrees.remainder(360)
     radians * Math::PI / 180
   end
 
+  # Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit. Valid units:
+  # miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+  # @see https://turfjs.org/docs/#radiansToLength
+  # @param radians [number] in radians across the sphere
+  # @param units [string] can be degrees, radians, miles, inches, yards, metres, meters, kilometres, kilometers.
+  # @return [number] distance
   def radians_to_length(radians, units = "kilometers")
     factor = FACTORS[units]
     raise Error, "#{units} units is invalid" unless factor
@@ -140,6 +154,12 @@ module Turf
     radians * factor
   end
 
+  # Convert a distance measurement (assuming a spherical Earth) from a real-world unit into radians Valid units: miles,
+  # nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+  # @see https://turfjs.org/docs/#lengthToRadians
+  # @param distance [number] in real units
+  # @param units [string] can be degrees, radians, miles, inches, yards, metres, meters, kilometres, kilometers.
+  # @return [number] radians
   def length_to_radians(distance, units = "kilometers")
     factor = FACTORS[units]
     raise Error, "#{units} units is invalid" unless factor
