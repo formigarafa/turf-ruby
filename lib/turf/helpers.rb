@@ -2,29 +2,54 @@
 
 module Turf
   module Helper
-    def feature(geom, properties = nil, options = {})
+    # Wraps a GeoJSON Geometry in a GeoJSON Feature.
+    #
+    # See: https://turfjs.org/docs/#feature
+    #
+    # @param geom [Geometry] input geometry
+    # @param properties [Hash] an Object of key-value pairs to add as properties
+    # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
+    # @param id [string | number] Identifier associated with the Feature
+    # @return [Feature] a GeoJSON Feature
+    def feature(geom, properties = {}, bbox: nil, id: nil)
       feat = {
         type: "Feature",
         geometry: geom,
-        properties: properties || {}
+        properties: properties
       }
-      feat[:id] = options[:id] if options[:id]
-
-      feat[:bbox] = options[:bbox] if options[:bbox]
+      feat[:id] = options[:id] if id
+      feat[:bbox] = options[:bbox] if bbox
 
       feat
     end
 
-    def feature_collection(features, options = {})
+    # Takes one or more Features and creates a FeatureCollection.
+    #
+    # See: https://turfjs.org/docs/#featureCollection
+    #
+    # @param features [Array<Feature>] input features
+    # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
+    # @param id [string | number] Identifier associated with the Feature
+    # @return [FeatureCollection] FeatureCollection of Features
+    def feature_collection(features, bbox: nil, id: nil)
       fc = { type: "FeatureCollection" }
-      fc[:id] = options[:id] if options[:id]
-      fc[:bbox] = options[:bbox] if options[:bbox]
+      fc[:id] = options[:id] if id
+      fc[:bbox] = options[:bbox] if bbox
       fc[:features] = features
 
       fc
     end
 
-    def line_string(coordinates, properties = nil, options = {})
+    # Creates a LineString Feature from an Array of Positions.
+    #
+    # See: https://turfjs.org/docs/#lineString
+    #
+    # @param coordinates [Array<Array<number>>] an array of Positions
+    # @param properties [Hash] an Hash of key-value pairs to add as properties
+    # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
+    # @param id [string | number] Identifier associated with the Feature
+    # @return [Feature<LineString>] LineString Feature
+    def line_string(coordinates, properties = {}, bbox: nil, id: nil)
       if coordinates.size < 2
         raise Error, "coordinates must be an array of two or more positions"
       end
@@ -33,18 +58,36 @@ module Turf
         type: "LineString",
         coordinates: coordinates
       }
-      feature(geom, properties, options)
+      feature(geom, properties, bbox: bbox, id: id)
     end
 
-    def point(coordinates, properties = nil, options = {})
+    # Creates a Point Feature from a Position.
+    #
+    # See: https://turfjs.org/docs/#point
+    #
+    # @param coordinates [Array<number>] longitude, latitude position (each in decimal degrees)
+    # @param properties [Hash] an Hash of key-value pairs to add as properties
+    # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
+    # @param id [string | number] Identifier associated with the Feature
+    # @return [Feature<Point>] a Point feature
+    def point(coordinates, properties = {}, id: nil, bbox: nil)
       geom = {
         type: "Point",
         coordinates: coordinates
       }
-      feature(geom, properties, options)
+      feature(geom, properties, id: id, bbox: bbox)
     end
 
-    def polygon(coordinates, properties = nil, options = {})
+    # Creates a Polygon Feature from an Array of LinearRings.
+    #
+    # See: https://turfjs.org/docs/#polygon
+    #
+    # @param coordinates [Array<Array<Array<number>>>] an array of LinearRings
+    # @param properties [Hash] an Hash of key-value pairs to add as properties
+    # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
+    # @param id [string | number] Identifier associated with the Feature
+    # @return [Feature<Polygon>] Polygon feature
+    def polygon(coordinates, properties = {}, bbox: nil, id: nil)
       coordinates.each do |ring|
         if ring.size < 4
           raise(
@@ -63,7 +106,7 @@ module Turf
         type: "Polygon",
         coordinates: coordinates
       }
-      feature(geom, properties, options)
+      feature(geom, properties, id: id, bbox: bbox)
     end
   end
 

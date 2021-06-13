@@ -2,7 +2,16 @@
 
 module Turf
   module Measurement
-    def distance(from, to, **options)
+    # Calculates the distance between two points in degrees, radians, miles, or kilometers. This uses the Haversine
+    # formula to account for global curvature.
+    #
+    # See: http://turfjs.org/docs/#distance
+    #
+    # @param from [Coord] origin point
+    # @param to [Coord] destination point
+    # @param units [string] can be degrees, radians, miles, or kilometers
+    # @return [number] distance between the two points
+    def distance(from, to, units: "kilometers")
       coordinates1 = get_coord from
       coordinates2 = get_coord to
 
@@ -17,16 +26,13 @@ module Turf
           (Math.sin(d_lon / 2)**2) * Math.cos(lat1) * Math.cos(lat2)
         )
 
-      call_args = [
+      radians_to_length(
         2 * Math.atan2(
           Math.sqrt(a),
           Math.sqrt(1 - a),
         ),
-      ]
-      if options[:units]
-        call_args << options[:units]
-      end
-      public_send(:radians_to_length, *call_args)
+        units,
+      )
     end
   end
 end

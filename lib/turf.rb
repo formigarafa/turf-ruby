@@ -5,7 +5,7 @@ require "turf/version"
 module Turf
   class Error < StandardError; end
 
-  # This list should correspond to:
+  # this list should correspond to:
   #
   #   https://github.com/Turfjs/turf/blob/master/documentation.yml
   #
