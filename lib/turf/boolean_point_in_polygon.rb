@@ -2,6 +2,17 @@
 
 module Turf
   module Booleans
+    # Takes a Point and a Polygon or MultiPolygon and determines if the point resides inside the polygon. The polygon
+    # can be convex or concave. The function accounts for holes.
+    #
+    # See: http://turfjs.org/docs/#booleanPointInPolygon
+    #
+    # @param point [Coord] input point
+    # @param polygon [Feature<(Polygon | MultiPolygon)>] input polygon or multipolygon
+    # @param ignore_boundary [boolean] True if polygon boundary should be ignored when determining if the point is
+    # inside
+    # the polygon otherwise false.
+    # @return [boolean] true if the Point is inside the Polygon; false if the Point is not inside the Polygon
     def boolean_point_in_polygon(point, polygon, ignore_boundary: false)
       polygon = deep_symbolize_keys(polygon)
       pt = get_coord(point)
