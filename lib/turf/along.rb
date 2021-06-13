@@ -10,6 +10,7 @@ module Turf
   # @param units [string] can be degrees, radians, miles, or kilometers (optional, default "kilometers")
   # @return [Feature<Point>] Point distance units along the line
   def along(line, distance, units: "kilometers")
+    line = deep_symbolize_keys line
     travelled = 0
 
     geom = get_geom line

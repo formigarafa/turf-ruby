@@ -38,6 +38,7 @@ module Turf
   # @param geojson [Feature|Geometry] GeoJSON Feature or Geometry Object
   # @return [Geometry|null] GeoJSON Geometry Object
   def get_geom(geojson)
+    geojson = deep_symbolize_keys geojson
     return geojson[:geometry] if geojson[:type] == "Feature"
 
     geojson
