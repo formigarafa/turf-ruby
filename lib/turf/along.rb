@@ -2,7 +2,15 @@
 
 module Turf
   module Measurement
-    def along(line, distance, **options)
+    # Takes a LineString and returns a Point at a specified distance along the line.
+    #
+    # See: {http://turfjs.org/docs/#along}
+    #
+    # @param line [Feature<LineString>] input line
+    # @param distance [number] distance along the line
+    # @param units [string] can be degrees, radians, miles, or kilometers (optional, default "kilometers")
+    # @return [Feature<Point>] Point distance units along the line
+    def along(line, distance, units: "kilometers")
       travelled = 0
 
       geom = get_geom line
@@ -16,10 +24,10 @@ module Turf
           return point(coord) if overshot.zero?
 
           direction = bearing(coord, coords[i - 1]) - 180
-          interpolated = destination(coord, overshot, direction, **options)
+          interpolated = destination(coord, overshot, direction, units: units)
           return interpolated
         else
-          travelled += distance(coords[i], coords[i + 1], **options)
+          travelled += distance(coords[i], coords[i + 1], units: units)
         end
       end
 
