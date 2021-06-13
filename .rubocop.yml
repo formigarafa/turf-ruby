@@ -10,12 +10,6 @@ Style/Documentation:
 Style/HashEachMethods:
   Enabled: false
 
-Style/HashTransformKeys:
-  Enabled: true
-
-Style/HashTransformValues:
-  Enabled: true
-
 Style/IfUnlessModifier:
   Enabled: false
 
@@ -30,3 +24,10 @@ Style/TrailingCommaInArguments:
 
 Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: consistent_comma
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+AllCops:
+  SuggestExtensions: false
+  NewCops: enable

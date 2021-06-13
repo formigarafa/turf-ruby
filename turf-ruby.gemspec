@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
     "Turf Ruby is a Ruby library for spatial analysis. ",
     "It includes traditional spatial operations, helper functions for creating",
     " GeoJSON data, and data classification and statistics tools.",
-  ].join("")
+  ].join
   spec.homepage      = "http://github.com/formigarafa/turf-ruby"
   spec.license       = "MIT"
 
