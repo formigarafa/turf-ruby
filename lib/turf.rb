@@ -2,29 +2,11 @@
 
 require "turf/version"
 
+# Ruby port of Turf.js, an advance geospatial analysis library.
+# @see https://turfjs.org/
 module Turf
+  # Error thrown by turf-ruby
   class Error < StandardError; end
-
-  # this list should correspond to:
-  #
-  #   https://github.com/Turfjs/turf/blob/master/documentation.yml
-  #
-  include Turf::Measurement
-  # include Turf::CoordinateMutation
-  # include Turf::Transformation
-  # include Turf::FeatureConversion
-  # include Turf::Misc
-  include Turf::Helper
-  # include Turf::Data
-  # include Turf::Interpolation
-  # include Turf::Joins
-  # include Turf::Grids
-  # include Turf::Classification
-  # include Turf::Aggregation
-  include Turf::Meta
-  # include Turf::Assertions
-  include Turf::Booleans
-  include Turf::UnitConversion
 
   extend self
 

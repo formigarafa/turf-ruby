@@ -1,37 +1,35 @@
 # frozen_string_literal: true
 
 module Turf
-  module Measurement
-    # Takes a LineString and returns a Point at a specified distance along the line.
-    #
-    # See: {http://turfjs.org/docs/#along}
-    #
-    # @param line [Feature<LineString>] input line
-    # @param distance [number] distance along the line
-    # @param units [string] can be degrees, radians, miles, or kilometers (optional, default "kilometers")
-    # @return [Feature<Point>] Point distance units along the line
-    def along(line, distance, units: "kilometers")
-      travelled = 0
+  # @!group Measurement
 
-      geom = get_geom line
-      coords = geom[:coordinates]
+  # Takes a LineString and returns a Point at a specified distance along the line.
+  # @see http://turfjs.org/docs/#along
+  # @param line [Feature<LineString>] input line
+  # @param distance [number] distance along the line
+  # @param units [string] can be degrees, radians, miles, or kilometers (optional, default "kilometers")
+  # @return [Feature<Point>] Point distance units along the line
+  def along(line, distance, units: "kilometers")
+    travelled = 0
 
-      coords.each_with_index do |coord, i|
-        break if distance >= travelled && i == coords.length - 1
+    geom = get_geom line
+    coords = geom[:coordinates]
 
-        if travelled >= distance
-          overshot = distance - travelled
-          return point(coord) if overshot.zero?
+    coords.each_with_index do |coord, i|
+      break if distance >= travelled && i == coords.length - 1
 
-          direction = bearing(coord, coords[i - 1]) - 180
-          interpolated = destination(coord, overshot, direction, units: units)
-          return interpolated
-        else
-          travelled += distance(coords[i], coords[i + 1], units: units)
-        end
+      if travelled >= distance
+        overshot = distance - travelled
+        return point(coord) if overshot.zero?
+
+        direction = bearing(coord, coords[i - 1]) - 180
+        interpolated = destination(coord, overshot, direction, units: units)
+        return interpolated
+      else
+        travelled += distance(coords[i], coords[i + 1], units: units)
       end
-
-      point(coords.last)
     end
+
+    point(coords.last)
   end
 end

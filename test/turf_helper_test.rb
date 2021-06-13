@@ -99,8 +99,8 @@ class TurfHelperTest < Minitest::Test
   def test_radians_to_length
     [
       [1, "radians", 1],
-      [1, "kilometers", Turf::EARTH_RADIUS / 1000],
-      [1, "miles", Turf::EARTH_RADIUS / 1609.344],
+      [1, "kilometers", Turf.const_get(:EARTH_RADIUS) / 1000],
+      [1, "miles", Turf.const_get(:EARTH_RADIUS) / 1609.344],
     ].each do |radians, units, length|
       assert_equal length, Turf.radians_to_length(radians, units)
     end
@@ -113,8 +113,8 @@ class TurfHelperTest < Minitest::Test
   def test_length_to_radians
     [
       [1, "radians", 1],
-      [Turf::EARTH_RADIUS / 1000, "kilometers", 1],
-      [Turf::EARTH_RADIUS / 1609.344, "miles", 1],
+      [Turf.const_get(:EARTH_RADIUS) / 1000, "kilometers", 1],
+      [Turf.const_get(:EARTH_RADIUS) / 1609.344, "miles", 1],
     ].each do |length, units, radians|
       assert_equal radians, Turf.length_to_radians(length, units)
     end
