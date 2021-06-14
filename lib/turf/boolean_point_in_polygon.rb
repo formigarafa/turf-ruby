@@ -1,48 +1,18 @@
 # frozen_string_literal: true
 
-# https://github.com/Turfjs/turf/blob/master/packages/turf-boolean-point-in-polygon/index.ts
-def in_bbox(point, bbox)
-  bbox[0] <= point[0] &&
-    bbox[1] <= point[1] &&
-    bbox[2] >= point[0] &&
-    bbox[3] >= point[1]
-end
-
-def in_ring(point, ring, ignore_boundary)
-  is_inside = false
-  is_ring_valid = ring[0][0] == ring[ring.size - 1][0]
-  is_ring_valid &&= ring[0][1] == ring[ring.size - 1][1]
-  if is_ring_valid
-    ring = ring.slice(0, ring.size - 1)
-  end
-  ring.each_with_index do |ring_pt, ring_pt_index|
-    ring_pt2 = ring[(ring_pt_index + 1) % ring.size]
-
-    xi = ring_pt[0]
-    yi = ring_pt[1]
-    xj = ring_pt2[0]
-    yj = ring_pt2[1]
-
-    on_boundary = (
-      point[1] * (xi - xj) + yi * (xj - point[0]) + yj * (point[0] - xi)
-    ).zero?
-    on_boundary &&= ((xi - point[0]) * (xj - point[0]) <= 0)
-    on_boundary &&= ((yi - point[1]) * (yj - point[1]) <= 0)
-    if on_boundary
-      return !ignore_boundary
-    end
-
-    intersect = ((yi > point[1]) != (yj > point[1])) &&
-                (point[0] < (xj - xi) * (point[1] - yi) / (yj - yi) + xi)
-    if intersect
-      is_inside = !is_inside
-    end
-  end
-  is_inside
-end
-
 module Turf
-  def self.boolean_point_in_polygon(point, polygon, ignore_boundary: false)
+  # @!group Booleans
+
+  # Takes a Point and a Polygon or MultiPolygon and determines if the point resides inside the polygon. The polygon
+  # can be convex or concave. The function accounts for holes.
+  # @see http://turfjs.org/docs/#booleanPointInPolygon
+  # @param point [Coord] input point
+  # @param polygon [Feature<(Polygon | MultiPolygon)>] input polygon or multipolygon
+  # @param ignore_boundary [boolean] True if polygon boundary should be ignored when determining if the point is
+  # inside
+  # the polygon otherwise false.
+  # @return [boolean] true if the Point is inside the Polygon; false if the Point is not inside the Polygon
+  def boolean_point_in_polygon(point, polygon, ignore_boundary: false)
     polygon = deep_symbolize_keys(polygon)
     pt = get_coord(point)
     geom = get_geom(polygon)
@@ -74,5 +44,47 @@ module Turf
       end
     end
     inside_poly
+  end
+
+  private
+
+  def in_bbox(point, bbox)
+    bbox[0] <= point[0] &&
+      bbox[1] <= point[1] &&
+      bbox[2] >= point[0] &&
+      bbox[3] >= point[1]
+  end
+
+  def in_ring(point, ring, ignore_boundary)
+    is_inside = false
+    is_ring_valid = ring[0][0] == ring[ring.size - 1][0]
+    is_ring_valid &&= ring[0][1] == ring[ring.size - 1][1]
+    if is_ring_valid
+      ring = ring.slice(0, ring.size - 1)
+    end
+    ring.each_with_index do |ring_pt, ring_pt_index|
+      ring_pt2 = ring[(ring_pt_index + 1) % ring.size]
+
+      xi = ring_pt[0]
+      yi = ring_pt[1]
+      xj = ring_pt2[0]
+      yj = ring_pt2[1]
+
+      on_boundary = (
+        point[1] * (xi - xj) + yi * (xj - point[0]) + yj * (point[0] - xi)
+      ).zero?
+      on_boundary &&= ((xi - point[0]) * (xj - point[0]) <= 0)
+      on_boundary &&= ((yi - point[1]) * (yj - point[1]) <= 0)
+      if on_boundary
+        return !ignore_boundary
+      end
+
+      intersect = ((yi > point[1]) != (yj > point[1])) &&
+                  (point[0] < (xj - xi) * (point[1] - yi) / (yj - yi) + xi)
+      if intersect
+        is_inside = !is_inside
+      end
+    end
+    is_inside
   end
 end

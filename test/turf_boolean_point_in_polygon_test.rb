@@ -210,7 +210,7 @@ class TurfBooleanPointInPolygonTest < Minitest::Test
   end
 
   # https://github.com/Turfjs/turf-inside/issues/15
-  def test_issue_15
+  def test_issue15
     pt1 = Turf.point([-9.9964077, 53.8040989])
     poly = Turf.polygon(
       [

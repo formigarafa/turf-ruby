@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
 module Turf
-  def self.get_coord(coord)
+  # @!group Meta
+
+  # Unwrap a coordinate from a Point Feature, Geometry or a single coordinate.
+  # @see https://turfjs.org/docs/#getCoord
+  # @param coord [Array|Geometry<Point>|Feature<Point>] GeoJSON Point or an Array of numbers
+  # @return [Array] coordinates
+  def get_coord(coord)
     if !coord
       raise Error, "coord is required"
     end
@@ -27,7 +33,12 @@ module Turf
     raise Error, "coord must be GeoJSON Point or an Array of numbers"
   end
 
-  def self.get_geom(geojson)
+  # Get Geometry from Feature or Geometry Object
+  # @see https://turfjs.org/docs/#getGeom
+  # @param geojson [Feature|Geometry] GeoJSON Feature or Geometry Object
+  # @return [Geometry|null] GeoJSON Geometry Object
+  def get_geom(geojson)
+    geojson = deep_symbolize_keys geojson
     return geojson[:geometry] if geojson[:type] == "Feature"
 
     geojson
