@@ -27,11 +27,11 @@ Example:
 from = { type: "Feature", geometry: { type: "Point", coordinates: [-75.343, 39.984] } }
 to = { type: "Feature", geometry: { type: "Point", coordinates: [-75.534, 39.123] } }
 
-Turf::distance(from, to, units: 'miles') 
+Turf::distance(from, to, units: 'miles')
 # 60.35329997171344
 ```
 
-You can view all methods here: [https://layerssss.github.io/turf-ruby/](https://layerssss.github.io/turf-ruby/). Most methods have their documentation linked to Turf.js.
+You can view all methods here: [https://formigarafa.github.io/turf-ruby/](https://formigarafa.github.io/turf-ruby/). Most methods have their documentation linked to Turf.js.
 
 ## Progress
 
@@ -248,3 +248,10 @@ The gem is available as open source under the terms of the [MIT License](LICENSE
 ## Code of Conduct
 
 Everyone interacting in the Turf Ruby project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](CODE_OF_CONDUCT.md).
+
+## Great Thanks
+
+Great thanks to people that care to share and helping with the evolution of the community:
+
+- [@layerssss](https://github.com/layerssss) - Michael Yin
+- [@Henridv](https://github.com/Henridv) - Henri De Veene
