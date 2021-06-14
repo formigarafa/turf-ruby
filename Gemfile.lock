@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    turf-ruby (0.3.0)
+    turf-ruby (0.4.0)
 
 GEM
   remote: https://rubygems.org/
@@ -52,4 +52,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.2.9
+   2.2.15

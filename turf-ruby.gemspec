@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
+  spec.metadata["documentation_uri"] = "https://formigarafa.github.io/turf-ruby/"
 
   spec.files = Dir["lib/**/*.rb"]
   spec.bindir        = "exe"
