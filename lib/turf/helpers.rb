@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+#:nodoc:
 module Turf
   EARTH_RADIUS = 6_371_008.8
   private_constant :EARTH_RADIUS
@@ -34,8 +35,8 @@ module Turf
   def feature(geom, properties = {}, bbox: nil, id: nil)
     feat = {
       type: "Feature",
-      geometry: geom,
-      properties: properties
+      properties: properties,
+      geometry: geom
     }
     feat[:id] = options[:id] if id
     feat[:bbox] = options[:bbox] if bbox
@@ -116,6 +117,36 @@ module Turf
     end
     geom = {
       type: "Polygon",
+      coordinates: coordinates
+    }
+    feature(geom, properties, id: id, bbox: bbox)
+  end
+
+  # Creates a Feature<MultiPolygon> based on a coordinate array. Properties can be added optionally.
+  # @see https://turfjs.org/docs/#multiPolygon
+  # @param coordinates [Array<Array<Array<Array<number>>>>] an array of Polygons
+  # @param properties [Hash] an Hash of key-value pairs to add as properties
+  # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
+  # @param id [string|number] Identifier associated with the Feature
+  # @return [Feature<MultiPolygon>] a multipolygon feature
+  def multi_polygon(coordinates, properties = {}, bbox: nil, id: nil)
+    geom = {
+      type: "MultiPolygon",
+      coordinates: coordinates
+    }
+    feature(geom, properties, id: id, bbox: bbox)
+  end
+
+  # Creates a Feature<MultiLineString> based on a coordinate array. Properties can be added optionally.
+  # @see https://turfjs.org/docs/#multiLineString
+  # @param coordinates [Array<Array<Array<number>>>] coordinates an array of LineStrings
+  # @param properties [Hash] a Hash of key-value pairs to add as properties
+  # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
+  # @param id [string|number] Identifier associated with the Feature
+  # @return [Feature<MultiLineString>] a MultiLineString feature
+  def multi_line_string(coordinates, properties = {}, bbox: nil, id: nil)
+    geom = {
+      type: "MultiLineString",
       coordinates: coordinates
     }
     feature(geom, properties, id: id, bbox: bbox)
