@@ -10,7 +10,7 @@ require "json"
 
 def load_geojson(name)
   JSON.parse(
-    File.read(File.expand_path("geojson/#{name}", __dir__)),
+    File.read(File.expand_path(name, __dir__)),
   )
 end
 

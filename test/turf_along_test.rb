@@ -4,7 +4,7 @@ require "test_helper"
 
 class TurfAlongTest < Minitest::Test
   def test_along
-    line = load_geojson("dc_line.geojson")
+    line = load_geojson("along/dc_line.geojson")
     options = { units: "miles" }
     pt1 = Turf.along(line, 1, **options)
     pt2 = Turf.along(line["geometry"], 1.2, **options)

@@ -4,9 +4,6 @@ Layout/FirstArrayElementIndentation:
 Metrics:
   Enabled: false
 
-Style/Documentation:
-  Enabled: false
-
 Style/HashEachMethods:
   Enabled: false
 
@@ -29,5 +26,6 @@ Gemspec/RequiredRubyVersion:
   Enabled: false
 
 AllCops:
+  TargetRubyVersion: 2.5
   SuggestExtensions: false
   NewCops: enable

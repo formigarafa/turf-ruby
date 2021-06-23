@@ -48,7 +48,7 @@ Measurement
 - [x] bearing
 - [ ] center
 - [ ] centerOfMass
-- [ ] centroid
+- [x] centroid
 - [x] destination
 - [x] distance
 - [ ] envelope
@@ -125,9 +125,9 @@ Helper
 - [x] feature
 - [ ] geometryCollection
 - [x] lineString
-- [ ] multiLineString
+- [x] multiLineString
 - [ ] multiPoint
-- [ ] multiPolygon
+- [x] multiPolygon
 - [x] point
 - [x] polygon
 
@@ -175,9 +175,9 @@ Aggregation
 Meta
 
 - [ ] coordAll
-- [ ] coordEach
+- [x] coordEach
 - [ ] coordReduce
-- [ ] featureEach
+- [x] featureEach
 - [ ] featureReduce
 - [ ] flattenEach
 - [ ] flattenReduce

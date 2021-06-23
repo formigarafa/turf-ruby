@@ -2,9 +2,9 @@
 
 require "test_helper"
 
-class TurfMeasurementTest < Minitest::Test
+class TurfDistanceTest < Minitest::Test
   def test_distance
-    points = load_geojson("distance_points.geojson")
+    points = load_geojson("distance/points.geojson")
     pt2 = points["features"][1]
     pt1 = points["features"][0]
 
