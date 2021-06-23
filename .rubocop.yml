@@ -26,6 +26,6 @@ Gemspec/RequiredRubyVersion:
   Enabled: false
 
 AllCops:
-  TargetRubyVersion: 3.0
+  TargetRubyVersion: 2.5
   SuggestExtensions: false
   NewCops: enable

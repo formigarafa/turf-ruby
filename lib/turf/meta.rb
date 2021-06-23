@@ -49,14 +49,14 @@ module Turf
         when "Polygon", "MultiLineString"
           geometry[:coordinates].flat_map do |line_coords|
             (
-              exclude_wrap_coord ? line_coords.slice(...-1) : line_coords
+              exclude_wrap_coord ? line_coords.slice(0...-1) : line_coords
             )
           end
         when "MultiPolygon"
           geometry[:coordinates].flat_map do |polygon_coords|
             polygon_coords.flat_map do |line_coords|
               (
-                exclude_wrap_coord ? line_coords.slice(...-1) : line_coords
+                exclude_wrap_coord ? line_coords.slice(0...-1) : line_coords
               )
             end
           end
