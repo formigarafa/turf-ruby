@@ -29,7 +29,6 @@ module Turf
     lng = radians_to_degrees(longitude2)
     lat = radians_to_degrees(latitude2)
 
-    # prevent ruby@2 converting `properties` as kwargs
-    point([lng, lat], properties, **{})
+    point([lng, lat], properties: properties)
   end
 end

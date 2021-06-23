@@ -23,7 +23,7 @@ module Turf
 
     point(
       [x_sum / len, y_sum / len],
-      properties,
+      properties: properties,
     )
   end
 end
