@@ -123,10 +123,10 @@ Helper
 
 - [x] featureCollection
 - [x] feature
-- [ ] geometryCollection
+- [x] geometryCollection
 - [x] lineString
 - [x] multiLineString
-- [ ] multiPoint
+- [x] multiPoint
 - [x] multiPolygon
 - [x] point
 - [x] polygon
