@@ -42,7 +42,7 @@ This list should be updated from [https://github.com/Turfjs/turf/blob/master/doc
 Measurement
 
 - [x] along
-- [ ] area
+- [x] area
 - [ ] bbox
 - [ ] bboxPolygon
 - [x] bearing
