@@ -87,7 +87,7 @@ module Turf
       coordinates: coordinates
     }
 
-    feature(geom, properties, properties: properties, bbox: bbox, id: id)
+    feature(geom, properties: properties, bbox: bbox, id: id)
   end
 
   # Creates a LineString Feature from an Array of Positions.

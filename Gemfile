@@ -6,7 +6,9 @@ source "https://rubygems.org"
 gemspec
 
 gem "minitest", "~> 5.0"
+gem "minitest-bonus-assertions"
 gem "minitest-focus"
+gem "pry"
 gem "rake", "~> 12.0"
 gem "simplecov"
 gem "yard"

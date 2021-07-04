@@ -176,17 +176,17 @@ Meta
 
 - [ ] coordAll
 - [x] coordEach
-- [ ] coordReduce
+- [x] coordReduce
 - [x] featureEach
-- [ ] featureReduce
-- [ ] flattenEach
-- [ ] flattenReduce
+- [x] featureReduce
+- [x] flattenEach
+- [x] flattenReduce
 - [x] getCoord
 - [ ] getCoords
 - [x] getGeom
 - [ ] getType
-- [ ] geomEach
-- [ ] geomReduce
+- [x] geomEach
+- [x] geomReduce
 - [ ] propEach
 - [ ] propReduce
 - [ ] segmentEach
