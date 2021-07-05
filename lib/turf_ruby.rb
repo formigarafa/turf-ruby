@@ -13,5 +13,6 @@ require "turf/invariant"
 require "turf/boolean_point_in_polygon"
 require "turf/centroid"
 require "turf/meta"
+require "turf/area"
 
 require "turf"

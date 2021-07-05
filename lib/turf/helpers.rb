@@ -59,12 +59,43 @@ module Turf
     fc
   end
 
+  # Creates a Feature based on a coordinate array. Properties can be added optionally.
+  # @see https://turfjs.org/docs/#geometryCollection
+  # @param geometries [Array<Geometry>] an array of GeoJSON Geometries
+  # @param properties [Hash] a Hash of key-value pairs to add as properties
+  # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
+  # @param id [string|number] Identifier associated with the Feature
+  # @return [Feature<GeometryCollection>] a GeoJSON GeometryCollection Feature
+  def geometry_collection(geometries, bbox: nil, id: nil, properties: {})
+    geom = {
+      type: "GeometryCollection",
+      geometries: geometries
+    }
+
+    feature(geom, properties: properties, bbox: bbox, id: id)
+  end
+
+  # Creates a Feature based on a coordinate array. Properties can be added optionally.
+  # @param coordinates [Array<Array<number>>] an array of Positions
+  # @param properties [Hash] a Hash of key-value pairs to add as properties
+  # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
+  # @param id [string|number] Identifier associated with the Feature
+  # @return [Feature<MultiPoint>] a MultiPoint feature
+  def multi_point(coordinates, properties: {}, bbox: nil, id: nil)
+    geom = {
+      type: "MultiPoint",
+      coordinates: coordinates
+    }
+
+    feature(geom, properties: properties, bbox: bbox, id: id)
+  end
+
   # Creates a LineString Feature from an Array of Positions.
   # @see https://turfjs.org/docs/#lineString
   # @param coordinates [Array<Array<number>>] an array of Positions
   # @param properties [Hash] an Hash of key-value pairs to add as properties
   # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
-  # @param id [string | number] Identifier associated with the Feature
+  # @param id [string|number] Identifier associated with the Feature
   # @return [Feature<LineString>] LineString Feature
   def line_string(coordinates, properties: {}, bbox: nil, id: nil)
     if coordinates.size < 2

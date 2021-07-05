@@ -42,7 +42,7 @@ This list should be updated from [https://github.com/Turfjs/turf/blob/master/doc
 Measurement
 
 - [x] along
-- [ ] area
+- [x] area
 - [ ] bbox
 - [ ] bboxPolygon
 - [x] bearing
@@ -123,10 +123,10 @@ Helper
 
 - [x] featureCollection
 - [x] feature
-- [ ] geometryCollection
+- [x] geometryCollection
 - [x] lineString
 - [x] multiLineString
-- [ ] multiPoint
+- [x] multiPoint
 - [x] multiPolygon
 - [x] point
 - [x] polygon
@@ -176,17 +176,17 @@ Meta
 
 - [ ] coordAll
 - [x] coordEach
-- [ ] coordReduce
+- [x] coordReduce
 - [x] featureEach
-- [ ] featureReduce
-- [ ] flattenEach
-- [ ] flattenReduce
+- [x] featureReduce
+- [x] flattenEach
+- [x] flattenReduce
 - [x] getCoord
 - [ ] getCoords
 - [x] getGeom
 - [ ] getType
-- [ ] geomEach
-- [ ] geomReduce
+- [x] geomEach
+- [x] geomReduce
 - [ ] propEach
 - [ ] propReduce
 - [ ] segmentEach
