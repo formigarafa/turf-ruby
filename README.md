@@ -52,7 +52,7 @@ Measurement
 - [x] destination
 - [x] distance
 - [ ] envelope
-- [ ] length
+- [x] length
 - [ ] midpoint
 - [ ] pointOnFeature
 - [ ] polygonTangents
