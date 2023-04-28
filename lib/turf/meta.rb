@@ -304,21 +304,20 @@ module Turf
   # @see https://turfjs.org/docs/#segmentEach
   # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
   def segment_each(geojson)
-    flatten_each(geojson) do |feature, feature_index, multi_feature_index|
+    flatten_each(geojson) do |feature, feature_index|
       # Exclude null Geometries
       return if feature[:geometry].nil?
 
       # (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
       type = feature[:geometry][:type]
-      return if type == "Point" || type == "MultiPoint"
+      return if %w[Point MultiPoint].include?(type)
 
       segment_index = 0
 
       # Generate 2-vertex line segments
       previous_coords = nil
       previous_feature_index = 0
-      prev_geom_index = 0
-      coord_each(feature) do |current_coord, coord_index|
+      coord_each(feature) do |current_coord|
         # Simulating a meta.coord_reduce() since `reduce` operations cannot be stopped by returning `false`
         if previous_coords.nil? || feature_index > previous_feature_index
           previous_coords = current_coord
@@ -329,6 +328,7 @@ module Turf
 
         segment = Turf.line_string([previous_coords, current_coord], properties: feature[:properties])
         next unless yield(segment, feature_index)
+
         segment_index += 1
         previous_coords = current_coord
       end
