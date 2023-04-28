@@ -298,4 +298,64 @@ module Turf
 
     previous_value
   end
+
+  # Iterate over 2-vertex line segment in any GeoJSON object, similar to Array.forEach()
+  # (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
+  # @see https://turfjs.org/docs/#segmentEach
+  # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
+  def segment_each(geojson)
+    flatten_each(geojson) do |feature, feature_index, multi_feature_index|
+      # Exclude null Geometries
+      return if feature[:geometry].nil?
+
+      # (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
+      type = feature[:geometry][:type]
+      return if type == "Point" || type == "MultiPoint"
+
+      segment_index = 0
+
+      # Generate 2-vertex line segments
+      previous_coords = nil
+      previous_feature_index = 0
+      prev_geom_index = 0
+      coord_each(feature) do |current_coord, coord_index|
+        # Simulating a meta.coord_reduce() since `reduce` operations cannot be stopped by returning `false`
+        if previous_coords.nil? || feature_index > previous_feature_index
+          previous_coords = current_coord
+          previous_feature_index = feature_index
+          segment_index = 0
+          next
+        end
+
+        segment = Turf.line_string([previous_coords, current_coord], properties: feature[:properties])
+        next unless yield(segment, feature_index)
+        segment_index += 1
+        previous_coords = current_coord
+      end
+    end
+  end
+
+  def segment_reduce(geojson, initial_value: nil)
+    previous_value = initial_value
+    started = false
+
+    segment_each(geojson) do |segment, feature_index, multifeature_index, geometry_index, segment_index|
+      previous_value =
+        if !started && initial_value.nil?
+          segment
+        else
+          yield(
+            previous_value,
+            segment,
+            feature_index,
+            multifeature_index,
+            geometry_index,
+            segment_index
+          )
+        end
+      started = true
+    end
+
+    previous_value
+  end
 end
