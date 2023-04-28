@@ -4,16 +4,16 @@
 #
 #   https://github.com/Turfjs/turf/tree/master/packages
 #
-require "turf/helpers"
-require "turf/bearing"
-require "turf/destination"
 require "turf/along"
-require "turf/distance"
-require "turf/length"
-require "turf/invariant"
+require "turf/area"
+require "turf/bearing"
 require "turf/boolean_point_in_polygon"
 require "turf/centroid"
+require "turf/destination"
+require "turf/distance"
+require "turf/helpers"
+require "turf/invariant"
+require "turf/length"
 require "turf/meta"
-require "turf/area"
 
 require "turf"
