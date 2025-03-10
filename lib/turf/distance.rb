@@ -22,8 +22,8 @@ module Turf
 
     a =
       (
-        (Math.sin(d_lat / 2)**2) +
-        (Math.sin(d_lon / 2)**2) * Math.cos(lat1) * Math.cos(lat2)
+        (Math.sin(d_lat / 2.0)**2) +
+        (Math.sin(d_lon / 2.0)**2) * Math.cos(lat1) * Math.cos(lat2)
       )
 
     radians_to_length(

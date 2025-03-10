@@ -11,9 +11,9 @@ module Turf
   # @param properties [Hash] a [Hash] that is used as the Feature's properties
   # @return [Feature<Point>] the centroid of the input features
   def centroid(geojson, properties: {})
-    x_sum = 0
-    y_sum = 0
-    len = 0
+    x_sum = 0.0
+    y_sum = 0.0
+    len = 0.0
 
     coord_each geojson, exclude_wrap_coord: true do |coord|
       x_sum += coord[0]

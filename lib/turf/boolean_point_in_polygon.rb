@@ -81,7 +81,7 @@ module Turf
       end
 
       intersect = ((yi > point[1]) != (yj > point[1])) &&
-                  (point[0] < (xj - xi) * (point[1] - yi) / (yj - yi) + xi)
+                  (point[0] < (xj - xi) * (point[1] - yi).to_f / (yj - yi) + xi)
       if intersect
         is_inside = !is_inside
       end

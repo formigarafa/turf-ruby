@@ -36,7 +36,7 @@ module Turf
     total
   end
 
-  AREA_RADIUS = 6_378_137
+  AREA_RADIUS = 6_378_137.0
 
   def area_ring_area(coords)
     return 0 if coords.size <= 2
@@ -71,10 +71,10 @@ module Turf
       total += (area_rad(p3[0]) - area_rad(p1[0])) * Math.sin(area_rad(p2[1]))
     end
 
-    total * AREA_RADIUS * AREA_RADIUS / 2
+    total * AREA_RADIUS * AREA_RADIUS / 2.0
   end
 
   def area_rad(num)
-    num * Math::PI / 180
+    num * Math::PI / 180.0
   end
 end

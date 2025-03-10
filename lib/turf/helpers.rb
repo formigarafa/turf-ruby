@@ -18,7 +18,7 @@ module Turf
     "millimeters" => EARTH_RADIUS * 1000,
     "millimetres" => EARTH_RADIUS * 1000,
     "nauticalmiles" => EARTH_RADIUS / 1852,
-    "radians" => 1,
+    "radians" => 1.0,
     "yards" => EARTH_RADIUS / 1.0936
   }.freeze
   private_constant :FACTORS
