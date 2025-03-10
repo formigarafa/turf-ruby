@@ -12,16 +12,13 @@ class TurfCentroidTest < Minitest::Test
   ].each do |name|
     define_method "test_centroid_#{name}" do
       geojson = load_geojson "centroid/in/#{name}.geojson"
-      out = load_geojson "centroid/out/#{name}.geojson"
+      out = load_geojson "centroid/out/#{name}.geojson", symbolize_names: true
       centered = Turf.centroid geojson, properties: { "marker-symbol": "circle" }
       results = Turf.feature_collection [centered]
       Turf.feature_each geojson do |feature|
         results[:features].push feature
       end
-      assert_equal(
-        Turf.send(:deep_symbolize_keys, out),
-        results,
-      )
+      assert_equal(out, results)
     end
   end
 end
