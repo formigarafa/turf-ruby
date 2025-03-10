@@ -41,4 +41,23 @@ module Turf
     end
     input
   end
+
+  def deep_dup(input)
+    if input.is_a?(Hash)
+      duppe = {}
+      input.each_pair do |key, value|
+        if key.is_a?(::String) || key.is_a?(::Symbol)
+          duppe[key] = deep_dup(value)
+        else
+          duppe.delete(key)
+          duppe[deep_dup(key)] = deep_dup(value)
+        end
+      end
+      duppe
+    elsif input.is_a?(Array)
+      input.map { |i| deep_dup(i) }
+    else
+      input.dup
+    end
+  end
 end
