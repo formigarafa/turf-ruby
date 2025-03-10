@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#:nodoc:
+# :nodoc:
 module Turf
   # @!group Meta
 
@@ -13,7 +13,7 @@ module Turf
   # @yieldparam current_coord [Array<number>] The current coordinate being processed.
   # @yieldparam coord_index [number] The current index of the coordinate being processed.
   def coord_each(geojson, exclude_wrap_coord: false, &block)
-    coord_all(geojson, exclude_wrap_coord: exclude_wrap_coord).each_with_index(&block)
+    coord_all(geojson, exclude_wrap_coord: exclude_wrap_coord, &block)
   end
 
   # Get all coordinates from any GeoJSON object.
@@ -22,40 +22,51 @@ module Turf
   # @param exclude_wrap_coord [boolean] whether or not to include the final coordinate of LinearRings that wraps the
   # ring in its iteration
   # @return [Array<Array<number>>] coordinate position array
-  def coord_all(geojson, exclude_wrap_coord: false)
-    geometries = self.geometries(geojson)
-    geometries.flat_map do |geometry|
-      next [] if geometry.nil?
+  def coord_all(geojson, exclude_wrap_coord: false, &block)
+    geometry_index = -1
+    geom_each(geojson) do |geometry, _idx, _properties|
+      if geometry.nil?
+        next
+      end
 
       case geometry[:type]
       when "Point"
-        [geometry[:coordinates]]
+        geometry_index += 1
+        block.call(geometry[:coordinates], geometry_index)
       when "LineString", "MultiPoint"
-        geometry[:coordinates]
+        geometry[:coordinates].each do |coords|
+          geometry_index += 1
+          block.call(coords, geometry_index)
+        end
       when "Polygon", "MultiLineString"
-        geometry[:coordinates].flat_map do |line_coords|
-          (
-            exclude_wrap_coord ? line_coords.slice(0...-1) : line_coords
-          )
+        geometry[:coordinates].each do |line_coords|
+          if exclude_wrap_coord
+            line_coords = line_coords[0...-1]
+          end
+          line_coords.each do |coords|
+            geometry_index += 1
+            block.call(coords, geometry_index)
+          end
         end
       when "MultiPolygon"
-        geometry[:coordinates].flat_map do |polygon_coords|
-          polygon_coords.flat_map do |line_coords|
-            (
-              exclude_wrap_coord ? line_coords.slice(0...-1) : line_coords
-            )
+        geometry[:coordinates].each do |polygon_coords|
+          polygon_coords.each do |line_coords|
+            if exclude_wrap_coord
+              line_coords = line_coords[0...-1]
+            end
+            line_coords.each do |coords|
+              geometry_index += 1
+              block.call(coords, geometry_index)
+            end
           end
         end
       when "Feature"
-        [].tap do |feature_coords|
-          coord_each geometry, exclude_wrap_coord: exclude_wrap_coord do |coord|
-            feature_coords.push coord
-          end
-        end
+        coord_each(geometry, exclude_wrap_coord: exclude_wrap_coord, &block)
       else
         raise Error, "Unknown Geometry Type: #{geometry[:type]}"
       end
     end
+    geojson
   end
 
   # Reduce coordinates in any GeoJSON object, similar to Array.reduce()
@@ -98,9 +109,8 @@ module Turf
   def geom_each(geojson)
     return unless geojson
 
-    geojson = deep_symbolize_keys geojson
+    geojson = deep_symbolize_keys! geojson
 
-    # [geometry, properties, bbox, id]
     entries = []
 
     case geojson[:type]
@@ -114,21 +124,20 @@ module Turf
       entries.push [geojson, {}, nil, nil]
     end
 
-    # flatten GeometryCollection
-    entries =
-      entries.flat_map do |entry|
-        geometry, properties, bbox, id = entry
-        next [entry] if geometry.nil?
-        next [entry] unless geometry[:type] == "GeometryCollection"
+    entry_index = -1
 
-        geometry[:geometries].map do |sub_geometry|
-          [sub_geometry, properties, bbox, id]
+    # flatten GeometryCollection
+    entries.each do |entry|
+      geometry, properties, bbox, id = entry
+      if geometry.nil?
+        yield(geometry, (entry_index += 1), properties, bbox, id)
+      elsif geometry[:type] != "GeometryCollection"
+        yield(geometry, (entry_index += 1), properties, bbox, id)
+      else
+        geometry[:geometries].each do |sub_geometry|
+          yield(sub_geometry, (entry_index += 1), properties, bbox, id)
         end
       end
-
-    entries.each_with_index do |entry, entry_index|
-      geometry, properties, bbox, id = entry
-      yield geometry, entry_index, properties, bbox, id
     end
   end
 
@@ -171,11 +180,11 @@ module Turf
   # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
   # @return [Array<Geometry>] list of Geometry
   def geometries(geojson)
-    [].tap do |geometries|
-      geom_each(geojson) do |geometry|
-        geometries.push(geometry)
-      end
+    geometries = []
+    geom_each(geojson) do |geometry|
+      geometries.push(geometry)
     end
+    geometries
   end
 
   # Iterate over features in any GeoJSON object, similar to Array.forEach.
@@ -188,7 +197,7 @@ module Turf
     return unless geojson
 
     features = []
-    geojson = deep_symbolize_keys geojson
+    geojson = deep_symbolize_keys! geojson
     case geojson[:type]
     when "Feature"
       features.push geojson

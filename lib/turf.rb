@@ -27,4 +27,18 @@ module Turf
       input
     end
   end
+
+  def deep_symbolize_keys!(input)
+    case input
+    when Hash
+      input.transform_keys!(&:to_sym).transform_values do |value|
+        deep_symbolize_keys!(value)
+      end
+    when Array
+      input.map do |value|
+        deep_symbolize_keys! value
+      end
+    end
+    input
+  end
 end
