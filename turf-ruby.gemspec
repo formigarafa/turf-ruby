@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name          = "turf-ruby"
   spec.version       = Turf::VERSION
   spec.authors       = ["Rafael Santos"]
-  spec.email         = ["santos@rafael.nz"]
+  spec.email         = ["formigarafa@gmail.com"]
 
   spec.summary       = "A modular geospatial engine. Ruby port of TurfJS."
   spec.description   = [
@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.metadata["source_code_uri"] = spec.homepage
   spec.metadata["documentation_uri"] = "https://formigarafa.github.io/turf-ruby/"
 
-  spec.files = Dir["lib/**/*.rb"]
+  spec.files = Dir["*.gemspec", "lib/**/*", "LICENSE.txt", "README.md"]
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
