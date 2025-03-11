@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#:nodoc:
+# :nodoc:
 module Turf
   # @!group Measurement
 
@@ -20,11 +20,11 @@ module Turf
     bearing_radians = degrees_to_radians bearing
     radians = length_to_radians distance, units
 
-    latitude2 = Math.asin(Math.sin(latitude1) * Math.cos(radians) +
-      Math.cos(latitude1) * Math.sin(radians) * Math.cos(bearing_radians))
+    latitude2 = Math.asin((Math.sin(latitude1) * Math.cos(radians)) +
+      (Math.cos(latitude1) * Math.sin(radians) * Math.cos(bearing_radians)))
     longitude2 = longitude1 + Math.atan2(
       Math.sin(bearing_radians) * Math.sin(radians) * Math.cos(latitude1),
-      Math.cos(radians) - Math.sin(latitude1) * Math.sin(latitude2),
+      Math.cos(radians) - (Math.sin(latitude1) * Math.sin(latitude2)),
     )
     lng = radians_to_degrees(longitude2)
     lat = radians_to_degrees(latitude2)

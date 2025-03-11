@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#:nodoc:
+# :nodoc:
 module Turf
   EARTH_RADIUS = 6_371_008.8
   private_constant :EARTH_RADIUS

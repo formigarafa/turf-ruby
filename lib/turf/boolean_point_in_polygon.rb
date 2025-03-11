@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#:nodoc:
+# :nodoc:
 module Turf
   # @!group Booleans
 
@@ -72,7 +72,7 @@ module Turf
       yj = ring_pt2[1]
 
       on_boundary = (
-        point[1] * (xi - xj) + yi * (xj - point[0]) + yj * (point[0] - xi)
+        (point[1] * (xi - xj)) + (yi * (xj - point[0])) + (yj * (point[0] - xi))
       ).zero?
       on_boundary &&= ((xi - point[0]) * (xj - point[0]) <= 0)
       on_boundary &&= ((yi - point[1]) * (yj - point[1]) <= 0)
@@ -81,7 +81,7 @@ module Turf
       end
 
       intersect = ((yi > point[1]) != (yj > point[1])) &&
-                  (point[0] < (xj - xi) * (point[1] - yi).to_f / (yj - yi) + xi)
+                  (point[0] < ((xj - xi) * (point[1] - yi).to_f / (yj - yi)) + xi)
       if intersect
         is_inside = !is_inside
       end

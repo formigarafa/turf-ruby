@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#:nodoc:
+# :nodoc:
 module Turf
   # Takes one or more features and returns their area in square meters.
   # @see https://turfjs.org/docs/#area
@@ -11,6 +11,8 @@ module Turf
       value + area_calculate_area(geom)
     end
   end
+
+  AREA_RADIUS = 6_378_137.0
 
   private
 
@@ -35,8 +37,6 @@ module Turf
     end
     total
   end
-
-  AREA_RADIUS = 6_378_137.0
 
   def area_ring_area(coords)
     return 0 if coords.size <= 2

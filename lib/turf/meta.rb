@@ -129,9 +129,7 @@ module Turf
     # flatten GeometryCollection
     entries.each do |entry|
       geometry, properties, bbox, id = entry
-      if geometry.nil?
-        yield(geometry, (entry_index += 1), properties, bbox, id)
-      elsif geometry[:type] != "GeometryCollection"
+      if geometry.nil? || geometry[:type] != "GeometryCollection"
         yield(geometry, (entry_index += 1), properties, bbox, id)
       else
         geometry[:geometries].each do |sub_geometry|

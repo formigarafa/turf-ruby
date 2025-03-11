@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#:nodoc:
+# :nodoc:
 module Turf
   # @!group Measurement
 
@@ -22,8 +22,8 @@ module Turf
     lat1 = degrees_to_radians(coordinates1[1])
     lat2 = degrees_to_radians(coordinates2[1])
     a = Math.sin(lon2 - lon1) * Math.cos(lat2)
-    b = Math.cos(lat1) * Math.sin(lat2) -
-        Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1)
+    b = (Math.cos(lat1) * Math.sin(lat2)) -
+        (Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1))
 
     radians_to_degrees(Math.atan2(a, b))
   end
