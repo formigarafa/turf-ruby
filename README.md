@@ -76,7 +76,7 @@ Transformation
 - [ ] bboxClip
 - [ ] bezierSpline
 - [ ] buffer
-- [ ] circle
+- [x] circle
 - [ ] clone
 - [ ] concave
 - [ ] convex
@@ -96,7 +96,7 @@ Transformation
 Feature Conversion
 
 - [ ] combine
-- [ ] explode
+- [x] explode
 - [ ] flatten
 - [ ] lineToPolygon
 - [ ] polygonize
@@ -174,7 +174,7 @@ Aggregation
 
 Meta
 
-- [ ] coordAll
+- [x] coordAll
 - [x] coordEach
 - [x] coordReduce
 - [x] featureEach
@@ -222,7 +222,7 @@ Unit Conversion
 - [ ] bearingToAzimuth
 - [ ] convertArea
 - [ ] convertLength
-- [ ] degreesToRadians
+- [x] degreesToRadians
 - [x] lengthToRadians
 - [x] lengthToDegrees
 - [x] radiansToLength
