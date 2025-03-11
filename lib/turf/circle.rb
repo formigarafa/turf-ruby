@@ -11,19 +11,16 @@ module Turf
   # @param {string} [options.units='kilometers'] miles, kilometers, degrees, or radians
   # @param {hash} [options.properties={}] properties
   # @returns {Feature<Polygon>} circle polygon
-  def circle(center, radius, options = {}, units: nil, steps: 64)
-    # default params
+  def circle(center, radius, options = {})
     center = deep_symbolize_keys(center)
-    properties = options[:properties] || (
-      !center.is_a?(Array) && center[:type] == "Feature" && center[:properties] ? center[:properties] : {}
-    )
+    # default params
+    steps = options[:steps] || 64
+    properties = options[:properties]
+    properties ||= !center.is_a?(Array) && center[:type] == "Feature" && center[:properties]
+    properties ||= {}
 
     # main
     coordinates = []
-    destination_options = { properties: properties }
-    if units
-      destination_options[:units] = units
-    end
     steps.times do |i|
       coordinates.push(destination(center, radius, (i * -360.0) / steps, **options).dig(:geometry, :coordinates))
     end

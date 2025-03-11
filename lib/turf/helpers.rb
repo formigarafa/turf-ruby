@@ -209,7 +209,8 @@ module Turf
   # @param radians [number] in radians across the sphere
   # @param units [string] can be degrees, radians, miles, inches, yards, metres, meters, kilometres, kilometers.
   # @return [number] distance
-  def radians_to_length(radians, units = "kilometers")
+  def radians_to_length(radians, units = nil)
+    units ||= "kilometers"
     factor = FACTORS[units]
     raise Error, "#{units} units is invalid" unless factor
 
@@ -222,7 +223,8 @@ module Turf
   # @param distance [number] in real units
   # @param units [string] can be degrees, radians, miles, inches, yards, metres, meters, kilometres, kilometers.
   # @return [number] radians
-  def length_to_radians(distance, units = "kilometers")
+  def length_to_radians(distance, units = nil)
+    units ||= "kilometers"
     factor = FACTORS[units]
     raise Error, "#{units} units is invalid" unless factor
 
