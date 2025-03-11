@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    turf-ruby (0.8.0)
+    turf-ruby (0.8.1)
 
 GEM
   remote: https://rubygems.org/
