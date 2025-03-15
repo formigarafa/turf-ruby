@@ -230,4 +230,44 @@ module Turf
 
     distance / factor
   end
+
+  def line_strings(coordinates, properties = nil, options = {})
+    # to be implemented
+  end
+
+  def points(coordinates, properties = nil, options = {})
+    # to be implemented
+  end
+
+  def polygons(coordinates, properties = nil, options = {})
+    # to be implemented
+  end
+
+  def is_number(num)
+    # to be implemented
+  end
+
+  def is_object(input)
+    # to be implemented
+  end
+
+  def azimuth_to_bearing(angle)
+    # to be implemented
+  end
+
+  def bearing_to_azimuth(bearing)
+    # to be implemented
+  end
+
+  def round(num, precision = 0)
+    # to be implemented
+  end
+
+  def convert_area(area, original_unit = "meters", final_unit = "kilometers")
+    # to be implemented
+  end
+
+  def convert_length(length, original_unit = "meters", final_unit = "kilometers")
+    # to be implemented
+  end
 end
