@@ -44,37 +44,37 @@ Measurement
 - [x] along
 - [x] area
 - [ ] bbox
-- [ ] bboxPolygon
+- [ ] bbox_polygon
 - [x] bearing
 - [ ] center
-- [ ] centerOfMass
+- [ ] center_of_mass
 - [x] centroid
 - [x] destination
 - [x] distance
 - [ ] envelope
 - [x] length
 - [ ] midpoint
-- [ ] pointOnFeature
-- [ ] polygonTangents
-- [ ] pointToLineDistance
-- [ ] rhumbBearing
-- [ ] rhumbDestination
-- [ ] rhumbDistance
+- [ ] point_on_feature
+- [ ] polygon_tangents
+- [ ] point_to_line_distance
+- [ ] rhumb_bearing
+- [ ] rhumb_destination
+- [ ] rhumb_distance
 - [ ] square
-- [ ] greatCircle
+- [ ] great_circle
 
 Coordinate Mutation
 
-- [ ] cleanCoords
+- [ ] clean_coords
 - [ ] flip
 - [ ] rewind
 - [ ] round
-- [ ] truncate
+- [x] truncate
 
 Transformation
 
-- [ ] bboxClip
-- [ ] bezierSpline
+- [ ] bbox_clip
+- [ ] bezier_spline
 - [ ] buffer
 - [x] circle
 - [ ] clone
@@ -83,13 +83,13 @@ Transformation
 - [ ] difference
 - [ ] dissolve
 - [ ] intersect
-- [ ] lineOffset
-- [ ] polygonSmooth
+- [ ] line_offset
+- [ ] polygon_smooth
 - [ ] simplify
 - [ ] tesselate
-- [ ] transformRotate
-- [ ] transformTranslate
-- [ ] transformScale
+- [ ] transform_rotate
+- [ ] transform_translate
+- [ ] transform_scale
 - [ ] union
 - [ ] voronoi
 
@@ -98,45 +98,45 @@ Feature Conversion
 - [ ] combine
 - [x] explode
 - [ ] flatten
-- [ ] lineToPolygon
+- [ ] line_to_polygon
 - [ ] polygonize
-- [ ] polygonToLine
+- [ ] polygon_to_line
 
 Misc
 
 - [ ] kinks
-- [ ] lineArc
-- [ ] lineChunk
-- [ ] lineIntersect
-- [ ] lineOverlap
-- [ ] lineSegment
-- [ ] lineSlice
-- [ ] lineSliceAlong
-- [ ] lineSplit
+- [ ] line_arc
+- [ ] line_chunk
+- [ ] line_intersect
+- [ ] line_overlap
+- [ ] line_segment
+- [ ] line_slice
+- [ ] line_slice_along
+- [ ] line_split
 - [ ] mask
-- [ ] nearestPointOnLine
+- [ ] nearest_point_on_line
 - [ ] sector
-- [ ] shortestPath
-- [ ] unkinkPolygon
+- [ ] shortest_path
+- [ ] unkink_polygon
 
 Helper
 
-- [x] featureCollection
+- [x] feature_collection
 - [x] feature
-- [x] geometryCollection
-- [x] lineString
-- [x] multiLineString
-- [x] multiPoint
-- [x] multiPolygon
+- [x] geometry_collection
+- [x] line_string
+- [x] multi_line_string
+- [x] multi_point
+- [x] multi_polygon
 - [x] point
 - [x] polygon
 
 Random
 
-- [ ] randomPosition
-- [ ] randomPoint
-- [ ] randomLineString
-- [ ] randomPolygon
+- [ ] random_position
+- [ ] random_point
+- [ ] random_line_string
+- [ ] random_polygon
 
 Data
 
@@ -152,83 +152,83 @@ Interpolation
 
 Joins
 
-- [ ] pointsWithinPolygon
+- [ ] points_within_polygon
 - [ ] tag
 
 Grids
 
-- [ ] hexGrid
-- [ ] pointGrid
-- [ ] squareGrid
-- [ ] triangleGrid
+- [ ] hex_grid
+- [ ] point_grid
+- [ ] square_grid
+- [ ] triangle_grid
 
 Classification
 
-- [ ] nearestPoint
+- [ ] nearest_point
 
 Aggregation
 
 - [ ] collect
-- [ ] clustersDbscan
-- [ ] clustersKmeans
+- [ ] clusters_dbscan
+- [ ] clusters_kmeans
 
 Meta
 
-- [x] coordAll
-- [x] coordEach
-- [x] coordReduce
-- [x] featureEach
-- [x] featureReduce
-- [x] flattenEach
-- [x] flattenReduce
-- [x] getCoord
-- [ ] getCoords
-- [x] getGeom
-- [ ] getType
-- [x] geomEach
-- [x] geomReduce
-- [ ] propEach
-- [ ] propReduce
-- [ ] segmentEach
-- [ ] segmentReduce
-- [ ] getCluster
-- [ ] clusterEach
-- [ ] clusterReduce
+- [x] coord_all
+- [x] coord_each
+- [x] coord_reduce
+- [x] feature_each
+- [x] feature_reduce
+- [x] flatten_each
+- [x] flatten_reduce
+- [x] get_coord
+- [x] get_coords
+- [x] get_geom
+- [x] get_type
+- [x] geom_each
+- [x] geom_reduce
+- [ ] prop_each
+- [ ] prop_reduce
+- [x] segment_each
+- [x] segment_reduce
+- [ ] get_cluster
+- [ ] cluster_each
+- [ ] cluster_reduce
 
 Assertions
 
-- [ ] collectionOf
-- [ ] containsNumber
-- [ ] geojsonType
-- [ ] featureOf
+- [x] collection_of
+- [x] contains_number
+- [x] geojson_type
+- [x] feature_of
 
 Booleans
 
-- [ ] booleanClockwise
-- [ ] booleanConcave
-- [ ] booleanContains
-- [ ] booleanCrosses
-- [ ] booleanDisjoint
-- [ ] booleanEqual
-- [ ] booleanIntersects
-- [ ] booleanOverlap
-- [ ] booleanParallel
-- [x] booleanPointInPolygon
-- [ ] booleanPointOnLine
-- [ ] booleanWithin
+- [ ] boolean_clockwise
+- [ ] boolean_concave
+- [ ] boolean_contains
+- [ ] boolean_crosses
+- [ ] boolean_disjoint
+- [ ] boolean_equal
+- [ ] boolean_intersects
+- [ ] boolean_overlap
+- [ ] boolean_parallel
+- [x] boolean_point_in_polygon
+- [ ] boolean_point_on_line
+- [ ] boolean_within
 
 Unit Conversion
 
-- [ ] bearingToAzimuth
-- [ ] convertArea
-- [ ] convertLength
-- [x] degreesToRadians
-- [x] lengthToRadians
-- [x] lengthToDegrees
-- [x] radiansToLength
-- [x] radiansToDegrees
-- [ ] toMercator
-- [ ] toWgs84
+- [x] bearing_to_azimuth
+- [x] convert_area
+- [x] convert_length
+- [x] degrees_to_radians
+- [x] length_to_radians
+- [x] length_to_degrees
+- [x] radians_to_length
+- [x] radians_to_degrees
+- [ ] to_mercator
+- [ ] to_wgs84
 
 ## Development
 
