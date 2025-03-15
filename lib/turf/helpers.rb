@@ -19,14 +19,14 @@ module Turf
     "millimetres" => EARTH_RADIUS * 1000,
     "nauticalmiles" => EARTH_RADIUS / 1852,
     "radians" => 1.0,
-    "yards" => EARTH_RADIUS * 1.0936,
+    "yards" => EARTH_RADIUS * 1.0936
   }.freeze
   private_constant :FACTORS
 
   AREA_FACTORS = {
     "acres" => 0.000247105,
-    "centimeters" => 10000.0,
-    "centimetres" => 10000.0,
+    "centimeters" => 10_000.0,
+    "centimetres" => 10_000.0,
     "feet" => 10.763910417,
     "hectares" => 0.0001,
     "inches" => 1550.003100006,
@@ -36,9 +36,9 @@ module Turf
     "metres" => 1.0,
     "miles" => 3.86e-7,
     "nauticalmiles" => 2.9155334959812285e-7,
-    "millimeters" => 1000000.0,
-    "millimetres" => 1000000.0,
-    "yards" => 1.195990046,
+    "millimeters" => 1_000_000.0,
+    "millimetres" => 1_000_000.0,
+    "yards" => 1.195990046
   }.freeze
   private_constant :FACTORS
 
@@ -334,6 +334,7 @@ module Turf
     if !precision.is_a?(Numeric) || precision < 0
       raise Error, "invalid precision"
     end
+
     num.round(precision)
   end
 

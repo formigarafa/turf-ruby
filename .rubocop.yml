@@ -4,6 +4,9 @@ Layout/FirstArrayElementIndentation:
 Metrics:
   Enabled: false
 
+Naming/PredicateName:
+  Enabled: false
+
 Style/HashEachMethods:
   Enabled: false
 
@@ -11,6 +14,9 @@ Style/IfUnlessModifier:
   Enabled: false
 
 Style/NegatedIf:
+  Enabled: false
+
+Style/NumericPredicate:
   Enabled: false
 
 Style/StringLiterals:
