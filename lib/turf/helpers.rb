@@ -21,6 +21,24 @@ module Turf
     "radians" => 1.0,
     "yards" => EARTH_RADIUS * 1.0936,
   }.freeze
+  private_constant :FACTORS
+
+  AREA_FACTORS = {
+    "acres" => 0.000247105,
+    "centimeters" => 10000.0,
+    "centimetres" => 10000.0,
+    "feet" => 10.763910417,
+    "hectares" => 0.0001,
+    "inches" => 1550.003100006,
+    "kilometers" => 0.000001,
+    "kilometres" => 0.000001,
+    "meters" => 1.0,
+    "metres" => 1.0,
+    "miles" => 3.86e-7,
+    "nauticalmiles" => 2.9155334959812285e-7,
+    "millimeters" => 1000000.0,
+    "millimetres" => 1000000.0,
+    "yards" => 1.195990046,
   }.freeze
   private_constant :FACTORS
 
@@ -232,43 +250,126 @@ module Turf
     distance / factor
   end
 
+  # Creates a FeatureCollection from an Array of LineString coordinates.
+  # @see https://turfjs.org/docs/#lineStrings
+  # @param coordinates [Array<Array<Array<number>>>] an array of LinearRings
+  # @param properties [Hash] a Hash of key-value pairs to add as properties
+  # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the FeatureCollection
+  # @param id [string|number] Identifier associated with the FeatureCollection
+  # @return [FeatureCollection<LineString>] LineString FeatureCollection
   def line_strings(coordinates, properties = nil, options = {})
-    # to be implemented
+    features = coordinates.map { |coords| line_string(coords, properties) }
+    feature_collection(features, options)
   end
 
+  # Creates a Point FeatureCollection from an Array of Point coordinates.
+  # @see https://turfjs.org/docs/#points
+  # @param coordinates [Array<Array<number>>] an array of Points
+  # @param properties [Hash] a Hash of key-value pairs to add as properties
+  # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the FeatureCollection
+  # @param id [string|number] Identifier associated with the FeatureCollection
+  # @return [FeatureCollection<Point>] Point FeatureCollection
   def points(coordinates, properties = nil, options = {})
-    # to be implemented
+    features = coordinates.map { |coords| point(coords, properties) }
+    feature_collection(features, options)
   end
 
+  # Creates a Polygon FeatureCollection from an Array of Polygon coordinates.
+  # @see https://turfjs.org/docs/#polygons
+  # @param coordinates [Array<Array<Array<Array<number>>>>] an array of Polygon coordinates
+  # @param properties [Hash] a Hash of key-value pairs to add as properties
+  # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the FeatureCollection
+  # @param id [string|number] Identifier associated with the FeatureCollection
+  # @return [FeatureCollection<Polygon>] Polygon FeatureCollection
   def polygons(coordinates, properties = nil, options = {})
-    # to be implemented
+    features = coordinates.map { |coords| polygon(coords, properties) }
+    feature_collection(features, options)
   end
 
+  # Checks if the input is a number.
+  # @see https://turfjs.org/docs/#isNumber
+  # @param num [Object] Number to validate
+  # @return [boolean] true/false
   def is_number(num)
-    # to be implemented
+    num.is_a?(Numeric)
   end
 
+  # Checks if the input is an object.
+  # @see https://turfjs.org/docs/#isObject
+  # @param input [Object] variable to validate
+  # @return [boolean] true/false, including false for Arrays and Functions
   def is_object(input)
-    # to be implemented
+    input.is_a?(Hash) && !input.is_a?(Array)
   end
 
+  # Converts any azimuth angle from the north line direction (positive clockwise)
+  # and returns an angle between -180 and +180 degrees (positive clockwise), 0 being the north line
+  # @see https://turfjs.org/docs/#azimuthToBearing
+  # @param angle [number] between 0 and 360 degrees
+  # @return [number] bearing between -180 and +180 degrees
   def azimuth_to_bearing(angle)
-    # to be implemented
+    angle = angle.remainder(360)
+    angle -= 360 if angle > 180
+    angle += 360 if angle < -180
+    angle
   end
 
+  # Converts any bearing angle from the north line direction (positive clockwise)
+  # and returns an angle between 0-360 degrees (positive clockwise), 0 being the north line
+  # @see https://turfjs.org/docs/#bearingToAzimuth
+  # @param bearing [number] angle, between -180 and +180 degrees
+  # @return [number] angle between 0 and 360 degrees
   def bearing_to_azimuth(bearing)
-    # to be implemented
+    angle = bearing.remainder(360)
+    angle += 360 if angle < 0
+    angle
   end
 
+  # Rounds a number to a specified precision
+  # @see https://turfjs.org/docs/#round
+  # @param num [number] Number to round
+  # @param precision [number] Precision
+  # @return [number] rounded number
   def round(num, precision = 0)
-    # to be implemented
+    if !precision.is_a?(Numeric) || precision < 0
+      raise Error, "invalid precision"
+    end
+    num.round(precision)
   end
 
-  def convert_area(area, original_unit = "meters", final_unit = "kilometers")
-    # to be implemented
+  # Converts an area from one unit to another.
+  # @see https://turfjs.org/docs/#convertArea
+  # @param area [number] Area to be converted
+  # @param original_unit [string] Input area unit
+  # @param final_unit [string] Returned area unit
+  # @return [number] The converted length
+  def convert_area(area, original_unit = nil, final_unit = nil)
+    original_unit ||= "meters"
+    final_unit ||= "kilometers"
+
+    raise Error, "area must be a positive number" unless area >= 0
+
+    start_factor = AREA_FACTORS[original_unit]
+    raise Error, "invalid original units" unless start_factor
+
+    final_factor = AREA_FACTORS[final_unit]
+    raise Error, "invalid final units" unless final_factor
+
+    (area / start_factor) * final_factor
   end
 
-  def convert_length(length, original_unit = "meters", final_unit = "kilometers")
-    # to be implemented
+  # Converts a length from one unit to another.
+  # @see https://turfjs.org/docs/#convertLength
+  # @param length [number] Length to be converted
+  # @param original_unit [string] Input length unit
+  # @param final_unit [string] Returned length unit
+  # @return [number] The converted length
+  def convert_length(length, original_unit = nil, final_unit = nil)
+    original_unit ||= "kilometers"
+    final_unit ||= "kilometers"
+
+    raise Error, "length must be a positive number" unless length >= 0
+
+    radians_to_length(length_to_radians(length, original_unit), final_unit)
   end
 end
