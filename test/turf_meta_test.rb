@@ -149,6 +149,9 @@ class TurfMetaTest < Minitest::Test
     [geometry, feature, feature_collection]
   end
 
+  def test_prop_each
+  end
+
   def test_coord_each_point
     feature_and_collection(pt[:geometry]).each do |input|
       Turf.coord_each input do |coord, index|
@@ -273,6 +276,9 @@ class TurfMetaTest < Minitest::Test
     assert_equal(390, sum)
   end
 
+  def test_array_reduce_initial_value
+  end
+
   def test_coord_reduce_previous_coordinates
     output = []
     line = Turf.line_string([
@@ -293,6 +299,9 @@ class TurfMetaTest < Minitest::Test
     ], output)
   end
 
+  def test_array_reduce_previous_coordinates
+  end
+
   def test_coord_reduce_previous_coordinates_initial_value
     output = []
     Turf.coord_reduce(
@@ -309,7 +318,10 @@ class TurfMetaTest < Minitest::Test
     ], output)
   end
 
-  def test_coord_each_error
+  def test_array_reduce_previous_coordinates_initial_value
+  end
+
+  def test_unknown
     assert_raises_with_message(Turf::Error, "Unknown Geometry Type: ") do
       Turf.coord_each({})
     end
@@ -445,64 +457,55 @@ class TurfMetaTest < Minitest::Test
     assert_equal([1], multi_feature_indexes)
   end
 
+  def test_flatten_reduce_previous_feature_initial_value
+  end
+
   # @see https://github.com/Turfjs/turf/issues/853
-  def test_null_geometries_feature_each
+  def test_null_geometries
     output = []
     Turf.feature_each fc_null do |feature|
       output.push feature.fetch(:geometry)
     end
-    assert_equal([nil, nil], output)
-  end
+    assert_equal([nil, nil], output, "feature_each")
 
-  def test_null_geometries_geom_each
     output = []
     Turf.geom_each fc_null do |geometry|
       output.push geometry
     end
-    assert_equal([nil, nil], output)
-  end
+    assert_equal([nil, nil], output, "geom_each")
 
-  def test_null_geometries_flatten_each
     output = []
     Turf.flatten_each fc_null do |feature|
       output.push feature.fetch(:geometry)
     end
-    assert_equal([nil, nil], output)
-  end
+    assert_equal([nil, nil], output, "flatten_each")
 
-  def test_null_geometries_coord_each
-    output = []
-    Turf.coord_each fc_null do |coord|
-      output.push coord
+    assert_raises_with_message(Turf::Error, "no coordinates should be found") do
+      Turf.coord_each(fc_null) {|whatever| whatever }
     end
-    assert_equal([], output)
-  end
 
-  def test_null_geometries_feature_reduce
     assert_equal(
       2,
       Turf.feature_reduce(fc_null, 0) { |prev| prev + 1 },
+      "feature_reduce",
     )
-  end
 
-  def test_null_geometries_geom_reduce
     assert_equal(
       2,
       Turf.geom_reduce(fc_null, 0) { |prev| prev + 1 },
+      "geom_reduce",
     )
-  end
 
-  def test_null_geometries_flatten_reduce
     assert_equal(
       2,
       Turf.flatten_reduce(fc_null, 0) { |prev| prev + 1 },
+      "flatten_reduce",
     )
-  end
 
-  def test_null_geometries_coord_reduce
     assert_equal(
       0,
       Turf.coord_reduce(fc_null, 0) { |prev| prev + 1 },
+      "coord_reduce",
     )
   end
 
@@ -537,5 +540,127 @@ class TurfMetaTest < Minitest::Test
         fc, []
       ) { |prev, _cur, index| [*prev, index] },
     )
+  end
+
+  def test_segment_each
+  end
+
+  def test_segment_each_multi_point
+  end
+
+  def test_segment_reduce
+  end
+
+  def test_segment_reduce_no_initial_value
+  end
+
+  def test_segment_each_index_and_sub_index
+  end
+
+  def test_segment_reduce_index_and_sub_index
+  end
+
+  def test_line_each_line_string
+  end
+
+  def test_line_each_multi_line_string
+  end
+
+  def test_line_each_multi_polygon
+  end
+
+  def test_line_each_feature_collection
+  end
+
+  def test_line_reduce_multi_line_string
+  end
+
+  def test_line_reduce_multi_polygon
+  end
+
+  def test_line_each_and_line_reduce_assert
+  end
+
+  def test_geom_each_callback_bbox_and_id
+    properties = { foo: "bar" }
+    bbox = [0, 0, 0, 0]
+    id = "foo"
+    pt = Turf.point([0, 0], properties, bbox: bbox, id: id)
+
+    Turf.geom_each(
+      pt,
+    ) do |_current_geometry, feature_index, current_properties, current_bbox, current_id|
+      assert_equal(0, feature_index)
+      assert_equal(properties, current_properties)
+      assert_equal(bbox, current_bbox)
+      assert_equal(id, current_id)
+    end
+  end
+
+  def test_line_each_callback_bbox_and_id
+  end
+
+  def test_line_each_return_line_string
+  end
+
+  def coord_each_indexes_polygon_with_hole
+  end
+
+  def line_each_indexes_polygon_with_hole # (source line: 1081)
+  end
+
+  def segment_each_indexes_polygon_with_hole
+  end
+
+  def coord_each_indexes_multi_polygon_with_hole
+  end
+
+  def coord_each_indexes_polygon_with_hole2 # (source line: 1223)
+  end
+
+  def coord_each_indexes_feature_collection_of_line_string
+  end
+
+  def breaking_of_iretations
+  end
+
+  def test_find_segment
+  end
+
+  def test_find_point
+  end
+
+  def test_segment_each_issue_1273
+    # https://github.com/Turfjs/turf/issues/1273
+    poly = Turf.polygon([
+      # Outer Ring
+      # Segment = 0
+      # Geometries = 0,1,2
+      [
+        [10, 10],
+        [50, 30],
+        [30, 40],
+        [10, 10],
+      ],
+      # Inner Ring
+      # Segment => 1
+      # Geometries => 0,1,2
+      [
+        [-10, -10],
+        [-50, -30],
+        [-30, -40],
+        [-10, -10],
+      ],
+    ])
+    segment_indexes = []
+    geometry_indexes = []
+    Turf.segment_each(
+      poly,
+    ) do |_line, _feature_index, _multi_feature_index, segment_index, geometry_index|
+      segment_indexes.push segment_index
+      geometry_indexes.push geometry_index
+    end
+    assert_equal([0, 0, 0, 1, 1, 1], segment_indexes)
+    assert_equal([0, 1, 2, 0, 1, 2], geometry_indexes)
   end
 end

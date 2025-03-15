@@ -368,21 +368,21 @@ module Turf
     previous_value
   end
 
-  def prop_each
+  def prop_each(*args)
   end
 
-  def prop_reduce
+  def prop_reduce(*args)
   end
 
-  def line_reduce
+  def line_reduce(*args)
   end
 
-  def line_each
+  def line_each(*args)
   end
 
-  def find_segment
+  def find_segment(*args)
   end
 
-  def find_point
+  def find_point(*args)
   end
 end
