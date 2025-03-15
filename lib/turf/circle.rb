@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "destination"
+require_relative "helpers"
+
 # :nodoc:
 module Turf
   # Takes a Point and calculates the circle polygon given a radius in degrees, radians, miles, or kilometers;

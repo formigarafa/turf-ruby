@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "invariant"
+
 # :nodoc:
 module Turf
   # @!group Booleans

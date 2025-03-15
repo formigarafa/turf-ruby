@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "helpers"
+require_relative "meta"
+
 # :nodoc:
 module Turf
   # Takes one or more features and returns their area in square meters.

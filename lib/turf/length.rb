@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "distance"
+require_relative "meta"
+
 # :nodoc:
 module Turf
   # @!group Measurement

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "meta"
+require_relative "helpers"
+
 # :nodoc:
 module Turf
   def explode(geojson)

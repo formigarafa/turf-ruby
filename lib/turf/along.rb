@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "bearing"
+require_relative "destination"
+require_relative "distance"
+require_relative "helpers"
+require_relative "invariant"
+
 # :nodoc:
 module Turf
   # @!group Measurement
