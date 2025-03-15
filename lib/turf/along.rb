@@ -16,7 +16,8 @@ module Turf
   # @param distance [number] distance along the line
   # @param units [string] can be degrees, radians, miles, or kilometers (optional, default "kilometers")
   # @return [Feature<Point>] Point distance units along the line
-  def along(line, distance, units: "kilometers")
+  def along(line, distance, options = {})
+    units = options[:units] || "kilometers"
     line = deep_symbolize_keys line
     travelled = 0
 
@@ -31,10 +32,10 @@ module Turf
         return point(coord) if overshot.zero?
 
         direction = bearing(coord, coords[i - 1]) - 180
-        interpolated = destination(coord, overshot, direction, units: units)
+        interpolated = destination(coord, overshot, direction, {units: units})
         return interpolated
       else
-        travelled += distance(coords[i], coords[i + 1], units: units)
+        travelled += distance(coords[i], coords[i + 1], {units: units})
       end
     end
 

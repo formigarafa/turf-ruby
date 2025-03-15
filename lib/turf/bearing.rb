@@ -14,8 +14,8 @@ module Turf
   # @param to [Coord] ending Point
   # @param final boolean calculates the final bearing if true
   # @return [number] bearing in decimal degrees, between -180 and 180 degrees (positive clockwise)
-  def bearing(from, to, final: false)
-    return calculate_final_bearing(from, to) if final
+  def bearing(from, to, options = {})
+    return calculate_final_bearing(from, to) if options[:final]
 
     coordinates1 = get_coord from
     coordinates2 = get_coord to

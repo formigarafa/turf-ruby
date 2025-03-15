@@ -10,7 +10,7 @@ module Turf
   # @param geojson [GeoJSON] input GeoJSON feature(s)
   # @return [number] aria in square meters
   def area(geojson)
-    geom_reduce(geojson, initial_value: 0) do |value, geom|
+    geom_reduce(geojson, 0) do |value, geom|
       value + area_calculate_area(geom)
     end
   end

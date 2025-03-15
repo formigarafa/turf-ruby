@@ -25,7 +25,7 @@ module Turf
     # main
     coordinates = []
     steps.times do |i|
-      coordinates.push(destination(center, radius, (i * -360.0) / steps, **options).dig(:geometry, :coordinates))
+      coordinates.push(destination(center, radius, (i * -360.0) / steps, options).dig(:geometry, :coordinates))
     end
     coordinates.push(coordinates[0])
 

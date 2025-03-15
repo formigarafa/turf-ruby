@@ -259,7 +259,7 @@ class TurfMetaTest < Minitest::Test
     ])
     sum = Turf.coord_reduce(
       line,
-      initial_value: 0,
+      0,
     ) do |previous, coords, index|
       output.push [previous, coords, index]
       previous + coords[0]
@@ -297,7 +297,7 @@ class TurfMetaTest < Minitest::Test
     output = []
     Turf.coord_reduce(
       line,
-      initial_value: line.fetch(:geometry).fetch(:coordinates)[0],
+      line.fetch(:geometry).fetch(:coordinates)[0],
     ) do |previous, coords, index|
       output.push [previous, coords, index]
       coords
@@ -421,7 +421,7 @@ class TurfMetaTest < Minitest::Test
     last_sub_index = nil
     sum =
       Turf.flatten_reduce(
-        multi_pt.fetch(:geometry), initial_value: 0
+        multi_pt.fetch(:geometry), 0
       ) do |previous, current, index, sub_index|
         last_index = index
         last_sub_index = sub_index
@@ -483,28 +483,28 @@ class TurfMetaTest < Minitest::Test
   def test_null_geometries_feature_reduce
     assert_equal(
       2,
-      Turf.feature_reduce(fc_null, initial_value: 0) { |prev| prev + 1 },
+      Turf.feature_reduce(fc_null, 0) { |prev| prev + 1 },
     )
   end
 
   def test_null_geometries_geom_reduce
     assert_equal(
       2,
-      Turf.geom_reduce(fc_null, initial_value: 0) { |prev| prev + 1 },
+      Turf.geom_reduce(fc_null, 0) { |prev| prev + 1 },
     )
   end
 
   def test_null_geometries_flatten_reduce
     assert_equal(
       2,
-      Turf.flatten_reduce(fc_null, initial_value: 0) { |prev| prev + 1 },
+      Turf.flatten_reduce(fc_null, 0) { |prev| prev + 1 },
     )
   end
 
   def test_null_geometries_coord_reduce
     assert_equal(
       0,
-      Turf.coord_reduce(fc_null, initial_value: 0) { |prev| prev + 1 },
+      Turf.coord_reduce(fc_null, 0) { |prev| prev + 1 },
     )
   end
 
@@ -522,21 +522,21 @@ class TurfMetaTest < Minitest::Test
     assert_equal(
       [0, 1, 2],
       Turf.coord_reduce(
-        fc, initial_value: []
+        fc, []
       ) { |prev, _cur, index| [*prev, index] },
     )
 
     assert_equal(
       [0, 1, 2, 3],
       Turf.geom_reduce(
-        fc, initial_value: []
+        fc, []
       ) { |prev, _cur, index| [*prev, index] },
     )
 
     assert_equal(
       [0, 1, 2, 3],
       Turf.flatten_reduce(
-        fc, initial_value: []
+        fc, []
       ) { |prev, _cur, index| [*prev, index] },
     )
   end

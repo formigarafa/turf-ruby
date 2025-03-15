@@ -78,7 +78,7 @@ module Turf
   # @param exclude_wrap_coord [Boolean] whether or not to include the final coordinate of LinearRings that wraps the
   # ring in its iteration.
   # @return [*] The value that results from the reduction.
-  def coord_reduce(geojson, initial_value: nil, exclude_wrap_coord: false)
+  def coord_reduce(geojson, initial_value = nil, exclude_wrap_coord: false)
     previous_value = initial_value
 
     coord_each(
@@ -152,7 +152,7 @@ module Turf
   # @yieldparam bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
   # @yieldparam id [string|number] Identifier associated with the Feature
   # @return [*] The value that results from the reduction.
-  def geom_reduce(geojson, initial_value: nil)
+  def geom_reduce(geojson, initial_value = nil)
     previous_value = initial_value
 
     geom_each(
@@ -216,7 +216,7 @@ module Turf
   # @yieldparam feature [Feature<any>] The current Feature being processed.
   # @yieldparam feature_index [number] The current index of the Feature being processed.
   # @return [*] The value that results from the reduction.
-  def feature_reduce(geojson, initial_value: nil)
+  def feature_reduce(geojson, initial_value = nil)
     previous_value = initial_value
 
     feature_each(
@@ -286,7 +286,7 @@ module Turf
   # @yieldparam feature_index [number] The current index of the Feature being processed.
   # @yieldparam multi_feature_index [number] The current index of the Feature in the multi-Feature
   # @return [*] The value that results from the reduction.
-  def flatten_reduce(geojson, initial_value: nil)
+  def flatten_reduce(geojson, initial_value = nil)
     previous_value = initial_value
 
     flatten_each(
@@ -344,7 +344,7 @@ module Turf
     end
   end
 
-  def segment_reduce(geojson, initial_value: nil)
+  def segment_reduce(geojson, initial_value = nil)
     previous_value = initial_value
     started = false
 

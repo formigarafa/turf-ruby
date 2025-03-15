@@ -14,7 +14,7 @@ module Turf
   # @param to [Coord] destination point
   # @param units [string] can be degrees, radians, miles, or kilometers
   # @return [number] distance between the two points
-  def distance(from, to, units: "kilometers")
+  def distance(from, to, options = {})
     coordinates1 = get_coord from
     coordinates2 = get_coord to
 
@@ -34,7 +34,7 @@ module Turf
         Math.sqrt(a),
         Math.sqrt(1 - a),
       ),
-      units,
+      options[:units],
     )
   end
 end
