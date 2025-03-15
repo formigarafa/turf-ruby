@@ -2,6 +2,6 @@
 
 # :nodoc:
 module Turf
-  # Version of turf-ruby
-  VERSION = "0.8.1"
+  def points_within_polygon(*args)
+  end
 end

@@ -2,6 +2,6 @@
 
 # :nodoc:
 module Turf
-  # Version of turf-ruby
-  VERSION = "0.8.1"
+  def transform_rotate(*args)
+  end
 end

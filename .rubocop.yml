@@ -7,6 +7,9 @@ Metrics:
 Naming/PredicateName:
   Enabled: false
 
+Style/EmptyMethod:
+  Enabled: false
+
 Style/HashEachMethods:
   Enabled: false
 

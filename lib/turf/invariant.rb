@@ -46,4 +46,22 @@ module Turf
 
     geojson
   end
+
+  def get_coords(*args)
+  end
+
+  def contains_number(*args)
+  end
+
+  def geojson_type(*args)
+  end
+
+  def feature_of(*args)
+  end
+
+  def collection_of(*args)
+  end
+
+  def get_type(*args)
+  end
 end

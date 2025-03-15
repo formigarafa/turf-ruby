@@ -6,7 +6,7 @@ require_relative "helpers"
 module Turf
   # @!group Meta
 
-  # Iterate over coordinates in any GeoJSON object, similar to Array.forEach()
+  # Iterate over coordinates in any GeoJSON object, similar to Array.forEach(*args)
   # @see https://turfjs.org/docs/#coordEach
   # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
   # @param exclude_wrap_coord [boolean] whether or not to include the final coordinate of LinearRings that wraps the
@@ -71,7 +71,7 @@ module Turf
     geojson
   end
 
-  # Reduce coordinates in any GeoJSON object, similar to Array.reduce()
+  # Reduce coordinates in any GeoJSON object, similar to Array.reduce(*args)
   # @see https://turfjs.org/docs/#coordReduce
   # @param geojson [FeatureCollection|Geometry|Feature] any GeoJSON object
   # @param initial_value [*] Value to use as the first argument to the first call of the callback.
@@ -100,7 +100,7 @@ module Turf
     previous_value
   end
 
-  # Iterate over each geometry in any GeoJSON object, similar to Array.forEach()
+  # Iterate over each geometry in any GeoJSON object, similar to Array.forEach(*args)
   # @see https://turfjs.org/docs/#geomReduce
   # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
   # @yieldparam geom [Geometry] The current Feature being processed.
@@ -141,7 +141,7 @@ module Turf
     end
   end
 
-  # Reduce geometry in any GeoJSON object, similar to Array.reduce().
+  # Reduce geometry in any GeoJSON object, similar to Array.reduce(*args).
   # @see https://turfjs.org/docs/#geomReduce
   # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
   # @param initial_value [*] Value to use as the first argument to the first call of the callback.
@@ -208,7 +208,7 @@ module Turf
     features.each_with_index(&block)
   end
 
-  # Reduce features in any GeoJSON object, similar to Array.reduce().
+  # Reduce features in any GeoJSON object, similar to Array.reduce(*args).
   # @see https://turfjs.org/docs/#featureReduce
   # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
   # @param initial_value [*] Value to use as the first argument to the first call of the callback.
@@ -277,7 +277,7 @@ module Turf
     end
   end
 
-  # Reduce flattened features in any GeoJSON object, similar to Array.reduce().
+  # Reduce flattened features in any GeoJSON object, similar to Array.reduce(*args).
   # @see https://turfjs.org/docs/#flattenEach
   # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
   # @param initial_value [*] Value to use as the first argument to the first call of the callback.
@@ -308,7 +308,7 @@ module Turf
     previous_value
   end
 
-  # Iterate over 2-vertex line segment in any GeoJSON object, similar to Array.forEach()
+  # Iterate over 2-vertex line segment in any GeoJSON object, similar to Array.forEach(*args)
   # (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
   # @see https://turfjs.org/docs/#segmentEach
   # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
@@ -327,7 +327,7 @@ module Turf
       previous_coords = nil
       previous_feature_index = 0
       coord_each(feature) do |current_coord|
-        # Simulating a meta.coord_reduce() since `reduce` operations cannot be stopped by returning `false`
+        # Simulating a meta.coord_reduce(*args) since `reduce` operations cannot be stopped by returning `false`
         if previous_coords.nil? || feature_index > previous_feature_index
           previous_coords = current_coord
           previous_feature_index = feature_index
@@ -366,5 +366,23 @@ module Turf
     end
 
     previous_value
+  end
+
+  def prop_each
+  end
+
+  def prop_reduce
+  end
+
+  def line_reduce
+  end
+
+  def line_each
+  end
+
+  def find_segment
+  end
+
+  def find_point
   end
 end
