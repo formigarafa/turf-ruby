@@ -419,18 +419,16 @@ class TurfMetaTest < Minitest::Test
   def test_flatten_reduce_initial_value
     last_index = nil
     last_sub_index = nil
-    sum =
-      Turf.flatten_reduce(
-        multi_pt.fetch(:geometry), 0
-      ) do |previous, current, index, sub_index|
-        last_index = index
-        last_sub_index = sub_index
-        return previous + current.fetch(:geometry).fetch(:coordinates)[0]
-      end
-    t.equal(last_index, 0)
-    t.equal(last_sub_index, 1)
-    t.equal(sum, 1)
-    t.end
+    sum = Turf.flatten_reduce(
+      multi_pt.fetch(:geometry), 0
+    ) do |previous, current, index, sub_index|
+      last_index = index
+      last_sub_index = sub_index
+      previous + current.fetch(:geometry).fetch(:coordinates)[0]
+    end
+    assert_equal(last_index, 0)
+    assert_equal(last_sub_index, 1)
+    assert_equal(sum, 1)
   end
 
   def test_flatten_reduce_previous_feature
