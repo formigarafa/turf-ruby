@@ -26,6 +26,6 @@ module Turf
     end
     coordinates.push(coordinates[0])
 
-    polygon([coordinates], properties: properties)
+    polygon([coordinates], properties)
   end
 end

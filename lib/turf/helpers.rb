@@ -32,14 +32,14 @@ module Turf
   # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
   # @param id [string | number] Identifier associated with the Feature
   # @return [Feature] a GeoJSON Feature
-  def feature(geom, properties: {}, bbox: nil, id: nil)
+  def feature(geom, properties = nil, options = {})
     feat = {
       type: "Feature",
-      properties: properties,
+      properties: properties || {},
       geometry: geom
     }
-    feat[:id] = options[:id] if id
-    feat[:bbox] = options[:bbox] if bbox
+    feat[:id] = options[:id] if options[:id]
+    feat[:bbox] = options[:bbox] if options[:bbox]
 
     feat
   end
@@ -50,10 +50,10 @@ module Turf
   # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
   # @param id [string | number] Identifier associated with the Feature
   # @return [FeatureCollection] FeatureCollection of Features
-  def feature_collection(features, bbox: nil, id: nil)
+  def feature_collection(features, options = {})
     fc = { type: "FeatureCollection" }
-    fc[:id] = options[:id] if id
-    fc[:bbox] = options[:bbox] if bbox
+    fc[:id] = options[:id] if options[:id]
+    fc[:bbox] = options[:bbox] if options[:bbox]
     fc[:features] = features
 
     fc
@@ -66,13 +66,13 @@ module Turf
   # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
   # @param id [string|number] Identifier associated with the Feature
   # @return [Feature<GeometryCollection>] a GeoJSON GeometryCollection Feature
-  def geometry_collection(geometries, bbox: nil, id: nil, properties: {})
+  def geometry_collection(geometries, properties = nil, options = {})
     geom = {
       type: "GeometryCollection",
       geometries: geometries
     }
 
-    feature(geom, properties: properties, bbox: bbox, id: id)
+    feature(geom, properties, options)
   end
 
   # Creates a Feature based on a coordinate array. Properties can be added optionally.
@@ -81,13 +81,13 @@ module Turf
   # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
   # @param id [string|number] Identifier associated with the Feature
   # @return [Feature<MultiPoint>] a MultiPoint feature
-  def multi_point(coordinates, properties: {}, bbox: nil, id: nil)
+  def multi_point(coordinates, properties = nil, options = {})
     geom = {
       type: "MultiPoint",
       coordinates: coordinates
     }
 
-    feature(geom, properties: properties, bbox: bbox, id: id)
+    feature(geom, properties, options)
   end
 
   # Creates a LineString Feature from an Array of Positions.
@@ -97,7 +97,7 @@ module Turf
   # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
   # @param id [string|number] Identifier associated with the Feature
   # @return [Feature<LineString>] LineString Feature
-  def line_string(coordinates, properties: {}, bbox: nil, id: nil)
+  def line_string(coordinates, properties = nil, options = {})
     if coordinates.size < 2
       raise Error, "coordinates must be an array of two or more positions"
     end
@@ -106,7 +106,7 @@ module Turf
       type: "LineString",
       coordinates: coordinates
     }
-    feature(geom, properties: properties, bbox: bbox, id: id)
+    feature(geom, properties, options)
   end
 
   # Creates a Point Feature from a Position.
@@ -116,12 +116,12 @@ module Turf
   # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
   # @param id [string | number] Identifier associated with the Feature
   # @return [Feature<Point>] a Point feature
-  def point(coordinates, properties: {}, id: nil, bbox: nil)
+  def point(coordinates, properties = nil, options = {})
     geom = {
       type: "Point",
       coordinates: coordinates
     }
-    feature(geom, properties: properties, id: id, bbox: bbox)
+    feature(geom, properties, options)
   end
 
   # Creates a Polygon Feature from an Array of LinearRings.
@@ -131,7 +131,7 @@ module Turf
   # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
   # @param id [string | number] Identifier associated with the Feature
   # @return [Feature<Polygon>] Polygon feature
-  def polygon(coordinates, properties: {}, bbox: nil, id: nil)
+  def polygon(coordinates, properties = nil, options = {})
     coordinates.each do |ring|
       if ring.size < 4
         raise(
@@ -150,7 +150,7 @@ module Turf
       type: "Polygon",
       coordinates: coordinates
     }
-    feature(geom, properties: properties, id: id, bbox: bbox)
+    feature(geom, properties, options)
   end
 
   # Creates a Feature<MultiPolygon> based on a coordinate array. Properties can be added optionally.
@@ -160,12 +160,12 @@ module Turf
   # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
   # @param id [string|number] Identifier associated with the Feature
   # @return [Feature<MultiPolygon>] a multipolygon feature
-  def multi_polygon(coordinates, properties: {}, bbox: nil, id: nil)
+  def multi_polygon(coordinates, properties = nil, options = {})
     geom = {
       type: "MultiPolygon",
       coordinates: coordinates
     }
-    feature(geom, properties: properties, id: id, bbox: bbox)
+    feature(geom, properties, options)
   end
 
   # Creates a Feature<MultiLineString> based on a coordinate array. Properties can be added optionally.
@@ -175,12 +175,12 @@ module Turf
   # @param bbox [Array<number>] Bounding Box Array [west, south, east, north] associated with the Feature
   # @param id [string|number] Identifier associated with the Feature
   # @return [Feature<MultiLineString>] a MultiLineString feature
-  def multi_line_string(coordinates, properties: {}, bbox: nil, id: nil)
+  def multi_line_string(coordinates, properties = nil, options = {})
     geom = {
       type: "MultiLineString",
       coordinates: coordinates
     }
-    feature(geom, properties: properties, id: id, bbox: bbox)
+    feature(geom, properties, options)
   end
 
   # @!group Unit Conversion

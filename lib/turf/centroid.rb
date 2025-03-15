@@ -10,7 +10,7 @@ module Turf
   # @param geojson [GeoJSON] GeoJSON to be centered
   # @param properties [Hash] a [Hash] that is used as the Feature's properties
   # @return [Feature<Point>] the centroid of the input features
-  def centroid(geojson, properties: {})
+  def centroid(geojson, properties = nil)
     x_sum = 0.0
     y_sum = 0.0
     len = 0.0
@@ -23,7 +23,7 @@ module Turf
 
     point(
       [x_sum / len, y_sum / len],
-      properties: properties,
+      properties,
     )
   end
 end

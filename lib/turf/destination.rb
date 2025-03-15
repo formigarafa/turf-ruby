@@ -10,8 +10,8 @@ module Turf
   # @param origin [Coord] starting point
   # @param distance [number] distance from the origin point
   # @param bearing [number] ranging from -180 to 180
-  # @param units [string] miles, kilometers, degrees, or radians
-  # @param properties [Hash] Translate properties to Point
+  # @param options[:units] [string] miles, kilometers, degrees, or radians
+  # @param options[:properties] [Hash] Translate properties to Point
   # @return [Feature<Point>] destination point
   def destination(origin, distance, bearing, options = {})
     coordinates1 = get_coord origin
@@ -29,6 +29,6 @@ module Turf
     lng = radians_to_degrees(longitude2)
     lat = radians_to_degrees(latitude2)
 
-    point([lng, lat], properties: options[:properties])
+    point([lng, lat], options[:properties])
   end
 end

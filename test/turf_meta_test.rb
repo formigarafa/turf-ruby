@@ -4,7 +4,7 @@ require "test_helper"
 # @see https://github.com/Turfjs/turf/blob/master/packages/turf-meta/test.js
 class TurfMetaTest < Minitest::Test
   def pt
-    Turf.point([0, 0], properties: { a: 1 })
+    Turf.point([0, 0], { a: 1 })
   end
 
   def pt2
@@ -94,7 +94,7 @@ class TurfMetaTest < Minitest::Test
   def geom_collection
     Turf.geometry_collection(
       [pt.fetch(:geometry), line.fetch(:geometry), multi_line.fetch(:geometry)],
-      properties: { a: 0 },
+      { a: 0 },
     )
   end
 

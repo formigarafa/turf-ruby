@@ -13,7 +13,7 @@ class TurfCentroidTest < Minitest::Test
     define_method "test_centroid_#{name}" do
       geojson = load_geojson "centroid/in/#{name}.geojson"
       out = load_geojson "centroid/out/#{name}.geojson", symbolize_names: true
-      centered = Turf.centroid geojson, properties: { "marker-symbol": "circle" }
+      centered = Turf.centroid geojson, { "marker-symbol": "circle" }
       results = Turf.feature_collection [centered]
       Turf.feature_each geojson do |feature|
         results[:features].push feature

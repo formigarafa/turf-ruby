@@ -245,7 +245,7 @@ module Turf
     geom_each(geojson) do |geometry, feature_index, properties, bbox, id|
       if geometry.nil?
         next yield(
-          feature(nil, properties: properties, bbox: bbox, id: id),
+          feature(nil, properties, bbox: bbox, id: id),
           feature_index,
           0
         )
@@ -254,7 +254,7 @@ module Turf
       case geometry[:type]
       when "Point", "LineString", "Polygon"
         yield(
-          feature(geometry, properties: properties, bbox: bbox, id: id),
+          feature(geometry, properties, bbox: bbox, id: id),
           feature_index,
           0
         )
@@ -266,7 +266,7 @@ module Turf
             coordinates: coordinate
           }
           yield(
-            feature(geom, properties: properties),
+            feature(geom, properties),
             feature_index,
             multi_feature_index
           )
@@ -333,7 +333,7 @@ module Turf
           next
         end
 
-        segment = Turf.line_string([previous_coords, current_coord], properties: feature[:properties])
+        segment = Turf.line_string([previous_coords, current_coord], feature[:properties])
         next unless yield(segment, feature_index)
 
         segment_index += 1
