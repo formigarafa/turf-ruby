@@ -7,9 +7,9 @@ module Turf
   FACTORS = {
     "centimeters" => EARTH_RADIUS * 100,
     "centimetres" => EARTH_RADIUS * 100,
-    "degrees" => EARTH_RADIUS / 111_325,
+    "degrees" => 360.0 / (2 * Math::PI),
     "feet" => EARTH_RADIUS * 3.28084,
-    "inches" => EARTH_RADIUS * 39.370,
+    "inches" => EARTH_RADIUS * 39.37,
     "kilometers" => EARTH_RADIUS / 1000,
     "kilometres" => EARTH_RADIUS / 1000,
     "meters" => EARTH_RADIUS,
@@ -19,7 +19,8 @@ module Turf
     "millimetres" => EARTH_RADIUS * 1000,
     "nauticalmiles" => EARTH_RADIUS / 1852,
     "radians" => 1.0,
-    "yards" => EARTH_RADIUS / 1.0936
+    "yards" => EARTH_RADIUS * 1.0936,
+  }.freeze
   }.freeze
   private_constant :FACTORS
 

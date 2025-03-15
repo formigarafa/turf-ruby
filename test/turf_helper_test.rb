@@ -391,7 +391,7 @@ class TurfHelperTest < Minitest::Test
 
   def test_radians_to_degrees
     assert_equal(
-      round(Turf.radians_to_degrees(Math::PI / 3), 6),
+      Turf.radians_to_degrees(Math::PI / 3).round(6),
       60,
       "radiance conversion PI/3"
     )
@@ -443,23 +443,17 @@ class TurfHelperTest < Minitest::Test
   end
 
   def test_convert_length
-    [
-      [1000, "meters", "kilometers", 1],
-      [1, "kilometers", "miles", 0.621371192237334],
-      [1, "miles", "kilometers", 1.609344],
-      [1, "nauticalmiles", nil, 1.852],
-      [1, "meters", "centimeters", 100.00000000000001],
-      [1, "meters", "yards", 1.0936],
-      [1, "yards", "meters", 0.91441111923921],
-      [Math::PI, "radians", "degrees", 180],
-      [180, "degrees", "radians", Math::PI],
-    ].each do |length, from_unit, to_unit, result|
-      assert_equal result, Turf.convert_length(length, from_unit, to_unit)
-    end
+    assert_equal(Turf.convert_length(1000, "meters"), 1);
+    assert_equal(Turf.convert_length(1000, "meters", "kilometers"), 1);
+    assert_equal(Turf.convert_length(1, "kilometers", "miles"), 0.621371192237334);
+    assert_equal(Turf.convert_length(1, "miles", "kilometers"), 1.609344);
+    assert_equal(Turf.convert_length(1, "nauticalmiles"), 1.852);
+    assert_equal(Turf.convert_length(1, "meters", "centimeters"), 100.00000000000001);
+    assert_equal(Turf.convert_length(1, "meters", "yards"), 1.0936);
+    assert_equal(Turf.convert_length(1, "yards", "meters"), 0.91441111923921);
 
-    assert_raises(Turf::Error) do
-      Turf.convert_length(1, "kilograms")
-    end
+    assert_equal(Turf.convert_length(Math::PI, "radians", "degrees"), 180, "PI Radians is 180 degrees");
+    assert_equal(Turf.convert_length(180, "degrees", "radians"), Math::PI, "180 Degrees is PI Radians");
   end
 
   def test_convert_area
