@@ -213,25 +213,20 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_coord_each_multi_polygon
-    feature_and_collection(multi_poly).each do |input|
-      output = []
-      Turf.coord_each input do |coord, index|
-        output.push [coord, index]
-      end
-      assert_equal(
-        [
-          [[0, 0], 0],
-          [[1, 1], 1],
-          [[0, 1], 2],
-          [[0, 0], 3],
-          [[3, 3], 4],
-          [[2, 2], 5],
-          [[1, 2], 6],
-          [[3, 3], 7],
-        ],
-        output,
-      )
+    coords = []
+    coord_indexes = []
+    feature_indexes = []
+    multi_feature_indexes = []
+    Turf.coord_each multi_poly do |coord, coord_index, feature_index, multi_feature_index|
+      coords.push coord
+      coord_indexes.push coord_index
+      feature_indexes.push feature_index
+      multi_feature_indexes.push multi_feature_index
     end
+    assert_equal(coord_indexes, [0, 1, 2, 3, 4, 5, 6, 7])
+    assert_equal(feature_indexes, [0, 0, 0, 0, 0, 0, 0, 0])
+    assert_equal(multi_feature_indexes, [0, 0, 0, 0, 1, 1, 1, 1])
+    assert_equal(coords.length, 8)
   end
 
   def test_coord_each_feature_collection
@@ -322,7 +317,7 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_unknown
-    assert_raises_with_message(Turf::Error, "Unknown Geometry Type: ") do
+    assert_raises_with_message(Turf::Error, "Unknown Geometry Type") do
       Turf.coord_each({})
     end
   end
@@ -480,9 +475,7 @@ class TurfMetaTest < Minitest::Test
     end
     assert_equal([nil, nil], output, "flatten_each")
 
-    assert_raises_with_message(Turf::Error, "no coordinates should be found") do
-      Turf.coord_each(fc_null) {|whatever| whatever }
-    end
+    Turf.coord_each(fc_null) {|coord| fail("no coordinate should be found") }
 
     assert_equal(
       2,

@@ -4,71 +4,130 @@ require_relative "helpers"
 
 # :nodoc:
 module Turf
-  # @!group Meta
+  # Iterate over coordinates in any GeoJSON object, similar to Array#each.
+  #
+  # @param geojson [AllGeoJSON] any GeoJSON object
+  # @yield [current_coord, coord_index, feature_index, multi_feature_index, geometry_index]
+  # @yieldparam current_coord [Array<Number>] The current coordinate being processed.
+  # @yieldparam coord_index [Integer] The current index of the coordinate being processed.
+  # @yieldparam feature_index [Integer] The current index of the Feature being processed.
+  # @yieldparam multi_feature_index [Integer] The current index of the Multi-Feature being processed.
+  # @yieldparam geometry_index [Integer] The current index of the Geometry being processed.
+  # @param exclude_wrap_coord [Boolean] whether or not to include the final coordinate of LinearRings that wraps the ring in its iteration.
+  # @return [void]
+  # @example
+  #   features = Turf.feature_collection([
+  #     Turf.point([26, 37], {foo: "bar"}),
+  #     Turf.point([36, 53], {hello: "world"})
+  #   ])
+  #
+  #   Turf.coord_each(features, exclude_wrap_coord: false) do |current_coord, coord_index, feature_index, multi_feature_index, geometry_index|
+  #     #=current_coord
+  #     #=coord_index
+  #     #=feature_index
+  #     #=multi_feature_index
+  #     #=geometry_index
+  #   end
+  def coord_each(geojson, exclude_wrap_coord: false)
+    return if geojson.nil?
 
-  # Iterate over coordinates in any GeoJSON object, similar to Array.forEach(*args)
-  # @see https://turfjs.org/docs/#coordEach
-  # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
-  # @param exclude_wrap_coord [boolean] whether or not to include the final coordinate of LinearRings that wraps the
-  # ring in its iteration
-  # @yield [current_coord, coord_index] given any coordinate
-  # @yieldparam current_coord [Array<number>] The current coordinate being processed.
-  # @yieldparam coord_index [number] The current index of the coordinate being processed.
-  def coord_each(geojson, exclude_wrap_coord: false, &block)
-    coord_all(geojson, exclude_wrap_coord: exclude_wrap_coord, &block)
+    coord_index = 0
+    is_geometry_collection = false
+    type = geojson[:type]
+    is_feature_collection = type == "FeatureCollection"
+    is_feature = type == "Feature"
+    stop = is_feature_collection ? geojson[:features].length : 1
+
+    (0...stop).each do |feature_index|
+      geometry_maybe_collection = if is_feature_collection
+        geojson[:features][feature_index][:geometry]
+      elsif is_feature
+        geojson[:geometry]
+      else
+        geojson
+      end
+
+      is_geometry_collection = geometry_maybe_collection ? geometry_maybe_collection[:type] == "GeometryCollection" : false
+      stop_g = is_geometry_collection ? geometry_maybe_collection[:geometries].length : 1
+
+      (0...stop_g).each do |geom_index|
+        multi_feature_index = 0
+        geometry_index = 0
+        geometry = is_geometry_collection ? geometry_maybe_collection[:geometries][geom_index] : geometry_maybe_collection
+
+        next if geometry.nil?
+
+        coords = geometry[:coordinates]
+        geom_type = geometry[:type]
+        wrap_shrink = exclude_wrap_coord && %w[Polygon MultiPolygon].include?(geom_type) ? 1 : 0
+
+        case geom_type
+        when "Point"
+          return false if yield(coords, coord_index, feature_index, multi_feature_index, geometry_index) == false
+
+          coord_index += 1
+          multi_feature_index += 1
+        when "LineString", "MultiPoint"
+          coords.each_with_index do |coord, j|
+            return false if yield(coord, coord_index, feature_index, multi_feature_index, geometry_index) == false
+
+            coord_index += 1
+            multi_feature_index += 1 if geom_type == "MultiPoint"
+          end
+          multi_feature_index += 1 if geom_type == "LineString"
+        when "Polygon", "MultiLineString"
+          coords.each_with_index do |coord, j|
+            (0...(coord.length - wrap_shrink)).each do |k|
+              return false if yield(coord[k], coord_index, feature_index, multi_feature_index, geometry_index) == false
+
+              coord_index += 1
+            end
+            multi_feature_index += 1 if geom_type == "MultiLineString"
+            geometry_index += 1 if geom_type == "Polygon"
+          end
+          multi_feature_index += 1 if geom_type == "Polygon"
+        when "MultiPolygon"
+          coords.each_with_index do |coord, j|
+            geometry_index = 0
+            coord.each_with_index do |inner_coord, k|
+              (0...(inner_coord.length - wrap_shrink)).each do |l|
+                return false if yield(inner_coord[l], coord_index, feature_index, multi_feature_index, geometry_index) == false
+
+                coord_index += 1
+              end
+              geometry_index += 1
+            end
+            multi_feature_index += 1
+          end
+        when "GeometryCollection"
+          geometry[:geometries].each do |inner_geometry|
+            return false if coord_each(inner_geometry, exclude_wrap_coord: exclude_wrap_coord, &Proc.new) == false
+          end
+        else
+          raise Error, "Unknown Geometry Type"
+        end
+      end
+    end
   end
 
   # Get all coordinates from any GeoJSON object.
-  # @see https://turfjs.org/docs/#coordAll
-  # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
-  # @param exclude_wrap_coord [boolean] whether or not to include the final coordinate of LinearRings that wraps the
-  # ring in its iteration
-  # @return [Array<Array<number>>] coordinate position array
-  def coord_all(geojson, exclude_wrap_coord: false, &block)
-    geometry_index = -1
-    geom_each(geojson) do |geometry, _idx, _properties|
-      if geometry.nil?
-        next
-      end
-
-      case geometry[:type]
-      when "Point"
-        geometry_index += 1
-        block.call(geometry[:coordinates], geometry_index)
-      when "LineString", "MultiPoint"
-        geometry[:coordinates].each do |coords|
-          geometry_index += 1
-          block.call(coords, geometry_index)
-        end
-      when "Polygon", "MultiLineString"
-        geometry[:coordinates].each do |line_coords|
-          if exclude_wrap_coord
-            line_coords = line_coords[0...-1]
-          end
-          line_coords.each do |coords|
-            geometry_index += 1
-            block.call(coords, geometry_index)
-          end
-        end
-      when "MultiPolygon"
-        geometry[:coordinates].each do |polygon_coords|
-          polygon_coords.each do |line_coords|
-            if exclude_wrap_coord
-              line_coords = line_coords[0...-1]
-            end
-            line_coords.each do |coords|
-              geometry_index += 1
-              block.call(coords, geometry_index)
-            end
-          end
-        end
-      when "Feature"
-        coord_each(geometry, exclude_wrap_coord: exclude_wrap_coord, &block)
-      else
-        raise Error, "Unknown Geometry Type: #{geometry[:type]}"
-      end
+  #
+  # @param geojson [AllGeoJSON] any GeoJSON object
+  # @return [Array<Array<Number>>] coordinate position array
+  # @example
+  #   features = Turf.feature_collection([
+  #     Turf.point([26, 37], {foo: 'bar'}),
+  #     Turf.point([36, 53], {hello: 'world'})
+  #   ])
+  #
+  #   coords = Turf.coord_all(features)
+  #   #= [[26, 37], [36, 53]]
+  def coord_all(geojson)
+    coords = []
+    coord_each(geojson) do |coord|
+      coords.push(coord)
     end
-    geojson
+    coords
   end
 
   # Reduce coordinates in any GeoJSON object, similar to Array.reduce(*args)
@@ -313,7 +372,7 @@ module Turf
   # @see https://turfjs.org/docs/#segmentEach
   # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
   def segment_each(geojson)
-    flatten_each(geojson) do |feature, feature_index|
+    flatten_each(geojson) do |feature, feature_index, multi_feature_index|
       # Exclude null Geometries
       return if feature[:geometry].nil?
 
@@ -326,17 +385,21 @@ module Turf
       # Generate 2-vertex line segments
       previous_coords = nil
       previous_feature_index = 0
-      coord_each(feature) do |current_coord|
+      previous_multi_index = 0
+      prev_geom_index = 0
+      coord_each(feature) do |current_coord, coord_index, feature_index_coord, multi_part_index_coord, geometry_index|
         # Simulating a meta.coord_reduce(*args) since `reduce` operations cannot be stopped by returning `false`
-        if previous_coords.nil? || feature_index > previous_feature_index
+        if previous_coords.nil? || feature_index > previous_feature_index || multi_part_index_coord > previous_multi_index || geometry_index > prev_geom_index
           previous_coords = current_coord
           previous_feature_index = feature_index
+          previous_multi_index = multi_part_index_coord
+          prev_geom_index = geometry_index
           segment_index = 0
           next
         end
 
         segment = Turf.line_string([previous_coords, current_coord], feature[:properties])
-        next unless yield(segment, feature_index)
+        next unless yield(segment, feature_index, multi_feature_index, geometry_index, segment_index)
 
         segment_index += 1
         previous_coords = current_coord
