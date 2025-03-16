@@ -475,7 +475,7 @@ class TurfMetaTest < Minitest::Test
     end
     assert_equal([nil, nil], output, "flatten_each")
 
-    Turf.coord_each(fc_null) {|coord| fail("no coordinate should be found") }
+    Turf.coord_each(fc_null) { |_coord| raise("no coordinate should be found") }
 
     assert_equal(
       2,
@@ -599,7 +599,8 @@ class TurfMetaTest < Minitest::Test
   def coord_each_indexes_polygon_with_hole
   end
 
-  def line_each_indexes_polygon_with_hole # (source line: 1081)
+  # (source line: 1081)
+  def line_each_indexes_polygon_with_hole
   end
 
   def segment_each_indexes_polygon_with_hole
@@ -608,7 +609,8 @@ class TurfMetaTest < Minitest::Test
   def coord_each_indexes_multi_polygon_with_hole
   end
 
-  def coord_each_indexes_polygon_with_hole2 # (source line: 1223)
+  # (source line: 1223)
+  def coord_each_indexes_polygon_with_hole2
   end
 
   def coord_each_indexes_feature_collection_of_line_string

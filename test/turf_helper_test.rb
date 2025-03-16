@@ -140,8 +140,8 @@ class TurfHelperTest < Minitest::Test
               [5, 0],
               [15, 8],
             ],
-          ],
-        },
+          ]
+        }
       },
       Turf.multi_line_string([
         [
@@ -152,7 +152,7 @@ class TurfHelperTest < Minitest::Test
           [5, 0],
           [15, 8],
         ],
-      ])
+      ]),
     )
 
     assert_equal(
@@ -170,8 +170,8 @@ class TurfHelperTest < Minitest::Test
               [5, 0],
               [15, 8],
             ],
-          ],
-        },
+          ]
+        }
       },
       Turf.multi_line_string(
         [
@@ -184,8 +184,8 @@ class TurfHelperTest < Minitest::Test
             [15, 8],
           ],
         ],
-        { "test" => 23 }
-      )
+        { "test" => 23 },
+      ),
     )
   end
 
@@ -199,13 +199,13 @@ class TurfHelperTest < Minitest::Test
           coordinates: [
             [0, 0],
             [10, 10],
-          ],
-        },
+          ]
+        }
       },
       Turf.multi_point([
         [0, 0],
         [10, 10],
-      ])
+      ]),
     )
 
     assert_equal(
@@ -217,16 +217,16 @@ class TurfHelperTest < Minitest::Test
           coordinates: [
             [0, 0],
             [10, 10],
-          ],
-        },
+          ]
+        }
       },
       Turf.multi_point(
         [
           [0, 0],
           [10, 10],
         ],
-        { "test" => 23 }
-      )
+        { "test" => 23 },
+      ),
     )
   end
 
@@ -254,8 +254,8 @@ class TurfHelperTest < Minitest::Test
                 [93, 19],
               ],
             ],
-          ],
-        },
+          ]
+        }
       },
       Turf.multi_polygon([
         [
@@ -274,7 +274,7 @@ class TurfHelperTest < Minitest::Test
             [93, 19],
           ],
         ],
-      ])
+      ]),
     )
 
     assert_equal(
@@ -300,8 +300,8 @@ class TurfHelperTest < Minitest::Test
                 [93, 19],
               ],
             ],
-          ],
-        },
+          ]
+        }
       },
       Turf.multi_polygon(
         [
@@ -322,22 +322,22 @@ class TurfHelperTest < Minitest::Test
             ],
           ],
         ],
-        { "test" => 23 }
-      )
+        { "test" => 23 },
+      ),
     )
   end
 
   def test_geometry_collection
     pt = {
       type: "Point",
-      coordinates: [100, 0],
+      coordinates: [100, 0]
     }
     line = {
       type: "LineString",
       coordinates: [
         [101, 0],
         [102, 1],
-      ],
+      ]
     }
     gc = Turf.geometry_collection([pt, line])
 
@@ -350,19 +350,19 @@ class TurfHelperTest < Minitest::Test
           geometries: [
             {
               type: "Point",
-              coordinates: [100, 0],
+              coordinates: [100, 0]
             },
             {
               type: "LineString",
               coordinates: [
                 [101, 0],
                 [102, 1],
-              ],
+              ]
             },
-          ],
-        },
+          ]
+        }
       },
-      gc
+      gc,
     )
 
     gc_with_props = Turf.geometry_collection([pt, line], { "a" => 23 })
@@ -375,19 +375,19 @@ class TurfHelperTest < Minitest::Test
           geometries: [
             {
               type: "Point",
-              coordinates: [100, 0],
+              coordinates: [100, 0]
             },
             {
               type: "LineString",
               coordinates: [
                 [101, 0],
                 [102, 1],
-              ],
+              ]
             },
-          ],
-        },
+          ]
+        }
       },
-      gc_with_props
+      gc_with_props,
     )
   end
 
@@ -395,7 +395,7 @@ class TurfHelperTest < Minitest::Test
     assert_equal(
       Turf.radians_to_degrees(Math::PI / 3).round(6),
       60,
-      "radiance conversion PI/3"
+      "radiance conversion PI/3",
     )
     assert_equal(Turf.radians_to_degrees(3.5 * Math::PI), 270, "radiance conversion 3.5PI")
     assert_equal(Turf.radians_to_degrees(-Math::PI), -180, "radiance conversion -PI")
@@ -445,17 +445,17 @@ class TurfHelperTest < Minitest::Test
   end
 
   def test_convert_length
-    assert_equal(Turf.convert_length(1000, "meters"), 1);
-    assert_equal(Turf.convert_length(1000, "meters", "kilometers"), 1);
-    assert_equal(Turf.convert_length(1, "kilometers", "miles"), 0.621371192237334);
-    assert_equal(Turf.convert_length(1, "miles", "kilometers"), 1.609344);
-    assert_equal(Turf.convert_length(1, "nauticalmiles"), 1.852);
-    assert_equal(Turf.convert_length(1, "meters", "centimeters"), 100.00000000000001);
-    assert_equal(Turf.convert_length(1, "meters", "yards"), 1.0936);
-    assert_equal(Turf.convert_length(1, "yards", "meters"), 0.91441111923921);
+    assert_equal(Turf.convert_length(1000, "meters"), 1)
+    assert_equal(Turf.convert_length(1000, "meters", "kilometers"), 1)
+    assert_equal(Turf.convert_length(1, "kilometers", "miles"), 0.621371192237334)
+    assert_equal(Turf.convert_length(1, "miles", "kilometers"), 1.609344)
+    assert_equal(Turf.convert_length(1, "nauticalmiles"), 1.852)
+    assert_equal(Turf.convert_length(1, "meters", "centimeters"), 100.00000000000001)
+    assert_equal(Turf.convert_length(1, "meters", "yards"), 1.0936)
+    assert_equal(Turf.convert_length(1, "yards", "meters"), 0.91441111923921)
 
-    assert_equal(Turf.convert_length(Math::PI, "radians", "degrees"), 180, "PI Radians is 180 degrees");
-    assert_equal(Turf.convert_length(180, "degrees", "radians"), Math::PI, "180 Degrees is PI Radians");
+    assert_equal(Turf.convert_length(Math::PI, "radians", "degrees"), 180, "PI Radians is 180 degrees")
+    assert_equal(Turf.convert_length(180, "degrees", "radians"), Math::PI, "180 Degrees is PI Radians")
   end
 
   def test_convert_area
@@ -463,11 +463,11 @@ class TurfHelperTest < Minitest::Test
       [1000, nil, nil, 0.001],
       [1, "kilometers", "miles", 0.386],
       [1, "miles", "kilometers", 2.5906735751295336],
-      [1, "meters", "centimeters", 10000],
+      [1, "meters", "centimeters", 10_000],
       [100, "meters", "acres", 0.0247105],
       [100, nil, "yards", 119.59900459999999],
       [100, "meters", "feet", 1076.3910417],
-      [100000, "feet", nil, 0.009290303999749462],
+      [100_000, "feet", nil, 0.009290303999749462],
       [1, "meters", "hectares", 0.0001],
     ].each do |area, from_unit, to_unit, result|
       assert_equal result, Turf.convert_area(area, from_unit, to_unit)
@@ -486,7 +486,7 @@ class TurfHelperTest < Minitest::Test
   end
 
   def test_handle_id_and_bbox_properties
-    id = 12345
+    id = 12_345
     bbox = [10, 30, 10, 30]
     pt = Turf.point([10, 30], {}, id: id, bbox: bbox)
     pt_id_0 = Turf.point([10, 30], {}, id: 0, bbox: bbox)
@@ -562,7 +562,7 @@ class TurfHelperTest < Minitest::Test
         [-78, 50],
       ],
       { "foo" => "bar" },
-      {id: "hello"}
+      { id: "hello" },
     )
 
     assert_equal 3, points[:features].length
@@ -587,7 +587,7 @@ class TurfHelperTest < Minitest::Test
         ],
       ],
       { "foo" => "bar" },
-      {id: "hello"}
+      { id: "hello" },
     )
 
     assert_equal 2, line_strings[:features].length
@@ -618,7 +618,7 @@ class TurfHelperTest < Minitest::Test
         ],
       ],
       { "foo" => "bar" },
-      {id: "hello"}
+      { id: "hello" },
     )
 
     assert_equal 2, polygons[:features].length

@@ -15,7 +15,7 @@ class TurfInvariantTest < Minitest::Test
 
   def test_geojson_type
     assert_raises(Turf::Error, "type and name required") do
-      Turf.geojson_type()
+      Turf.geojson_type
     end
 
     assert_raises(Turf::Error, "type and name required") do
@@ -39,15 +39,21 @@ class TurfInvariantTest < Minitest::Test
     end
 
     assert_raises(Turf::Error, "Invalid input to myfn: must be a Polygon, given Point") do
-      Turf.feature_of({ type: "Feature", geometry: { type: "Point", coordinates: [0, 0] }, properties: {} }, "Polygon", "myfn")
+      Turf.feature_of({ type: "Feature", geometry: { type: "Point", coordinates: [0, 0] }, properties: {} }, "Polygon",
+                      "myfn")
     end
 
-    Turf.feature_of({ type: "Feature", geometry: { type: "Point", coordinates: [0, 0] }, properties: {} }, "Point", "myfn")
+    Turf.feature_of({ type: "Feature", geometry: { type: "Point", coordinates: [0, 0] }, properties: {} }, "Point",
+                    "myfn")
   end
 
   def test_collection_of
     assert_raises(Turf::Error, "Invalid input to myfn: must be a Polygon, given Point") do
-      Turf.collection_of({ type: "FeatureCollection", features: [{ type: "Feature", geometry: { type: "Point", coordinates: [0, 0] }, properties: {} }] }, "Polygon", "myfn")
+      Turf.collection_of(
+        { type: "FeatureCollection",
+          features: [{ type: "Feature", geometry: { type: "Point", coordinates: [0, 0] },
+                       properties: {} }] }, "Polygon", "myfn"
+      )
     end
 
     assert_raises(Turf::Error, "requires a name") do
@@ -58,7 +64,11 @@ class TurfInvariantTest < Minitest::Test
       Turf.collection_of({}, "Polygon", "foo")
     end
 
-    Turf.collection_of({ type: "FeatureCollection", features: [{ type: "Feature", geometry: { type: "Point", coordinates: [0, 0] }, properties: {} }] }, "Point", "myfn")
+    Turf.collection_of(
+      { type: "FeatureCollection",
+        features: [{ type: "Feature", geometry: { type: "Point", coordinates: [0, 0] },
+                     properties: {} }] }, "Point", "myfn"
+    )
   end
 
   def test_get_coord
@@ -103,7 +113,7 @@ class TurfInvariantTest < Minitest::Test
       Turf.get_coords(nil)
     end
     assert_raises(Turf::Error) do
-      Turf.contains_number(Turf.get_coords(["A", "B", "C"]))
+      Turf.contains_number(Turf.get_coords(%w[A B C]))
     end
     assert_raises(Turf::Error) do
       Turf.contains_number(Turf.get_coords([1, "foo", "bar"]))

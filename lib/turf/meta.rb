@@ -13,7 +13,8 @@ module Turf
   # @yieldparam feature_index [Integer] The current index of the Feature being processed.
   # @yieldparam multi_feature_index [Integer] The current index of the Multi-Feature being processed.
   # @yieldparam geometry_index [Integer] The current index of the Geometry being processed.
-  # @param exclude_wrap_coord [Boolean] whether or not to include the final coordinate of LinearRings that wraps the ring in its iteration.
+  # @param exclude_wrap_coord [Boolean] whether or not to include the final coordinate
+  # of LinearRings that wraps the ring in its iteration.
   # @return [void]
   # @example
   #   features = Turf.feature_collection([
@@ -21,7 +22,13 @@ module Turf
   #     Turf.point([36, 53], {hello: "world"})
   #   ])
   #
-  #   Turf.coord_each(features, exclude_wrap_coord: false) do |current_coord, coord_index, feature_index, multi_feature_index, geometry_index|
+  #   Turf.coord_each(features, exclude_wrap_coord: false) do |
+  #     current_coord,
+  #     coord_index,
+  #     feature_index,
+  #     multi_feature_index,
+  #     geometry_index
+  #   |
   #     #=current_coord
   #     #=coord_index
   #     #=feature_index
@@ -40,20 +47,28 @@ module Turf
 
     (0...stop).each do |feature_index|
       geometry_maybe_collection = if is_feature_collection
-        geojson[:features][feature_index][:geometry]
-      elsif is_feature
-        geojson[:geometry]
-      else
-        geojson
-      end
+                                    geojson[:features][feature_index][:geometry]
+                                  elsif is_feature
+                                    geojson[:geometry]
+                                  else
+                                    geojson
+                                  end
 
-      is_geometry_collection = geometry_maybe_collection ? geometry_maybe_collection[:type] == "GeometryCollection" : false
+      is_geometry_collection = if geometry_maybe_collection
+                                 geometry_maybe_collection[:type] == "GeometryCollection"
+                               else
+                                 false
+                               end
       stop_g = is_geometry_collection ? geometry_maybe_collection[:geometries].length : 1
 
       (0...stop_g).each do |geom_index|
         multi_feature_index = 0
         geometry_index = 0
-        geometry = is_geometry_collection ? geometry_maybe_collection[:geometries][geom_index] : geometry_maybe_collection
+        geometry = if is_geometry_collection
+                     geometry_maybe_collection[:geometries][geom_index]
+                   else
+                     geometry_maybe_collection
+                   end
 
         next if geometry.nil?
 
@@ -68,7 +83,7 @@ module Turf
           coord_index += 1
           multi_feature_index += 1
         when "LineString", "MultiPoint"
-          coords.each_with_index do |coord, j|
+          coords.each_with_index do |coord, _j|
             return false if yield(coord, coord_index, feature_index, multi_feature_index, geometry_index) == false
 
             coord_index += 1
@@ -76,7 +91,7 @@ module Turf
           end
           multi_feature_index += 1 if geom_type == "LineString"
         when "Polygon", "MultiLineString"
-          coords.each_with_index do |coord, j|
+          coords.each_with_index do |coord, _j|
             (0...(coord.length - wrap_shrink)).each do |k|
               return false if yield(coord[k], coord_index, feature_index, multi_feature_index, geometry_index) == false
 
@@ -87,11 +102,13 @@ module Turf
           end
           multi_feature_index += 1 if geom_type == "Polygon"
         when "MultiPolygon"
-          coords.each_with_index do |coord, j|
+          coords.each_with_index do |coord, _j|
             geometry_index = 0
-            coord.each_with_index do |inner_coord, k|
+            coord.each_with_index do |inner_coord, _k|
               (0...(inner_coord.length - wrap_shrink)).each do |l|
-                return false if yield(inner_coord[l], coord_index, feature_index, multi_feature_index, geometry_index) == false
+                if yield(inner_coord[l], coord_index, feature_index, multi_feature_index, geometry_index) == false
+                  return false
+                end
 
                 coord_index += 1
               end
@@ -387,9 +404,13 @@ module Turf
       previous_feature_index = 0
       previous_multi_index = 0
       prev_geom_index = 0
-      coord_each(feature) do |current_coord, coord_index, feature_index_coord, multi_part_index_coord, geometry_index|
+      coord_each(feature) do |current_coord, _coord_index, _feature_index_coord, multi_part_index_coord, geometry_index|
         # Simulating a meta.coord_reduce(*args) since `reduce` operations cannot be stopped by returning `false`
-        if previous_coords.nil? || feature_index > previous_feature_index || multi_part_index_coord > previous_multi_index || geometry_index > prev_geom_index
+        if previous_coords.nil? ||
+           feature_index > previous_feature_index ||
+           multi_part_index_coord > previous_multi_index ||
+           geometry_index > prev_geom_index
+
           previous_coords = current_coord
           previous_feature_index = feature_index
           previous_multi_index = multi_part_index_coord
