@@ -314,6 +314,18 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_array_reduce_initial_value
+    last_index = nil
+    line = [
+      [126, -11],
+      [129, -21],
+      [135, -31],
+    ]
+    sum = line.each_with_index.reduce(0) do |previous, (current_coords, index)|
+      last_index = index
+      previous + current_coords[0]
+    end
+    assert_equal(2, last_index)
+    assert_equal(390, sum)
   end
 
   def test_coord_reduce_previous_coordinates
@@ -337,6 +349,15 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_array_reduce_previous_coordinates
+    last_index = nil
+    coords = []
+    line[:geometry][:coordinates].each_with_index.reduce(nil) do |_previous_coords, (current_coords, index)|
+      last_index = index
+      coords.push(current_coords)
+      current_coords.reverse
+    end
+    assert_equal(1, last_index)
+    assert_equal(2, coords.length)
   end
 
   def test_coord_reduce_previous_coordinates_initial_value
@@ -668,6 +689,48 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_segment_reduce_index_and_sub_index
+    feature_indexes = []
+    multi_feature_indexes = []
+    geometry_indexes = []
+    segment_indexes = []
+    total = 0
+
+    Turf.segment_reduce(geojson_segments) do |
+      _previous_value,
+      _segment,
+      feature_index,
+      multi_feature_index,
+      geometry_index,
+      segment_index
+    |
+      feature_indexes.push(feature_index)
+      multi_feature_indexes.push(multi_feature_index)
+      geometry_indexes.push(geometry_index)
+      segment_indexes.push(segment_index)
+      total += 1
+    end
+
+    assert_equal(total, 9, "total")
+    assert_equal(
+      [1, 2, 2, 2, 2, 4, 4, 4, 4],
+      feature_indexes,
+      "segmentReduce.feature_index",
+    )
+    assert_equal(
+      [0, 0, 0, 0, 0, 0, 0, 1, 1],
+      multi_feature_indexes,
+      "segmentReduce.multi_feature_index",
+    )
+    assert_equal(
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      geometry_indexes,
+      "segmentReduce.geometry_index",
+    )
+    assert_equal(
+      [1, 0, 1, 2, 3, 0, 1, 0, 1],
+      segment_indexes,
+      "segmentReduce.segment_index",
+    )
   end
 
   def test_line_each_line_string
@@ -1037,16 +1100,230 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_coord_each_indexes_multi_polygon_with_hole
+    feature_indexes = []
+    multi_feature_indexes = []
+    geometry_indexes = []
+    coord_indexes = []
+
+    # MultiPolygon with hole
+    # ======================
+    # FeatureIndex => 0
+    multi_poly_with_hole = Turf.multi_polygon([
+      # Polygon 1
+      # ---------
+      # MultiFeature Index => 0
+      [
+        # Outer Ring
+        # ----------
+        # Geometry Index => 0
+        # Coord Index => [0, 1, 2, 3, 4] (Major Release Change v6.x)
+        [
+          [102.0, 2.0],
+          [103.0, 2.0],
+          [103.0, 3.0],
+          [102.0, 3.0],
+          [102.0, 2.0],
+        ],
+      ],
+      # Polygon 2 with Hole
+      # -------------------
+      # MultiFeature Index => 1
+      [
+        # Outer Ring
+        # ----------
+        # Geometry Index => 0
+        # Coord Index => [0, 1, 2, 3, 4] (Major Release Change v6.x)
+        [
+          [100.0, 0.0],
+          [101.0, 0.0],
+          [101.0, 1.0],
+          [100.0, 1.0],
+          [100.0, 0.0],
+        ],
+        # Inner Ring
+        # ----------
+        # Geometry Index => 1
+        # Coord Index => [0, 1, 2, 3, 4] (Major Release Change v6.x)
+        [
+          [100.2, 0.2],
+          [100.8, 0.2],
+          [100.8, 0.8],
+          [100.2, 0.8],
+          [100.2, 0.2],
+        ],
+      ],
+    ])
+
+    Turf.coord_each(multi_poly_with_hole) do |_coord, coord_index, feature_index, multi_feature_index, geometry_index|
+      feature_indexes << feature_index
+      multi_feature_indexes << multi_feature_index
+      geometry_indexes << geometry_index
+      coord_indexes << coord_index
+    end
+
+    assert_equal [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], feature_indexes
+    assert_equal [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], multi_feature_indexes
+    assert_equal [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1], geometry_indexes
+    assert_equal [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], coord_indexes
+    # Major Release Change v6.x
+    # assert_equal [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4], coord_indexes
   end
 
   # (source line: 1223)
   def test_coord_each_indexes_polygon_with_hole2
+    feature_indexes = []
+    multi_feature_indexes = []
+    geometry_indexes = []
+    coord_indexes = []
+
+    # Polygon with Hole
+    # =================
+    # Feature Index => 0
+    poly_with_hole = Turf.polygon([
+      # Outer Ring
+      # ----------
+      # Geometry Index => 0
+      # Coord Index => [0, 1, 2, 3, 4] (Major Release Change v6.x)
+      [
+        [100.0, 0.0],
+        [101.0, 0.0],
+        [101.0, 1.0],
+        [100.0, 1.0],
+        [100.0, 0.0],
+      ],
+      # Inner Ring
+      # ----------
+      # Geometry Index => 1
+      # Coord Index => [0, 1, 2, 3, 4] (Major Release Change v6.x)
+      [
+        [100.2, 0.2],
+        [100.8, 0.2],
+        [100.8, 0.8],
+        [100.2, 0.8],
+        [100.2, 0.2],
+      ],
+    ])
+
+    Turf.coord_each(poly_with_hole) do |_coord, coord_index, feature_index, multi_feature_index, geometry_index|
+      feature_indexes << feature_index
+      multi_feature_indexes << multi_feature_index
+      geometry_indexes << geometry_index
+      coord_indexes << coord_index
+    end
+
+    assert_equal [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], feature_indexes
+    assert_equal [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], multi_feature_indexes
+    assert_equal [0, 0, 0, 0, 0, 1, 1, 1, 1, 1], geometry_indexes
+    assert_equal [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], coord_indexes
+    # Major Release Change v6.x
+    # assert_equal [0, 1, 2, 3, 4, 0, 1, 2, 3, 4], coord_indexes
   end
 
   def test_coord_each_indexes_feature_collection_of_line_string
+    feature_indexes = []
+    multi_feature_indexes = []
+    geometry_indexes = []
+    coord_indexes = []
+
+    # FeatureCollection of LineStrings
+    line = Turf.line_strings([
+      # LineString 1
+      # Feature Index => 0
+      # Geometry Index => 0
+      # Coord Index => [0, 1, 2, 3, 4] (Major Release Change v6.x)
+      [
+        [100.0, 0.0],
+        [101.0, 0.0],
+        [101.0, 1.0],
+        [100.0, 1.0],
+        [100.0, 0.0],
+      ],
+      # LineString 2
+      # Feature Index => 1
+      # Geometry Index => 0
+      # Coord Index => [0, 1, 2, 3, 4] (Major Release Change v6.x)
+      [
+        [100.2, 0.2],
+        [100.8, 0.2],
+        [100.8, 0.8],
+        [100.2, 0.8],
+        [100.2, 0.2],
+      ],
+    ])
+
+    Turf.coord_each(line) do |_coord, coord_index, feature_index, multi_feature_index, geometry_index|
+      feature_indexes << feature_index
+      multi_feature_indexes << multi_feature_index
+      geometry_indexes << geometry_index
+      coord_indexes << coord_index
+    end
+
+    assert_equal [0, 0, 0, 0, 0, 1, 1, 1, 1, 1], feature_indexes
+    assert_equal [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], multi_feature_indexes
+    assert_equal [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], geometry_indexes
+    assert_equal [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], coord_indexes
+    # Major Release Change v6.x
+    # assert_equal [0, 1, 2, 3, 4, 0, 1, 2, 3, 4], coord_indexes
   end
 
-  def test_breaking_of_iretations
+  def test_breaking_of_iterations
+    lines = Turf.line_strings([
+      [
+        [10, 10],
+        [50, 30],
+        [30, 40],
+      ],
+      [
+        [-10, -10],
+        [-50, -30],
+        [-30, -40],
+      ],
+    ])
+    multi_line = Turf.multi_line_string([
+      [
+        [10, 10],
+        [50, 30],
+        [30, 40],
+      ],
+      [
+        [-10, -10],
+        [-50, -30],
+        [-30, -40],
+      ],
+    ])
+
+    # Each Iterators
+    # meta.segment_each has been purposely excluded from this list
+    tested_functions = 0
+    %i[
+      coord_each
+      feature_each
+      flatten_each
+      geom_each
+      line_each
+      prop_each
+      segment_each
+    ].each do |func_name|
+      # Meta Each function should only a value of 1 after returning `false`
+
+      # FeatureCollection
+      count = 0
+      Turf.send(func_name, lines) do
+        count += 1
+        break false
+      end
+      assert_equal(1, count, func_name)
+
+      # Multi Geometry
+      multi_count = 0
+      Turf.send(func_name, multi_line) do
+        multi_count += 1
+        break false
+      end
+      assert_equal(1, multi_count, func_name)
+      tested_functions += 1
+    end
+    assert_equal(7, tested_functions)
   end
 
   def test_test_find_segment
