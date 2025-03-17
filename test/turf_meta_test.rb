@@ -460,6 +460,16 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_flatten_reduce_previous_feature_initial_value
+    last_index = nil
+    last_sub_index = nil
+    sum = Turf.flatten_reduce(multi_pt[:geometry], 0) do |previous, current, index, sub_index|
+      last_index = index
+      last_sub_index = sub_index
+      previous + current[:geometry][:coordinates][0]
+    end
+    assert_equal(0, last_index)
+    assert_equal(1, last_sub_index)
+    assert_equal(1, sum)
   end
 
   # @see https://github.com/Turfjs/turf/issues/853
@@ -543,15 +553,46 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_segment_each
+    segments = []
+    total = 0
+    Turf.segment_each(poly[:geometry]) do |current_segment|
+      segments.push(current_segment)
+      total += 1
+    end
+    assert_equal(2, segments[0][:geometry][:coordinates].length)
+    assert_equal(3, total)
   end
 
   def test_segment_each_multi_point
+    segments = []
+    total = 0
+    Turf.segment_each(multi_pt[:geometry]) do |current_segment|
+      segments.push(current_segment)
+      total += 1
+    end
+    assert_equal(0, total) # No segments are created from MultiPoint geometry
   end
 
   def test_segment_reduce
+    segments = []
+    total = Turf.segment_reduce(poly[:geometry], 0) do |previous_value, current_segment|
+      segments.push(current_segment)
+      previous_value += 1
+      previous_value
+    end
+    assert_equal(2, segments[0][:geometry][:coordinates].length)
+    assert_equal(3, total)
   end
 
   def test_segment_reduce_no_initial_value
+    segments = []
+    total = 0
+    Turf.segment_reduce(poly[:geometry]) do |_previous_value, current_segment|
+      segments.push(current_segment)
+      total += 1
+    end
+    assert_equal(2, segments[0][:geometry][:coordinates].length)
+    assert_equal(2, total)
   end
 
   def test_segment_each_index_and_sub_index
@@ -856,6 +897,21 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_coord_each_indexes_polygon_with_hole
+    coord_indexes = []
+    feature_indexes = []
+    multi_feature_indexes = []
+    geometry_indexes = []
+
+    Turf.coord_each(poly_with_hole) do |_coords, coord_index, feature_index, multi_feature_index, geometry_index|
+      coord_indexes.push(coord_index)
+      feature_indexes.push(feature_index)
+      multi_feature_indexes.push(multi_feature_index)
+      geometry_indexes.push(geometry_index)
+    end
+    assert_equal([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], coord_indexes)
+    assert_equal([0, 0, 0, 0, 0, 0, 0, 0, 0, 0], feature_indexes)
+    assert_equal([0, 0, 0, 0, 0, 0, 0, 0, 0, 0], multi_feature_indexes)
+    assert_equal([0, 0, 0, 0, 0, 1, 1, 1, 1, 1], geometry_indexes)
   end
 
   # (source line: 1081)
@@ -893,6 +949,22 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_segment_each_indexes_polygon_with_hole
+    feature_indexes = []
+    multi_feature_indexes = []
+    geometry_indexes = []
+    segment_indexes = []
+
+    Turf.segment_each(poly_with_hole) do |_segment, feature_index, multi_feature_index, geometry_index, segment_index|
+      feature_indexes.push(feature_index)
+      multi_feature_indexes.push(multi_feature_index)
+      geometry_indexes.push(geometry_index)
+      segment_indexes.push(segment_index)
+    end
+
+    assert_equal([0, 0, 0, 0, 0, 0, 0, 0], feature_indexes)
+    assert_equal([0, 0, 0, 0, 0, 0, 0, 0], multi_feature_indexes)
+    assert_equal([0, 0, 0, 0, 1, 1, 1, 1], geometry_indexes)
+    assert_equal([0, 1, 2, 3, 0, 1, 2, 3], segment_indexes)
   end
 
   def test_coord_each_indexes_multi_polygon_with_hole
