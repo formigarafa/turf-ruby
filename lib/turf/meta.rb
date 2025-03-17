@@ -452,16 +452,52 @@ module Turf
     previous_value
   end
 
-  def prop_each(*args)
+  # Iterate over properties in any GeoJSON object, similar to Array.forEach.
+  # @see https://turfjs.org/docs/#propEach
+  # @param geojson [FeatureCollection|Feature] any GeoJSON object
+  # @yieldparam current_properties [Hash] The current Properties being processed.
+  # @yieldparam feature_index [number] The current index of the Feature being processed.
+  def prop_each(geojson)
+    case geojson[:type]
+    when "FeatureCollection"
+      geojson[:features].each_with_index do |feature, i|
+        break if yield(feature[:properties], i) == false
+      end
+    when "Feature"
+      yield(geojson[:properties], 0)
+    end
   end
 
-  def prop_reduce(*args)
+  # Reduce properties in any GeoJSON object into a single value,
+  # similar to how Array.reduce works. However, in this case we lazily run
+  # the reduction, so an array of all properties is unnecessary.
+  # @see https://turfjs.org/docs/#propReduce
+  # @param geojson [FeatureCollection|Feature|Geometry] any GeoJSON object
+  # @param initial_value [Object] Value to use as the first argument to the first call of the callback.
+  # @yieldparam previous_value [Object] The accumulated value previously returned in the last invocation
+  # of the callback, or initial_value, if supplied.
+  # @yieldparam current_properties [Hash] The current Properties being processed.
+  # @yieldparam feature_index [number] The current index of the Feature being processed.
+  # @return [Object] The value that results from the reduction.
+  def prop_reduce(geojson, initial_value = nil)
+    previous_value = initial_value
+
+    prop_each(geojson) do |current_properties, feature_index|
+      previous_value = if feature_index.zero? && initial_value.nil?
+                         current_properties
+                       else
+                         yield(previous_value, current_properties, feature_index)
+                       end
+    end
+
+    previous_value
   end
 
   # Iterate over line or ring coordinates in LineString, Polygon, MultiLineString, MultiPolygon Features or Geometries,
   # similar to Array.forEach.
   # @see https://turfjs.org/docs/#lineEach
-  # @param geojson [FeatureCollection<Lines>|Feature<Lines>|Lines|Feature<GeometryCollection>|GeometryCollection] any GeoJSON object
+  # @param geojson [FeatureCollection<Lines>|Feature<Lines>|Lines|Feature<GeometryCollection>|GeometryCollection]
+  # any GeoJSON object
   # @yieldparam current_line [Feature<LineString>] The current LineString|LinearRing being processed
   # @yieldparam feature_index [number] The current index of the Feature being processed
   # @yieldparam multi_feature_index [number] The current index of the Multi-Feature being processed
@@ -491,7 +527,8 @@ module Turf
 
   # Reduce features in any GeoJSON object, similar to Array.reduce().
   # @see https://turfjs.org/docs/#lineReduce
-  # @param geojson [FeatureCollection<Lines>|Feature<Lines>|Lines|Feature<GeometryCollection>|GeometryCollection] any GeoJSON object
+  # @param geojson [FeatureCollection<Lines>|Feature<Lines>|Lines|Feature<GeometryCollection>|GeometryCollection]
+  # any GeoJSON object
   # @param initial_value [Object] Value to use as the first argument to the first call of the callback.
   # @yieldparam previous_value [Object] The accumulated value previously returned in the last invocation
   # of the callback, or initial_value, if supplied.
@@ -504,11 +541,11 @@ module Turf
     previous_value = initial_value
 
     line_each(geojson) do |current_line, feature_index, multi_feature_index, geometry_index|
-      if feature_index.zero? && initial_value.nil?
-        previous_value = current_line
-      else
-        previous_value = yield(previous_value, current_line, feature_index, multi_feature_index, geometry_index)
-      end
+      previous_value = if feature_index.zero? && initial_value.nil?
+                         current_line
+                       else
+                         yield(previous_value, current_line, feature_index, multi_feature_index, geometry_index)
+                       end
     end
 
     previous_value

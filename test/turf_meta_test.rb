@@ -150,6 +150,13 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_prop_each
+    props = []
+    collection(pt).each do |input|
+      Turf.prop_each(input) do |prop, _i|
+        props << prop
+      end
+    end
+    assert_equal([{ a: 1 }, { a: 1 }], props)
   end
 
   def test_coord_each_point
@@ -566,7 +573,7 @@ class TurfMetaTest < Minitest::Test
 
     Turf.line_each(
       line,
-    ) do |current_line, feature_index, multi_feature_index, line_index|
+    ) do |_current_line, feature_index, multi_feature_index, line_index|
       feature_indexes.push feature_index
       multi_feature_indexes.push multi_feature_index
       line_indexes.push line_index
@@ -598,7 +605,7 @@ class TurfMetaTest < Minitest::Test
 
     Turf.line_each(
       multi_line,
-    ) do |current_line, feature_index, multi_feature_index, line_index|
+    ) do |_current_line, feature_index, multi_feature_index, line_index|
       feature_indexes.push feature_index
       multi_feature_indexes.push multi_feature_index
       line_indexes.push line_index
@@ -643,7 +650,7 @@ class TurfMetaTest < Minitest::Test
 
     Turf.line_each(
       multi_poly,
-    ) do |current_line, feature_index, multi_feature_index, line_index|
+    ) do |_current_line, feature_index, multi_feature_index, line_index|
       feature_indexes.push feature_index
       multi_feature_indexes.push multi_feature_index
       line_indexes.push line_index
@@ -705,7 +712,7 @@ class TurfMetaTest < Minitest::Test
 
     Turf.line_each(
       Turf.feature_collection([line, multi_line, multi_poly]),
-    ) do |current_line, feature_index, multi_feature_index, line_index|
+    ) do |_current_line, feature_index, multi_feature_index, line_index|
       feature_indexes.push feature_index
       multi_feature_indexes.push multi_feature_index
       line_indexes.push line_index
@@ -776,7 +783,7 @@ class TurfMetaTest < Minitest::Test
       [0, 0],
       [10, 10],
     ])
-    noop = lambda {|*_args| }
+    noop = ->(*_args) {}
 
     Turf.line_each(pt, &noop) # Point geometry is supported
     Turf.line_each(multi_pt, &noop) # MultiPoint geometry is supported
@@ -821,7 +828,7 @@ class TurfMetaTest < Minitest::Test
       ],
       properties,
       bbox: bbox,
-      id: id
+      id: id,
     )
 
     Turf.line_each(line) do |current_line|
@@ -840,7 +847,7 @@ class TurfMetaTest < Minitest::Test
       ],
       properties,
       bbox: bbox,
-      id: id
+      id: id,
     )
 
     Turf.line_each(line) do |current_line|
@@ -875,7 +882,7 @@ class TurfMetaTest < Minitest::Test
 
     Turf.line_each(
       poly_with_hole,
-    ) do |current_line, feature_index, multi_feature_index, geometry_index|
+    ) do |_current_line, feature_index, multi_feature_index, geometry_index|
       feature_indexes.push feature_index
       multi_feature_indexes.push multi_feature_index
       geometry_indexes.push geometry_index
