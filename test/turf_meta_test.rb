@@ -909,9 +909,195 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_test_find_segment
+    null_feature = Turf.feature(nil)
+    pt = Turf.point([10, 10])
+    line = Turf.line_string([
+      [10, 10],
+      [50, 30],
+      [30, 40],
+    ])
+    poly = Turf.polygon([
+      [
+        [10, 10],
+        [50, 30],
+        [30, 40],
+        [10, 10],
+      ],
+      [
+        [-10, -10],
+        [-50, -30],
+        [-30, -40],
+        [-10, -10],
+      ],
+    ])
+    multi_line = Turf.multi_line_string([
+      [
+        [10, 10],
+        [50, 30],
+        [30, 40],
+      ],
+      [
+        [-10, -10],
+        [-50, -30],
+        [-30, -40],
+      ],
+    ])
+    lines = Turf.line_strings([
+      [
+        [10, 10],
+        [50, 30],
+        [30, 40],
+        [10, 10],
+      ],
+      [
+        [-10, -10],
+        [-50, -30],
+        [-30, -40],
+        [-10, -10],
+      ],
+    ])
+
+    # firstSegment
+    assert_nil(Turf.find_segment(null_feature))
+    assert_nil(Turf.find_segment(pt))
+    assert_equal(
+      Turf.line_string([
+        [10, 10],
+        [50, 30],
+      ]),
+      Turf.find_segment(line),
+    )
+    assert_equal(
+      Turf.line_string([
+        [10, 10],
+        [50, 30],
+      ]),
+      Turf.find_segment(poly),
+    )
+    assert_equal(
+      Turf.line_string([
+        [10, 10],
+        [50, 30],
+      ]),
+      Turf.find_segment(multi_line),
+    )
+    assert_equal(
+      Turf.line_string([
+        [10, 10],
+        [50, 30],
+      ]),
+      Turf.find_segment(lines),
+    )
+
+    # lastSegment
+    assert_nil(Turf.find_segment(null_feature))
+    assert_nil(Turf.find_segment(pt))
+    assert_equal(
+      Turf.line_string([
+        [50, 30],
+        [30, 40],
+      ]),
+      Turf.find_segment(line, segment_index: -1),
+    )
+    assert_equal(
+      Turf.line_string([
+        [-30, -40],
+        [-10, -10],
+      ]),
+      Turf.find_segment(poly, segment_index: -1, geometry_index: -1),
+    )
+    assert_equal(
+      Turf.line_string([
+        [-50, -30],
+        [-30, -40],
+      ]),
+      Turf.find_segment(multi_line, segment_index: -1, multi_feature_index: -1),
+    )
+    assert_equal(
+      Turf.line_string([
+        [-30, -40],
+        [-10, -10],
+      ]),
+      Turf.find_segment(lines, segment_index: -1, feature_index: -1),
+    )
   end
 
   def test_find_point
+    null_feature = Turf.feature(nil)
+    pt = Turf.point([10, 10])
+    line = Turf.line_string([
+      [10, 10],
+      [50, 30],
+      [30, 40],
+    ])
+    poly = Turf.polygon([
+      [
+        [10, 10],
+        [50, 30],
+        [30, 40],
+        [10, 10],
+      ],
+      [
+        [-10, -10],
+        [-50, -30],
+        [-30, -40],
+        [-10, -10],
+      ],
+    ])
+    multi_line = Turf.multi_line_string([
+      [
+        [10, 10],
+        [50, 30],
+        [30, 40],
+      ],
+      [
+        [-10, -10],
+        [-50, -30],
+        [-30, -40],
+      ],
+    ])
+    lines = Turf.line_strings([
+      [
+        [10, 10],
+        [50, 30],
+        [30, 40],
+        [10, 10],
+      ],
+      [
+        [-10, -10],
+        [-50, -30],
+        [-30, -40],
+        [-10, -10],
+      ],
+    ])
+
+    # firstPoint
+    assert_nil(Turf.find_point(null_feature))
+    assert_equal(Turf.point([10, 10]), Turf.find_point(pt))
+    assert_equal(Turf.point([10, 10]), Turf.find_point(line))
+    assert_equal(Turf.point([10, 10]), Turf.find_point(poly))
+    assert_equal(Turf.point([10, 10]), Turf.find_point(multi_line))
+    assert_equal(Turf.point([10, 10]), Turf.find_point(lines))
+
+    # lastPoint
+    assert_nil(Turf.find_point(null_feature))
+    assert_equal(Turf.point([10, 10]), Turf.find_point(pt))
+    assert_equal(
+      Turf.point([30, 40]),
+      Turf.find_point(line, coord_index: -1),
+    )
+    assert_equal(
+      Turf.point([-10, -10]),
+      Turf.find_point(poly, coord_index: -1, geometry_index: -1),
+    )
+    assert_equal(
+      Turf.point([-30, -40]),
+      Turf.find_point(multi_line, coord_index: -1, multi_feature_index: -1),
+    )
+    assert_equal(
+      Turf.point([-10, -10]),
+      Turf.find_point(lines, coord_index: -1, feature_index: -1),
+    )
   end
 
   def test_segment_each_issue_1273

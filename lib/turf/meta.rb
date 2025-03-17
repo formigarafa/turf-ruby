@@ -551,9 +551,184 @@ module Turf
     previous_value
   end
 
-  def find_segment(*args)
+  # Finds a particular 2-vertex LineString Segment from a GeoJSON using `@turf/meta` indexes.
+  #
+  # Negative indexes are permitted.
+  # Point & MultiPoint will always return null.
+  #
+  # @param geojson [FeatureCollection|Feature|Geometry] Any GeoJSON Feature or Geometry
+  # @param options [Hash] Optional parameters
+  # @option options [Integer] :feature_index (0) Feature Index
+  # @option options [Integer] :multi_feature_index (0) Multi-Feature Index
+  # @option options [Integer] :geometry_index (0) Geometry Index
+  # @option options [Integer] :segment_index (0) Segment Index
+  # @option options [Hash] :properties ({}) Translate Properties to output LineString
+  # @option options [Array<Number>] :bbox ({}) Translate BBox to output LineString
+  # @option options [String, Integer] :id ({}) Translate Id to output LineString
+  # @return [Feature<LineString>] 2-vertex GeoJSON Feature LineString
+  # @example
+  #   multi_line = Turf.multi_line_string([
+  #     [[10, 10], [50, 30], [30, 40]],
+  #     [[-10, -10], [-50, -30], [-30, -40]]
+  #   ])
+  #
+  #   # First Segment (defaults are 0)
+  #   Turf.find_segment(multi_line)
+  #   # => Feature<LineString<[[10, 10], [50, 30]]>>
+  #
+  #   # First Segment of 2nd Multi Feature
+  #   Turf.find_segment(multi_line, multi_feature_index: 1)
+  #   # => Feature<LineString<[[-10, -10], [-50, -30]]>>
+  #
+  #   # Last Segment of Last Multi Feature
+  #   Turf.find_segment(multi_line, multi_feature_index: -1, segment_index: -1)
+  #   # => Feature<LineString<[[-50, -30], [-30, -40]]>>
+  def find_segment(geojson, options = {})
+    options ||= {}
+    raise "options is invalid" unless options.is_a?(Hash)
+
+    feature_index = options.fetch(:feature_index, 0)
+    multi_feature_index = options.fetch(:multi_feature_index, 0)
+    geometry_index = options.fetch(:geometry_index, 0)
+    segment_index = options.fetch(:segment_index, 0)
+
+    properties = options[:properties]
+    geometry = nil
+
+    case geojson[:type]
+    when "FeatureCollection"
+      feature_index += geojson[:features].length if feature_index < 0
+      properties ||= geojson[:features][feature_index][:properties]
+      geometry = geojson[:features][feature_index][:geometry]
+    when "Feature"
+      properties ||= geojson[:properties]
+      geometry = geojson[:geometry]
+    when "Point", "MultiPoint"
+      return nil
+    when "LineString", "Polygon", "MultiLineString", "MultiPolygon"
+      geometry = geojson
+    else
+      raise "geojson is invalid"
+    end
+
+    return nil if geometry.nil?
+
+    coords = geometry[:coordinates]
+    case geometry[:type]
+    when "Point", "MultiPoint"
+      nil
+    when "LineString"
+      segment_index += coords.length - 1 if segment_index < 0
+      line_string([coords[segment_index], coords[segment_index + 1]], properties, options)
+    when "Polygon"
+      geometry_index += coords.length if geometry_index < 0
+      segment_index += coords[geometry_index].length - 1 if segment_index < 0
+      line_string([coords[geometry_index][segment_index], coords[geometry_index][segment_index + 1]], properties,
+                  options)
+    when "MultiLineString"
+      multi_feature_index += coords.length if multi_feature_index < 0
+      segment_index += coords[multi_feature_index].length - 1 if segment_index < 0
+      line_string([coords[multi_feature_index][segment_index], coords[multi_feature_index][segment_index + 1]],
+                  properties, options)
+    when "MultiPolygon"
+      multi_feature_index += coords.length if multi_feature_index < 0
+      geometry_index += coords[multi_feature_index].length if geometry_index < 0
+      segment_index += coords[multi_feature_index][geometry_index].length - 1 if segment_index < 0
+      line_string(
+        [coords[multi_feature_index][geometry_index][segment_index],
+         coords[multi_feature_index][geometry_index][segment_index + 1],], properties, options
+      )
+    else
+      raise "geojson is invalid"
+    end
   end
 
-  def find_point(*args)
+  # Finds a particular Point from a GeoJSON using `@turf/meta` indexes.
+  #
+  # Negative indexes are permitted.
+  #
+  # @param geojson [FeatureCollection|Feature|Geometry] Any GeoJSON Feature or Geometry
+  # @param options [Hash] Optional parameters
+  # @option options [Integer] :feature_index (0) Feature Index
+  # @option options [Integer] :multi_feature_index (0) Multi-Feature Index
+  # @option options [Integer] :geometry_index (0) Geometry Index
+  # @option options [Integer] :coord_index (0) Coord Index
+  # @option options [Hash] :properties ({}) Translate Properties to output Point
+  # @option options [Array<Number>] :bbox ({}) Translate BBox to output Point
+  # @option options [String, Integer] :id ({}) Translate Id to output Point
+  # @return [Feature<Point>] 2-vertex GeoJSON Feature Point
+  # @example
+  #   multi_line = Turf.multi_line_string([
+  #     [[10, 10], [50, 30], [30, 40]],
+  #     [[-10, -10], [-50, -30], [-30, -40]]
+  #   ])
+  #
+  #   # First Segment (defaults are 0)
+  #   Turf.find_point(multi_line)
+  #   # => Feature<Point<[10, 10]>>
+  #
+  #   # First Segment of the 2nd Multi-Feature
+  #   Turf.find_point(multi_line, multi_feature_index: 1)
+  #   # => Feature<Point<[-10, -10]>>
+  #
+  #   # Last Segment of last Multi-Feature
+  #   Turf.find_point(multi_line, multi_feature_index: -1, coord_index: -1)
+  #   # => Feature<Point<[-30, -40]>>
+  def find_point(geojson, options = {})
+    options ||= {}
+    raise "options is invalid" unless options.is_a?(Hash)
+
+    feature_index = options[:feature_index] || 0
+    multi_feature_index = options[:multi_feature_index] || 0
+    geometry_index = options[:geometry_index] || 0
+    coord_index = options[:coord_index] || 0
+
+    properties = options[:properties]
+    geometry = nil
+
+    case geojson[:type]
+    when "FeatureCollection"
+      feature_index = geojson[:features].length + feature_index if feature_index < 0
+      properties ||= geojson[:features][feature_index][:properties]
+      geometry = geojson[:features][feature_index][:geometry]
+    when "Feature"
+      properties ||= geojson[:properties]
+      geometry = geojson[:geometry]
+    when "Point", "MultiPoint"
+      return nil
+    when "LineString", "Polygon", "MultiLineString", "MultiPolygon"
+      geometry = geojson
+    else
+      raise "geojson is invalid"
+    end
+
+    return nil if geometry.nil?
+
+    coords = geometry[:coordinates]
+    case geometry[:type]
+    when "Point"
+      point(coords, properties, options)
+    when "MultiPoint"
+      multi_feature_index = coords.length + multi_feature_index if multi_feature_index < 0
+      point(coords[multi_feature_index], properties, options)
+    when "LineString"
+      coord_index = coords.length + coord_index if coord_index < 0
+      point(coords[coord_index], properties, options)
+    when "Polygon"
+      geometry_index = coords.length + geometry_index if geometry_index < 0
+      coord_index = coords[geometry_index].length + coord_index if coord_index < 0
+      point(coords[geometry_index][coord_index], properties, options)
+    when "MultiLineString"
+      multi_feature_index = coords.length + multi_feature_index if multi_feature_index < 0
+      coord_index = coords[multi_feature_index].length + coord_index if coord_index < 0
+      point(coords[multi_feature_index][coord_index], properties, options)
+    when "MultiPolygon"
+      multi_feature_index = coords.length + multi_feature_index if multi_feature_index < 0
+      geometry_index = coords[multi_feature_index].length + geometry_index if geometry_index < 0
+      coord_index = coords[multi_feature_index][geometry_index].length - coord_index if coord_index < 0
+      point(coords[multi_feature_index][geometry_index][coord_index], properties, options)
+    else
+      raise "geojson is invalid"
+    end
   end
 end
