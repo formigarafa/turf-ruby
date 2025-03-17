@@ -391,11 +391,11 @@ module Turf
   def segment_each(geojson)
     flatten_each(geojson) do |feature, feature_index, multi_feature_index|
       # Exclude null Geometries
-      return if feature[:geometry].nil?
+      next if feature[:geometry].nil?
 
       # (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
       type = feature[:geometry][:type]
-      return if %w[Point MultiPoint].include?(type)
+      next if %w[Point MultiPoint].include?(type)
 
       segment_index = 0
 
