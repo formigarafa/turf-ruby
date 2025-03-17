@@ -177,23 +177,21 @@ Meta
 - [x] coord_all
 - [x] coord_each
 - [x] coord_reduce
+- [x] geom_each
+- [x] geom_reduce
+- [x] geometries
 - [x] feature_each
 - [x] feature_reduce
 - [x] flatten_each
 - [x] flatten_reduce
-- [x] get_coord
-- [x] get_coords
-- [x] get_geom
-- [x] get_type
-- [x] geom_each
-- [x] geom_reduce
-- [ ] prop_each
-- [ ] prop_reduce
 - [x] segment_each
 - [x] segment_reduce
-- [ ] get_cluster
-- [ ] cluster_each
-- [ ] cluster_reduce
+- [ ] prop_each
+- [ ] prop_reduce
+- [ ] line_each
+- [ ] line_reduce
+- [ ] find_segment
+- [ ] find_point
 
 Assertions
 
