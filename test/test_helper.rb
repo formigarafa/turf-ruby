@@ -18,4 +18,3 @@ end
 require "minitest/autorun"
 require "minitest/focus"
 require "minitest-bonus-assertions"
-require "pry"
