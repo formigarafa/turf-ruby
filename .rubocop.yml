@@ -10,6 +10,9 @@ Naming/PredicateName:
 Naming/VariableNumber:
   Enabled: false
 
+Style/CaseLikeIf:
+  Enabled: false
+
 Style/EmptyMethod:
   Enabled: false
 
