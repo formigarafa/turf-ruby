@@ -458,10 +458,60 @@ module Turf
   def prop_reduce(*args)
   end
 
-  def line_reduce(*args)
+  # Iterate over line or ring coordinates in LineString, Polygon, MultiLineString, MultiPolygon Features or Geometries,
+  # similar to Array.forEach.
+  # @see https://turfjs.org/docs/#lineEach
+  # @param geojson [FeatureCollection<Lines>|Feature<Lines>|Lines|Feature<GeometryCollection>|GeometryCollection] any GeoJSON object
+  # @yieldparam current_line [Feature<LineString>] The current LineString|LinearRing being processed
+  # @yieldparam feature_index [number] The current index of the Feature being processed
+  # @yieldparam multi_feature_index [number] The current index of the Multi-Feature being processed
+  # @yieldparam geometry_index [number] The current index of the Geometry being processed
+  def line_each(geojson)
+    flatten_each(geojson) do |feature, feature_index, multi_feature_index|
+      next unless feature[:geometry]
+
+      type = feature[:geometry][:type]
+      coords = feature[:geometry][:coordinates]
+
+      case type
+      when "LineString"
+        yield(feature, feature_index, multi_feature_index, 0, 0)
+      when "Polygon"
+        coords.each_with_index do |ring, geometry_index|
+          yield(
+            feature({ type: "LineString", coordinates: ring }, feature[:properties]),
+            feature_index,
+            multi_feature_index,
+            geometry_index
+          )
+        end
+      end
+    end
   end
 
-  def line_each(*args)
+  # Reduce features in any GeoJSON object, similar to Array.reduce().
+  # @see https://turfjs.org/docs/#lineReduce
+  # @param geojson [FeatureCollection<Lines>|Feature<Lines>|Lines|Feature<GeometryCollection>|GeometryCollection] any GeoJSON object
+  # @param initial_value [Object] Value to use as the first argument to the first call of the callback.
+  # @yieldparam previous_value [Object] The accumulated value previously returned in the last invocation
+  # of the callback, or initial_value, if supplied.
+  # @yieldparam current_line [Feature<LineString>] The current LineString|LinearRing being processed.
+  # @yieldparam feature_index [number] The current index of the Feature being processed
+  # @yieldparam multi_feature_index [number] The current index of the Multi-Feature being processed
+  # @yieldparam geometry_index [number] The current index of the Geometry being processed
+  # @return [Object] The value that results from the reduction.
+  def line_reduce(geojson, initial_value = nil)
+    previous_value = initial_value
+
+    line_each(geojson) do |current_line, feature_index, multi_feature_index, geometry_index|
+      if feature_index.zero? && initial_value.nil?
+        previous_value = current_line
+      else
+        previous_value = yield(previous_value, current_line, feature_index, multi_feature_index, geometry_index)
+      end
+    end
+
+    previous_value
   end
 
   def find_segment(*args)

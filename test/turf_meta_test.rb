@@ -554,24 +554,244 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_line_each_line_string
+    line = Turf.line_string([
+      [0, 0],
+      [2, 2],
+      [4, 4],
+    ])
+    feature_indexes = []
+    multi_feature_indexes = []
+    line_indexes = []
+    total = 0
+
+    Turf.line_each(
+      line,
+    ) do |current_line, feature_index, multi_feature_index, line_index|
+      feature_indexes.push feature_index
+      multi_feature_indexes.push multi_feature_index
+      line_indexes.push line_index
+      total += 1
+    end
+    assert_equal(1, total)
+    assert_equal([0], feature_indexes)
+    assert_equal([0], multi_feature_indexes)
+    assert_equal([0], line_indexes)
   end
 
   def test_line_each_multi_line_string
+    multi_line = Turf.multi_line_string([
+      [
+        [0, 0],
+        [2, 2],
+        [4, 4],
+      ],
+      [
+        [1, 1],
+        [3, 3],
+        [5, 5],
+      ],
+    ])
+    feature_indexes = []
+    multi_feature_indexes = []
+    line_indexes = []
+    total = 0
+
+    Turf.line_each(
+      multi_line,
+    ) do |current_line, feature_index, multi_feature_index, line_index|
+      feature_indexes.push feature_index
+      multi_feature_indexes.push multi_feature_index
+      line_indexes.push line_index
+      total += 1
+    end
+    assert_equal(2, total)
+    assert_equal([0, 0], feature_indexes)
+    assert_equal([0, 1], multi_feature_indexes)
+    assert_equal([0, 0], line_indexes)
   end
 
   def test_line_each_multi_polygon
+    multi_poly = Turf.multi_polygon([
+      [
+        [
+          [12, 48],
+          [2, 41],
+          [24, 38],
+          [12, 48],
+        ],
+        [
+          [9, 44],
+          [13, 41],
+          [13, 45],
+          [9, 44],
+        ],
+      ],
+      [
+        [
+          [5, 5],
+          [0, 0],
+          [2, 2],
+          [4, 4],
+          [5, 5],
+        ],
+      ],
+    ])
+    feature_indexes = []
+    multi_feature_indexes = []
+    line_indexes = []
+    total = 0
+
+    Turf.line_each(
+      multi_poly,
+    ) do |current_line, feature_index, multi_feature_index, line_index|
+      feature_indexes.push feature_index
+      multi_feature_indexes.push multi_feature_index
+      line_indexes.push line_index
+      total += 1
+    end
+    assert_equal(3, total)
+    assert_equal([0, 0, 0], feature_indexes)
+    assert_equal([0, 0, 1], multi_feature_indexes)
+    assert_equal([0, 1, 0], line_indexes)
   end
 
   def test_line_each_feature_collection
+    line = Turf.line_string([
+      [0, 0],
+      [2, 2],
+      [4, 4],
+    ])
+    multi_line = Turf.multi_line_string([
+      [
+        [0, 0],
+        [2, 2],
+        [4, 4],
+      ],
+      [
+        [1, 1],
+        [3, 3],
+        [5, 5],
+      ],
+    ])
+    multi_poly = Turf.multi_polygon([
+      [
+        [
+          [12, 48],
+          [2, 41],
+          [24, 38],
+          [12, 48],
+        ],
+        [
+          [9, 44],
+          [13, 41],
+          [13, 45],
+          [9, 44],
+        ],
+      ],
+      [
+        [
+          [5, 5],
+          [0, 0],
+          [2, 2],
+          [4, 4],
+          [5, 5],
+        ],
+      ],
+    ])
+    feature_indexes = []
+    multi_feature_indexes = []
+    line_indexes = []
+    total = 0
+
+    Turf.line_each(
+      Turf.feature_collection([line, multi_line, multi_poly]),
+    ) do |current_line, feature_index, multi_feature_index, line_index|
+      feature_indexes.push feature_index
+      multi_feature_indexes.push multi_feature_index
+      line_indexes.push line_index
+      total += 1
+    end
+    assert_equal(6, total)
+    assert_equal([0, 1, 1, 2, 2, 2], feature_indexes)
+    assert_equal([0, 0, 1, 0, 0, 1], multi_feature_indexes)
+    assert_equal([0, 0, 0, 0, 1, 0], line_indexes)
   end
 
   def test_line_reduce_multi_line_string
+    multi_line = Turf.multi_line_string([
+      [
+        [0, 0],
+        [2, 2],
+        [4, 4],
+      ],
+      [
+        [1, 1],
+        [3, 3],
+        [5, 5],
+      ],
+    ])
+
+    total = Turf.line_reduce(multi_line, 0) do |previous|
+      previous + 1
+    end
+    assert_equal(2, total)
   end
 
   def test_line_reduce_multi_polygon
+    multi_poly = Turf.multi_polygon([
+      [
+        [
+          [12, 48],
+          [2, 41],
+          [24, 38],
+          [12, 48],
+        ], # outer
+        [
+          [9, 44],
+          [13, 41],
+          [13, 45],
+          [9, 44],
+        ],
+      ], # inner
+      [
+        [
+          [5, 5],
+          [0, 0],
+          [2, 2],
+          [4, 4],
+          [5, 5],
+        ], # outer
+      ],
+    ])
+
+    total = Turf.line_reduce(multi_poly, 0) do |previous|
+      previous + 1
+    end
+    assert_equal(3, total)
   end
 
   def test_line_each_and_line_reduce_assert
+    pt = Turf.point([0, 0])
+    multi_pt = Turf.multi_point([
+      [0, 0],
+      [10, 10],
+    ])
+    noop = lambda {|*_args| }
+
+    Turf.line_each(pt, &noop) # Point geometry is supported
+    Turf.line_each(multi_pt, &noop) # MultiPoint geometry is supported
+    Turf.line_reduce(pt, &noop) # Point geometry is supported
+    Turf.line_reduce(multi_pt, &noop) # MultiPoint geometry is supported
+    Turf.line_reduce(geom_collection, &noop) # GeometryCollection is supported
+    Turf.line_reduce(
+      Turf.feature_collection([
+        Turf.line_string([
+          [10, 10],
+          [0, 0],
+        ]),
+      ]), &noop
+    ) # FeatureCollection is supported
+    Turf.line_reduce(Turf.feature(nil), &noop) # Feature with null geometry is supported
   end
 
   def test_geom_each_callback_bbox_and_id
@@ -591,35 +811,97 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_line_each_callback_bbox_and_id
+    properties = { foo: "bar" }
+    bbox = [0, 0, 10, 10]
+    id = "foo"
+    line = Turf.line_string(
+      [
+        [0, 0],
+        [10, 10],
+      ],
+      properties,
+      bbox: bbox,
+      id: id
+    )
+
+    Turf.line_each(line) do |current_line|
+      assert_equal(line, current_line)
+    end
   end
 
   def test_line_each_return_line_string
+    properties = { foo: "bar" }
+    bbox = [0, 0, 10, 10]
+    id = "foo"
+    line = Turf.line_string(
+      [
+        [0, 0],
+        [10, 10],
+      ],
+      properties,
+      bbox: bbox,
+      id: id
+    )
+
+    Turf.line_each(line) do |current_line|
+      assert_equal(line, current_line)
+    end
   end
 
-  def coord_each_indexes_polygon_with_hole
+  def test_coord_each_indexes_polygon_with_hole
   end
 
   # (source line: 1081)
-  def line_each_indexes_polygon_with_hole
+  def test_line_each_indexes_polygon_with_hole
+    poly_with_hole = Turf.polygon([
+      [
+        [100.0, 0.0],
+        [101.0, 0.0],
+        [101.0, 1.0],
+        [100.0, 1.0],
+        [100.0, 0.0],
+      ],
+      [
+        [100.2, 0.2],
+        [100.8, 0.2],
+        [100.8, 0.8],
+        [100.2, 0.8],
+        [100.2, 0.2],
+      ],
+    ])
+    feature_indexes = []
+    multi_feature_indexes = []
+    geometry_indexes = []
+
+    Turf.line_each(
+      poly_with_hole,
+    ) do |current_line, feature_index, multi_feature_index, geometry_index|
+      feature_indexes.push feature_index
+      multi_feature_indexes.push multi_feature_index
+      geometry_indexes.push geometry_index
+    end
+    assert_equal([0, 0], feature_indexes)
+    assert_equal([0, 0], multi_feature_indexes)
+    assert_equal([0, 1], geometry_indexes)
   end
 
-  def segment_each_indexes_polygon_with_hole
+  def test_segment_each_indexes_polygon_with_hole
   end
 
-  def coord_each_indexes_multi_polygon_with_hole
+  def test_coord_each_indexes_multi_polygon_with_hole
   end
 
   # (source line: 1223)
-  def coord_each_indexes_polygon_with_hole2
+  def test_coord_each_indexes_polygon_with_hole2
   end
 
-  def coord_each_indexes_feature_collection_of_line_string
+  def test_coord_each_indexes_feature_collection_of_line_string
   end
 
-  def breaking_of_iretations
+  def test_breaking_of_iretations
   end
 
-  def test_find_segment
+  def test_test_find_segment
   end
 
   def test_find_point
