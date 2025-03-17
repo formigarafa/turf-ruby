@@ -149,6 +149,41 @@ class TurfMetaTest < Minitest::Test
     [geometry, feature, feature_collection]
   end
 
+  def geojson_segments
+    Turf.feature_collection(
+      [
+        Turf.point([0, 1]), # ignored
+        Turf.line_string([
+          [0, 0],
+          [2, 2],
+          [4, 4],
+        ]),
+        Turf.polygon([
+          [
+            [5, 5],
+            [0, 0],
+            [2, 2],
+            [4, 4],
+            [5, 5],
+          ],
+        ]),
+        Turf.point([0, 1]), # ignored
+        Turf.multi_line_string([
+          [
+            [0, 0],
+            [2, 2],
+            [4, 4],
+          ],
+          [
+            [0, 0],
+            [2, 2],
+            [4, 4],
+          ],
+        ]),
+      ],
+    )
+  end
+
   def test_prop_each
     props = []
     collection(pt).each do |input|
@@ -596,6 +631,40 @@ class TurfMetaTest < Minitest::Test
   end
 
   def test_segment_each_index_and_sub_index
+    feature_indexes = []
+    multi_feature_indexes = []
+    geometry_indexes = []
+    segment_indexes = []
+    total = 0
+
+    Turf.segment_each(geojson_segments) do |_segment, feature_index, multi_feature_index, geometry_index, segment_index|
+      feature_indexes.push(feature_index)
+      multi_feature_indexes.push(multi_feature_index)
+      geometry_indexes.push(geometry_index)
+      segment_indexes.push(segment_index)
+      total += 1
+    end
+    assert_equal(10, total, "total")
+    assert_equal(
+      [1, 1, 2, 2, 2, 2, 4, 4, 4, 4],
+      feature_indexes,
+      "segmentEach.feature_index",
+    )
+    assert_equal(
+      [0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+      multi_feature_indexes,
+      "segmentEach.multi_feature_index",
+    )
+    assert_equal(
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      geometry_indexes,
+      "segmentEach.geometry_index",
+    )
+    assert_equal(
+      [0, 1, 0, 1, 2, 3, 0, 1, 0, 1],
+      segment_indexes,
+      "segmentEach.segment_index",
+    )
   end
 
   def test_segment_reduce_index_and_sub_index
