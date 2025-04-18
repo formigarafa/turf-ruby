@@ -39,8 +39,7 @@ Currently not all functions are available, feel free to fork the repo and port m
 
 This list should be updated from [https://github.com/Turfjs/turf/blob/master/documentation.yml](https://github.com/Turfjs/turf/blob/master/documentation.yml).
 
-Measurement
-
+### Measurement
 - [x] along
 - [x] area
 - [ ] bbox
@@ -52,27 +51,26 @@ Measurement
 - [x] destination
 - [x] distance
 - [ ] envelope
+- [ ] great_circle
 - [x] length
 - [ ] midpoint
 - [ ] point_on_feature
-- [ ] polygon_tangents
 - [ ] point_to_line_distance
+- [ ] point_to_polygon_distance
+- [ ] polygon_tangents
 - [ ] rhumb_bearing
 - [ ] rhumb_destination
 - [ ] rhumb_distance
 - [ ] square
-- [ ] great_circle
 
-Coordinate Mutation
-
+### Coordinate Mutation
 - [ ] clean_coords
 - [ ] flip
 - [ ] rewind
-- [ ] round
+- [x] round
 - [x] truncate
 
-Transformation
-
+### Transformation
 - [ ] bbox_clip
 - [ ] bezier_spline
 - [ ] buffer
@@ -88,22 +86,20 @@ Transformation
 - [ ] simplify
 - [ ] tesselate
 - [ ] transform_rotate
-- [ ] transform_translate
 - [ ] transform_scale
+- [ ] transform_translate
 - [ ] union
 - [ ] voronoi
 
-Feature Conversion
-
+### Feature Conversion
 - [ ] combine
 - [x] explode
 - [ ] flatten
 - [ ] line_to_polygon
-- [ ] polygonize
 - [ ] polygon_to_line
+- [ ] polygonize
 
-Misc
-
+### Misc
 - [ ] kinks
 - [ ] line_arc
 - [ ] line_chunk
@@ -119,10 +115,9 @@ Misc
 - [ ] shortest_path
 - [ ] unkink_polygon
 
-Helper
-
-- [x] feature_collection
+### Helper
 - [x] feature
+- [x] feature_collection
 - [x] geometry_collection
 - [x] line_string
 - [x] multi_line_string
@@ -131,77 +126,69 @@ Helper
 - [x] point
 - [x] polygon
 
-Random
-
-- [ ] random_position
-- [ ] random_point
+### Random
 - [ ] random_line_string
+- [ ] random_point
 - [ ] random_polygon
+- [ ] random_position
 
-Data
-
+### Data
 - [ ] sample
 
-Interpolation
-
+### Interpolation
 - [ ] interpolate
 - [ ] isobands
 - [ ] isolines
 - [ ] planepoint
 - [ ] tin
 
-Joins
-
+### Joins
 - [ ] points_within_polygon
 - [ ] tag
 
-Grids
-
+### Grids
 - [ ] hex_grid
 - [ ] point_grid
 - [ ] square_grid
 - [ ] triangle_grid
 
-Classification
-
+### Classification
 - [ ] nearest_point
 
-Aggregation
-
-- [ ] collect
+### Aggregation
 - [ ] clusters_dbscan
 - [ ] clusters_kmeans
+- [ ] collect
 
-Meta
-
+### Meta
+- [ ] cluster_each
+- [ ] cluster_reduce
 - [x] coord_all
 - [x] coord_each
 - [x] coord_reduce
-- [x] geom_each
-- [x] geom_reduce
-- [x] geometries
 - [x] feature_each
 - [x] feature_reduce
 - [x] flatten_each
 - [x] flatten_reduce
+- [x] geom_each
+- [x] geom_reduce
+- [ ] get_cluster
+- [x] get_coord
+- [x] get_coords
+- [x] get_geom
+- [x] get_type
+- [x] prop_each
+- [x] prop_reduce
 - [x] segment_each
 - [x] segment_reduce
-- [ ] prop_each
-- [ ] prop_reduce
-- [ ] line_each
-- [ ] line_reduce
-- [ ] find_segment
-- [ ] find_point
 
-Assertions
-
+### Assertions
 - [x] collection_of
 - [x] contains_number
-- [x] geojson_type
 - [x] feature_of
+- [x] geojson_type
 
-Booleans
-
+### Booleans
 - [ ] boolean_clockwise
 - [ ] boolean_concave
 - [ ] boolean_contains
@@ -213,20 +200,55 @@ Booleans
 - [ ] boolean_parallel
 - [x] boolean_point_in_polygon
 - [ ] boolean_point_on_line
+- [ ] boolean_touches
 - [ ] boolean_within
 
-Unit Conversion
-
+### Unit Conversion
+- [x] azimuth_to_bearing
 - [x] bearing_to_azimuth
 - [x] convert_area
 - [x] convert_length
 - [x] degrees_to_radians
-- [x] length_to_radians
 - [x] length_to_degrees
-- [x] radians_to_length
+- [x] length_to_radians
 - [x] radians_to_degrees
+- [x] radians_to_length
 - [ ] to_mercator
 - [ ] to_wgs84
+
+### Other
+- [ ] angle
+- [ ] boolean_valid
+- [ ] center_mean
+- [ ] center_median
+- [ ] directional_mean
+- [ ] distance_weight
+- [ ] ellipse
+- [x] find_point
+- [x] find_segment
+- [x] geometry
+- [x] is_number
+- [x] is_object
+- [x] line_each
+- [x] line_reduce
+- [x] line_strings
+- [ ] moran_index
+- [ ] nearest_neighbor_analysis
+- [ ] nearest_point_to_line
+- [ ] p_norm_distance
+- [x] points
+- [x] polygons
+- [ ] quadrat_analysis
+- [x] rbush
+- [ ] rectangle_grid
+- [ ] standard_deviational_ellipse
+
+### Constants
+- [ ] K_TABLE
+- [x] AREA_FACTORS
+- [x] EARTH_RADIUS
+- [x] FACTORS
+
 
 ## Development
 
