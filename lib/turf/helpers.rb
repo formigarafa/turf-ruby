@@ -3,7 +3,6 @@
 # :nodoc:
 module Turf
   EARTH_RADIUS = 6_371_008.8
-  private_constant :EARTH_RADIUS
   FACTORS = {
     "centimeters" => EARTH_RADIUS * 100,
     "centimetres" => EARTH_RADIUS * 100,
@@ -21,7 +20,6 @@ module Turf
     "radians" => 1.0,
     "yards" => EARTH_RADIUS * 1.0936
   }.freeze
-  private_constant :FACTORS
 
   AREA_FACTORS = {
     "acres" => 0.000247105,
@@ -40,7 +38,6 @@ module Turf
     "millimetres" => 1_000_000.0,
     "yards" => 1.195990046
   }.freeze
-  private_constant :FACTORS
 
   # @!group Helper
 
