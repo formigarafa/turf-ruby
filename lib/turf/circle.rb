@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "destination"
+require_relative "helpers"
+
 # :nodoc:
 module Turf
   # Takes a Point and calculates the circle polygon given a radius in degrees, radians, miles, or kilometers;
@@ -22,10 +25,10 @@ module Turf
     # main
     coordinates = []
     steps.times do |i|
-      coordinates.push(destination(center, radius, (i * -360.0) / steps, **options).dig(:geometry, :coordinates))
+      coordinates.push(destination(center, radius, (i * -360.0) / steps, options).dig(:geometry, :coordinates))
     end
     coordinates.push(coordinates[0])
 
-    polygon([coordinates], properties: properties)
+    polygon([coordinates], properties)
   end
 end

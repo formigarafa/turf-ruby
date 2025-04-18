@@ -13,7 +13,7 @@ class TurfDistanceTest < Minitest::Test
       [52.44558379572202, "nauticalmiles"],
       [97.1292211896772, "kilometers"],
       [0.015245501024841969, "radians"],
-      [0.8724834600465052, "degrees"],
+      [0.873502865285816, "degrees"],
     ].each do |distance, units|
       assert_equal(distance, Turf.distance(pt1, pt2, units: units))
     end

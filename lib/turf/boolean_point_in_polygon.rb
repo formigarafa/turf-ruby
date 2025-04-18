@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "invariant"
+
 # :nodoc:
 module Turf
   # @!group Booleans
@@ -13,7 +15,7 @@ module Turf
   # inside
   # the polygon otherwise false.
   # @return [boolean] true if the Point is inside the Polygon; false if the Point is not inside the Polygon
-  def boolean_point_in_polygon(point, polygon, ignore_boundary: false)
+  def boolean_point_in_polygon(point, polygon, options = {})
     polygon = deep_symbolize_keys(polygon)
     pt = get_coord(point)
     geom = get_geom(polygon)
@@ -30,13 +32,13 @@ module Turf
     inside_poly = false
     polys.each do |poly|
       # check if it is in the outer ring first
-      next unless in_ring(pt, poly[0], ignore_boundary)
+      next unless in_ring(pt, poly[0], options[:ignore_boundary])
 
       in_hole = false
 
       # check for the point in any of the holes
       poly.slice(1, poly.size - 1).each do |hole|
-        if in_ring(pt, hole, !ignore_boundary)
+        if in_ring(pt, hole, !options[:ignore_boundary])
           in_hole = true
         end
       end

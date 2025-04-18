@@ -39,196 +39,216 @@ Currently not all functions are available, feel free to fork the repo and port m
 
 This list should be updated from [https://github.com/Turfjs/turf/blob/master/documentation.yml](https://github.com/Turfjs/turf/blob/master/documentation.yml).
 
-Measurement
-
+### Measurement
 - [x] along
 - [x] area
 - [ ] bbox
-- [ ] bboxPolygon
+- [ ] bbox_polygon
 - [x] bearing
 - [ ] center
-- [ ] centerOfMass
+- [ ] center_of_mass
 - [x] centroid
 - [x] destination
 - [x] distance
 - [ ] envelope
+- [ ] great_circle
 - [x] length
 - [ ] midpoint
-- [ ] pointOnFeature
-- [ ] polygonTangents
-- [ ] pointToLineDistance
-- [ ] rhumbBearing
-- [ ] rhumbDestination
-- [ ] rhumbDistance
+- [ ] point_on_feature
+- [ ] point_to_line_distance
+- [ ] point_to_polygon_distance
+- [ ] polygon_tangents
+- [ ] rhumb_bearing
+- [ ] rhumb_destination
+- [ ] rhumb_distance
 - [ ] square
-- [ ] greatCircle
 
-Coordinate Mutation
-
-- [ ] cleanCoords
+### Coordinate Mutation
+- [ ] clean_coords
 - [ ] flip
 - [ ] rewind
-- [ ] round
-- [ ] truncate
+- [x] round
+- [x] truncate
 
-Transformation
-
-- [ ] bboxClip
-- [ ] bezierSpline
+### Transformation
+- [ ] bbox_clip
+- [ ] bezier_spline
 - [ ] buffer
-- [ ] circle
+- [x] circle
 - [ ] clone
 - [ ] concave
 - [ ] convex
 - [ ] difference
 - [ ] dissolve
 - [ ] intersect
-- [ ] lineOffset
-- [ ] polygonSmooth
+- [ ] line_offset
+- [ ] polygon_smooth
 - [ ] simplify
 - [ ] tesselate
-- [ ] transformRotate
-- [ ] transformTranslate
-- [ ] transformScale
+- [ ] transform_rotate
+- [ ] transform_scale
+- [ ] transform_translate
 - [ ] union
 - [ ] voronoi
 
-Feature Conversion
-
+### Feature Conversion
 - [ ] combine
-- [ ] explode
+- [x] explode
 - [ ] flatten
-- [ ] lineToPolygon
+- [ ] line_to_polygon
+- [ ] polygon_to_line
 - [ ] polygonize
-- [ ] polygonToLine
 
-Misc
-
+### Misc
 - [ ] kinks
-- [ ] lineArc
-- [ ] lineChunk
-- [ ] lineIntersect
-- [ ] lineOverlap
-- [ ] lineSegment
-- [ ] lineSlice
-- [ ] lineSliceAlong
-- [ ] lineSplit
+- [ ] line_arc
+- [ ] line_chunk
+- [ ] line_intersect
+- [ ] line_overlap
+- [ ] line_segment
+- [ ] line_slice
+- [ ] line_slice_along
+- [ ] line_split
 - [ ] mask
-- [ ] nearestPointOnLine
+- [ ] nearest_point_on_line
 - [ ] sector
-- [ ] shortestPath
-- [ ] unkinkPolygon
+- [ ] shortest_path
+- [ ] unkink_polygon
 
-Helper
-
-- [x] featureCollection
+### Helper
 - [x] feature
-- [x] geometryCollection
-- [x] lineString
-- [x] multiLineString
-- [x] multiPoint
-- [x] multiPolygon
+- [x] feature_collection
+- [x] geometry_collection
+- [x] line_string
+- [x] multi_line_string
+- [x] multi_point
+- [x] multi_polygon
 - [x] point
 - [x] polygon
 
-Random
+### Random
+- [ ] random_line_string
+- [ ] random_point
+- [ ] random_polygon
+- [ ] random_position
 
-- [ ] randomPosition
-- [ ] randomPoint
-- [ ] randomLineString
-- [ ] randomPolygon
-
-Data
-
+### Data
 - [ ] sample
 
-Interpolation
-
+### Interpolation
 - [ ] interpolate
 - [ ] isobands
 - [ ] isolines
 - [ ] planepoint
 - [ ] tin
 
-Joins
-
-- [ ] pointsWithinPolygon
+### Joins
+- [ ] points_within_polygon
 - [ ] tag
 
-Grids
+### Grids
+- [ ] hex_grid
+- [ ] point_grid
+- [ ] square_grid
+- [ ] triangle_grid
 
-- [ ] hexGrid
-- [ ] pointGrid
-- [ ] squareGrid
-- [ ] triangleGrid
+### Classification
+- [ ] nearest_point
 
-Classification
-
-- [ ] nearestPoint
-
-Aggregation
-
+### Aggregation
+- [ ] clusters_dbscan
+- [ ] clusters_kmeans
 - [ ] collect
-- [ ] clustersDbscan
-- [ ] clustersKmeans
 
-Meta
+### Meta
+- [ ] cluster_each
+- [ ] cluster_reduce
+- [x] coord_all
+- [x] coord_each
+- [x] coord_reduce
+- [x] feature_each
+- [x] feature_reduce
+- [x] flatten_each
+- [x] flatten_reduce
+- [x] geom_each
+- [x] geom_reduce
+- [ ] get_cluster
+- [x] get_coord
+- [x] get_coords
+- [x] get_geom
+- [x] get_type
+- [x] prop_each
+- [x] prop_reduce
+- [x] segment_each
+- [x] segment_reduce
 
-- [ ] coordAll
-- [x] coordEach
-- [x] coordReduce
-- [x] featureEach
-- [x] featureReduce
-- [x] flattenEach
-- [x] flattenReduce
-- [x] getCoord
-- [ ] getCoords
-- [x] getGeom
-- [ ] getType
-- [x] geomEach
-- [x] geomReduce
-- [ ] propEach
-- [ ] propReduce
-- [ ] segmentEach
-- [ ] segmentReduce
-- [ ] getCluster
-- [ ] clusterEach
-- [ ] clusterReduce
+### Assertions
+- [x] collection_of
+- [x] contains_number
+- [x] feature_of
+- [x] geojson_type
 
-Assertions
+### Booleans
+- [ ] boolean_clockwise
+- [ ] boolean_concave
+- [ ] boolean_contains
+- [ ] boolean_crosses
+- [ ] boolean_disjoint
+- [ ] boolean_equal
+- [ ] boolean_intersects
+- [ ] boolean_overlap
+- [ ] boolean_parallel
+- [x] boolean_point_in_polygon
+- [ ] boolean_point_on_line
+- [ ] boolean_touches
+- [ ] boolean_within
 
-- [ ] collectionOf
-- [ ] containsNumber
-- [ ] geojsonType
-- [ ] featureOf
+### Unit Conversion
+- [x] azimuth_to_bearing
+- [x] bearing_to_azimuth
+- [x] convert_area
+- [x] convert_length
+- [x] degrees_to_radians
+- [x] length_to_degrees
+- [x] length_to_radians
+- [x] radians_to_degrees
+- [x] radians_to_length
+- [ ] to_mercator
+- [ ] to_wgs84
 
-Booleans
+### Other
+- [ ] angle
+- [ ] boolean_valid
+- [ ] center_mean
+- [ ] center_median
+- [ ] directional_mean
+- [ ] distance_weight
+- [ ] ellipse
+- [x] find_point
+- [x] find_segment
+- [x] geometry
+- [x] is_number
+- [x] is_object
+- [x] line_each
+- [x] line_reduce
+- [x] line_strings
+- [ ] moran_index
+- [ ] nearest_neighbor_analysis
+- [ ] nearest_point_to_line
+- [ ] p_norm_distance
+- [x] points
+- [x] polygons
+- [ ] quadrat_analysis
+- [x] rbush
+- [ ] rectangle_grid
+- [ ] standard_deviational_ellipse
 
-- [ ] booleanClockwise
-- [ ] booleanConcave
-- [ ] booleanContains
-- [ ] booleanCrosses
-- [ ] booleanDisjoint
-- [ ] booleanEqual
-- [ ] booleanIntersects
-- [ ] booleanOverlap
-- [ ] booleanParallel
-- [x] booleanPointInPolygon
-- [ ] booleanPointOnLine
-- [ ] booleanWithin
+### Constants
+- [ ] K_TABLE
+- [x] AREA_FACTORS
+- [x] EARTH_RADIUS
+- [x] FACTORS
 
-Unit Conversion
-
-- [ ] bearingToAzimuth
-- [ ] convertArea
-- [ ] convertLength
-- [ ] degreesToRadians
-- [x] lengthToRadians
-- [x] lengthToDegrees
-- [x] radiansToLength
-- [x] radiansToDegrees
-- [ ] toMercator
-- [ ] toWgs84
 
 ## Development
 
