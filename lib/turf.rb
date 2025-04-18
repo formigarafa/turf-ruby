@@ -7,6 +7,7 @@ require "turf/version"
 module Turf
   # Error thrown by turf-ruby
   class Error < StandardError; end
+
   class NotImplementedError < Error; end
 
   extend self
