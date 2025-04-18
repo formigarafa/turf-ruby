@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def isolines(*args)
+    raise NotImplementedError
   end
 end

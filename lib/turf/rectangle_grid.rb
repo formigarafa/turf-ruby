@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def rectangle_grid(*args)
+    raise NotImplementedError
   end
 end

@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def flatten(*args)
+    raise NotImplementedError
   end
 end

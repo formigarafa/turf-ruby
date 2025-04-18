@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def square_grid(*args)
+    raise NotImplementedError
   end
 end

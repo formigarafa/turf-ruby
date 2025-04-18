@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def quadrat_analysis(*args)
+    raise NotImplementedError
   end
 end

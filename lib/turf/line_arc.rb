@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def line_arc(*args)
+    raise NotImplementedError
   end
 end

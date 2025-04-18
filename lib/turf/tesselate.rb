@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def tesselate(*args)
+    raise NotImplementedError
   end
 end

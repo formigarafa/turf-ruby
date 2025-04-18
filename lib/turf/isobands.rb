@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def isobands(*args)
+    raise NotImplementedError
   end
 end

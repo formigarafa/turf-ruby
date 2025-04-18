@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def line_to_polygon(*args)
+    raise NotImplementedError
   end
 end

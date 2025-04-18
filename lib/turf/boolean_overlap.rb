@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def boolean_overlap(*args)
+    raise NotImplementedError
   end
 end

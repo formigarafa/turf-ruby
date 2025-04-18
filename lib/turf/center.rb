@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def center(*args)
+    raise NotImplementedError
   end
 end

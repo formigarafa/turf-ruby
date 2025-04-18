@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def polygon_tangents(*args)
+    raise NotImplementedError
   end
 end

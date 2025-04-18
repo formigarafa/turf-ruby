@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def kinks(*args)
+    raise NotImplementedError
   end
 end

@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def bbox(*args)
+    raise NotImplementedError
   end
 end

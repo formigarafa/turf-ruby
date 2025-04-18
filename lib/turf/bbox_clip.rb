@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def bbox_clip(*args)
+    raise NotImplementedError
   end
 end

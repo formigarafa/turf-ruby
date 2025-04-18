@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def tag(*args)
+    raise NotImplementedError
   end
 end

@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def rewind(*args)
+    raise NotImplementedError
   end
 end

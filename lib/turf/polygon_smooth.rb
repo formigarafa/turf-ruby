@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def polygon_smooth(*args)
+    raise NotImplementedError
   end
 end

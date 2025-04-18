@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def clone(*args)
+    raise NotImplementedError
   end
 end

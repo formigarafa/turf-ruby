@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def moran_index(*args)
+    raise NotImplementedError
   end
 end

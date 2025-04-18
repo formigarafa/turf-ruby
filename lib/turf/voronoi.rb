@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def voronoi(*args)
+    raise NotImplementedError
   end
 end

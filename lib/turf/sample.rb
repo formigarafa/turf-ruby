@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def sample(*args)
+    raise NotImplementedError
   end
 end

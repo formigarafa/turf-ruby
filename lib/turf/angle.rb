@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def angle(*args)
+    raise NotImplementedError
   end
 end

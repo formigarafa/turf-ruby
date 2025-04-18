@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def boolean_intersects(*args)
+    raise NotImplementedError
   end
 end

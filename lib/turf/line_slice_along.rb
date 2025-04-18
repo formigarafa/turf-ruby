@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def line_slice_along(*args)
+    raise NotImplementedError
   end
 end

@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def difference(*args)
+    raise NotImplementedError
   end
 end

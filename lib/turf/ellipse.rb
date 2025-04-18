@@ -3,5 +3,6 @@
 # :nodoc:
 module Turf
   def ellipse(*args)
+    raise NotImplementedError
   end
 end
