@@ -37,13 +37,13 @@ class TurfBBoxClipTest < Minitest::Test
   end
 
   def test_bbox_clip_throws
-    assert_raises(RuntimeError, "geometry Point not supported") do
+    assert_raises_with_message(Turf::Error, "geometry Point not supported") do
       Turf.bbox_clip(Turf.point([5, 10]), [-180, -90, 180, 90])
     end
   end
 
   def test_bbox_clip_null_geometries
-    assert_raises(RuntimeError, "coords must be GeoJSON Feature, Geometry Object or an Array") do
+    assert_raises(NoMethodError, "coords must be GeoJSON Feature, Geometry Object or an Array") do
       Turf.bbox_clip(Turf.feature(nil), [-180, -90, 180, 90])
     end
   end
@@ -52,13 +52,12 @@ class TurfBBoxClipTest < Minitest::Test
 
   def colorize(feature, color, width = 6)
     color ||= "#F00"
-    feature[:properties] ||= {}
-    feature[:properties].merge!(
+    feature[:properties] = {
       stroke: color,
       fill: color,
       "stroke-width": width,
-      "fill-opacity": 0.1,
-    )
+      "fill-opacity": 0.1
+    }
     feature
   end
 end

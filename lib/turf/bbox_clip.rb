@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# :nodoc:
 module Turf
   # Takes a Feature and a bbox and clips the feature to the bbox using
   # [lineclip](https://github.com/mapbox/lineclip).
@@ -28,7 +29,7 @@ module Turf
       coords = [coords] if type == "LineString"
 
       coords.each do |line|
-        lineclip(line, bbox, lines)
+        Lineclip.lineclip(line, bbox, lines)
       end
 
       if lines.length == 1
@@ -44,7 +45,7 @@ module Turf
         properties,
       )
     else
-      raise "geometry #{type} not supported"
+      raise Error, "geometry #{type} not supported"
     end
   end
 
@@ -57,7 +58,7 @@ module Turf
     out_rings = []
 
     rings.each do |ring|
-      clipped = polygonclip(ring, bbox)
+      clipped = Lineclip.polygonclip(ring, bbox)
 
       next unless clipped.any?
 

@@ -6,6 +6,9 @@ require "turf"
 #
 #   https://github.com/Turfjs/turf/tree/master/packages
 #
+
+require "turf/lib/lineclip"
+
 require "turf/along"
 require "turf/angle"
 require "turf/area"
