@@ -43,7 +43,7 @@ This list should be updated from [https://github.com/Turfjs/turf/blob/master/doc
 - [x] along
 - [x] area
 - [x] bbox
-- [ ] bbox_polygon
+- [x] bbox_polygon
 - [x] bearing
 - [ ] center
 - [ ] center_of_mass
