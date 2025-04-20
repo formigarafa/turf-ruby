@@ -45,7 +45,7 @@ This list should be updated from [https://github.com/Turfjs/turf/blob/master/doc
 - [x] bbox
 - [x] bbox_polygon
 - [x] bearing
-- [ ] center
+- [x] center
 - [ ] center_of_mass
 - [x] centroid
 - [x] destination
