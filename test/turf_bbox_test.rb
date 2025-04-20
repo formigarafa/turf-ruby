@@ -10,7 +10,7 @@ class TurfBBoxTest < Minitest::Test
       [102.0, -10.0],
       [103.0, 1.0],
       [104.0, 0.0],
-      [130.0, 4.0]
+      [130.0, 4.0],
     ])
     @poly = Turf.polygon([
       [
@@ -18,18 +18,18 @@ class TurfBBoxTest < Minitest::Test
         [101.0, 1.0],
         [100.0, 1.0],
         [100.0, 0.0],
-        [101.0, 0.0]
-      ]
+        [101.0, 0.0],
+      ],
     ])
     @multi_line = Turf.multi_line_string([
       [
         [100.0, 0.0],
-        [101.0, 1.0]
+        [101.0, 1.0],
       ],
       [
         [102.0, 2.0],
-        [103.0, 3.0]
-      ]
+        [103.0, 3.0],
+      ],
     ])
     @multi_poly = Turf.multi_polygon([
       [
@@ -38,8 +38,8 @@ class TurfBBoxTest < Minitest::Test
           [103.0, 2.0],
           [103.0, 3.0],
           [102.0, 3.0],
-          [102.0, 2.0]
-        ]
+          [102.0, 2.0],
+        ],
       ],
       [
         [
@@ -47,16 +47,16 @@ class TurfBBoxTest < Minitest::Test
           [101.0, 0.0],
           [101.0, 1.0],
           [100.0, 1.0],
-          [100.0, 0.0]
+          [100.0, 0.0],
         ],
         [
           [100.2, 0.2],
           [100.8, 0.2],
           [100.8, 0.8],
           [100.2, 0.8],
-          [100.2, 0.2]
-        ]
-      ]
+          [100.2, 0.2],
+        ],
+      ],
     ])
     @fc = Turf.feature_collection([@pt, @line, @poly, @multi_line, @multi_poly])
   end
@@ -84,7 +84,8 @@ class TurfBBoxTest < Minitest::Test
     assert_equal [], Turf.bbox(@pt.merge(bbox: [])), "uses built-in bbox by default"
 
     # Recompute bbox
-    assert_equal [102, 0.5, 102, 0.5], Turf.bbox(@pt.merge(bbox: []), recompute: true), "recomputes bbox with recompute option"
+    assert_equal [102, 0.5, 102, 0.5], Turf.bbox(@pt.merge(bbox: []), recompute: true),
+                 "recomputes bbox with recompute option"
   end
 
   def test_bbox_throws

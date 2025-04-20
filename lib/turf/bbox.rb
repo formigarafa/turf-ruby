@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# :nodoc:
 module Turf
   # Calculates the bounding box for any GeoJSON object, including FeatureCollection.
   # Uses geojson[:bbox] if available and options[:recompute] is not set.

@@ -6,7 +6,7 @@ module Turf
   # [lineclip](https://github.com/mapbox/lineclip).
   # May result in degenerate edges when clipping Polygons.
   #
-  # @param [Feature<LineString, MultiLineString, Polygon, MultiPolygon>, LineString, MultiLineString, Polygon, MultiPolygon] feature Feature to clip to the bbox
+  # @param [Feature<LineString, MultiLineString, Polygon, MultiPolygon>] feature Feature to clip to the bbox
   # @param [BBox] bbox Extent in [minX, minY, maxX, maxY] order
   # @return [Feature<LineString, MultiLineString, Polygon, MultiPolygon>] Clipped Feature
   # @example

@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Turf
+  # :nodoc:
   module Lineclip
     # Cohen-Sutherland line clipping algorithm, adapted to efficiently
     # handle polylines rather than just segments.
@@ -32,7 +35,7 @@ module Turf
               part << b
             end
             break
-          elsif (code_a & code_b) != 0
+          elsif code_a.anybits?(code_b)
             # trivial reject
             break
           elsif code_a != 0
@@ -64,10 +67,10 @@ module Turf
       [8, 4, 2, 1].each do |edge|
         result = []
         prev = points.last
-        prev_inside = (bit_code(prev, bbox) & edge).zero?
+        prev_inside = bit_code(prev, bbox).nobits?(edge)
 
         points.each do |p|
-          inside = (bit_code(p, bbox) & edge).zero?
+          inside = bit_code(p, bbox).nobits?(edge)
 
           # if segment goes through the clip window, add an intersection
           result << intersect(prev, p, edge, bbox) if inside != prev_inside
@@ -86,14 +89,14 @@ module Turf
     end
 
     # intersect a segment against one of the 4 lines that make up the bbox
-    def self.intersect(a, b, edge, bbox)
-      if (edge & 8) != 0
+    def self.intersect(a, b, edge, bbox) # rubocop:disable Naming/MethodParameterName
+      if edge.anybits?(8)
         [a[0] + (((b[0] - a[0]) * (bbox[3] - a[1]).to_f) / (b[1] - a[1])), bbox[3]]
-      elsif (edge & 4) != 0
+      elsif edge.anybits?(4)
         [a[0] + (((b[0] - a[0]) * (bbox[1] - a[1]).to_f) / (b[1] - a[1])), bbox[1]]
-      elsif (edge & 2) != 0
+      elsif edge.anybits?(2)
         [bbox[2], a[1] + (((b[1] - a[1]) * (bbox[2] - a[0]).to_f) / (b[0] - a[0]))]
-      elsif (edge & 1) != 0
+      elsif edge.anybits?(1)
         [bbox[0], a[1] + (((b[1] - a[1]) * (bbox[0] - a[0]).to_f) / (b[0] - a[0]))]
       end
     end
@@ -103,7 +106,7 @@ module Turf
     #    top  1001  1000  1010
     #    mid  0001  0000  0010
     # bottom  0101  0100  0110
-    def self.bit_code(p, bbox)
+    def self.bit_code(p, bbox) # rubocop:disable Naming/MethodParameterName
       code = 0
       code |= 1 if p[0] < bbox[0] # left
       code |= 2 if p[0] > bbox[2] # right
