@@ -61,7 +61,7 @@ This list should be updated from [https://github.com/Turfjs/turf/blob/master/doc
 - [ ] rhumb_bearing
 - [ ] rhumb_destination
 - [ ] rhumb_distance
-- [ ] square
+- [x] square
 
 ### Coordinate Mutation
 - [ ] clean_coords
