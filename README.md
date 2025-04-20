@@ -42,7 +42,7 @@ This list should be updated from [https://github.com/Turfjs/turf/blob/master/doc
 ### Measurement
 - [x] along
 - [x] area
-- [ ] bbox
+- [x] bbox
 - [ ] bbox_polygon
 - [x] bearing
 - [ ] center
@@ -71,7 +71,7 @@ This list should be updated from [https://github.com/Turfjs/turf/blob/master/doc
 - [x] truncate
 
 ### Transformation
-- [ ] bbox_clip
+- [x] bbox_clip
 - [ ] bezier_spline
 - [ ] buffer
 - [x] circle
