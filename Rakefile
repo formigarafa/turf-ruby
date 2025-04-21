@@ -2,6 +2,7 @@
 
 require "bundler/gem_tasks"
 require "minitest/test_task"
+require "rubocop/rake_task"
 
 Minitest::TestTask.create(:test) do |t|
   t.libs << "test"
@@ -10,4 +11,6 @@ Minitest::TestTask.create(:test) do |t|
   t.test_globs = ["test/**/*_test.rb"]
 end
 
-task default: :test
+RuboCop::RakeTask.new
+
+task default: %i[test rubocop]
