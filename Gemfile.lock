@@ -18,7 +18,7 @@ GEM
     rainbow (3.0.0)
     rake (12.3.3)
     regexp_parser (2.1.1)
-    rexml (3.2.5)
+    rexml (3.3.9)
     rubocop (1.5.2)
       parallel (~> 1.10)
       parser (>= 2.7.1.5)
