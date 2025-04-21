@@ -6,9 +6,8 @@ source "https://rubygems.org"
 gemspec
 
 gem "minitest", "~> 5.0"
-gem "minitest-bonus-assertions"
 gem "minitest-focus"
-gem "rake", "~> 12.0"
+gem "rake", "~> 13.0"
 gem "simplecov"
 gem "yard"
 
@@ -16,4 +15,4 @@ gem "yard"
 #
 # http://help.houndci.com/en/articles/2461415-supported-linters
 #
-gem "rubocop", "1.5.2"
+gem "rubocop", "~> 1.0"
