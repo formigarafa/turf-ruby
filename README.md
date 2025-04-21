@@ -1,4 +1,7 @@
-# turf-ruby [![Build Status](https://travis-ci.com/formigarafa/turf-ruby.svg?branch=master)](https://travis-ci.com/formigarafa/turf-ruby)
+# turf-ruby
+
+[![Gem Version](https://badge.fury.io/rb/turf-ruby.svg)](https://badge.fury.io/rb/turf-ruby)
+[![Build Status](https://github.com/formigarafa/turf-ruby/actions/workflows/tests.yml/badge.svg)](https://github.com/formigarafa/turf-ruby)
 
 Ruby port of [Turf.js](https://turfjs.org/), an advance geospatial analysis library.
 
