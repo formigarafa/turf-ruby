@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Module: Turf::Lineclip
+  
+    &mdash; Documentation by YARD 0.9.37
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "Turf::Lineclip";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (L)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../Turf.html" title="Turf (module)">Turf</a></span></span>
+     &raquo; 
+    <span class="title">Lineclip</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Module: Turf::Lineclip
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/turf/lib/lineclip.rb</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>:nodoc:</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#bit_code-class_method" title="bit_code (class method)">.<strong>bit_code</strong>(p, bbox)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>bit code reflects the point position relative to the bbox:         left  mid  right    top  1001  1000  1010    mid  0001  0000  0010 bottom  0101  0100  0110.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#intersect-class_method" title="intersect (class method)">.<strong>intersect</strong>(a, b, edge, bbox)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>intersect a segment against one of the 4 lines that make up the bbox.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#lineclip-class_method" title="lineclip (class method)">.<strong>lineclip</strong>(points, bbox, result = [])  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Cohen-Sutherland line clipping algorithm, adapted to efficiently handle polylines rather than just segments.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#polygonclip-class_method" title="polygonclip (class method)">.<strong>polygonclip</strong>(points, bbox)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Sutherland-Hodgeman polygon clipping algorithm.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="bit_code-class_method">
+  
+    .<strong>bit_code</strong>(p, bbox)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>bit code reflects the point position relative to the bbox:</p>
+
+<pre class="code ruby"><code class="ruby">     left  mid  right
+top  1001  1000  1010
+mid  0001  0000  0010
+</code></pre>
+
+<p>bottom  0101  0100  0110</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+109
+110
+111
+112
+113
+114
+115
+116</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turf/lib/lineclip.rb', line 109</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_bit_code'>bit_code</span><span class='lparen'>(</span><span class='id identifier rubyid_p'>p</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='rparen'>)</span> <span class='comment'># rubocop:disable Naming/MethodParameterName
+</span>  <span class='id identifier rubyid_code'>code</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_code'>code</span> <span class='op'>|=</span> <span class='int'>1</span> <span class='kw'>if</span> <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='comment'># left
+</span>  <span class='id identifier rubyid_code'>code</span> <span class='op'>|=</span> <span class='int'>2</span> <span class='kw'>if</span> <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='comment'># right
+</span>  <span class='id identifier rubyid_code'>code</span> <span class='op'>|=</span> <span class='int'>4</span> <span class='kw'>if</span> <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='comment'># bottom
+</span>  <span class='id identifier rubyid_code'>code</span> <span class='op'>|=</span> <span class='int'>8</span> <span class='kw'>if</span> <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='lbracket'>[</span><span class='int'>3</span><span class='rbracket'>]</span> <span class='comment'># top
+</span>  <span class='id identifier rubyid_code'>code</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="intersect-class_method">
+  
+    .<strong>intersect</strong>(a, b, edge, bbox)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>intersect a segment against one of the 4 lines that make up the bbox</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turf/lib/lineclip.rb', line 92</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_intersect'>intersect</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='comma'>,</span> <span class='id identifier rubyid_b'>b</span><span class='comma'>,</span> <span class='id identifier rubyid_edge'>edge</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='rparen'>)</span> <span class='comment'># rubocop:disable Naming/MethodParameterName
+</span>  <span class='kw'>if</span> <span class='id identifier rubyid_edge'>edge</span><span class='period'>.</span><span class='id identifier rubyid_anybits?'>anybits?</span><span class='lparen'>(</span><span class='int'>8</span><span class='rparen'>)</span>
+    <span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='lparen'>(</span><span class='lparen'>(</span><span class='id identifier rubyid_b'>b</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='op'>*</span> <span class='lparen'>(</span><span class='id identifier rubyid_bbox'>bbox</span><span class='lbracket'>[</span><span class='int'>3</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span><span class='rparen'>)</span> <span class='op'>/</span> <span class='lparen'>(</span><span class='id identifier rubyid_b'>b</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='lbracket'>[</span><span class='int'>3</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_edge'>edge</span><span class='period'>.</span><span class='id identifier rubyid_anybits?'>anybits?</span><span class='lparen'>(</span><span class='int'>4</span><span class='rparen'>)</span>
+    <span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='lparen'>(</span><span class='lparen'>(</span><span class='id identifier rubyid_b'>b</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='op'>*</span> <span class='lparen'>(</span><span class='id identifier rubyid_bbox'>bbox</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span><span class='rparen'>)</span> <span class='op'>/</span> <span class='lparen'>(</span><span class='id identifier rubyid_b'>b</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_edge'>edge</span><span class='period'>.</span><span class='id identifier rubyid_anybits?'>anybits?</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span>
+    <span class='lbracket'>[</span><span class='id identifier rubyid_bbox'>bbox</span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='lparen'>(</span><span class='lparen'>(</span><span class='id identifier rubyid_b'>b</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='op'>*</span> <span class='lparen'>(</span><span class='id identifier rubyid_bbox'>bbox</span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span><span class='rparen'>)</span> <span class='op'>/</span> <span class='lparen'>(</span><span class='id identifier rubyid_b'>b</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rbracket'>]</span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_edge'>edge</span><span class='period'>.</span><span class='id identifier rubyid_anybits?'>anybits?</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span>
+    <span class='lbracket'>[</span><span class='id identifier rubyid_bbox'>bbox</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='lparen'>(</span><span class='lparen'>(</span><span class='id identifier rubyid_b'>b</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='op'>*</span> <span class='lparen'>(</span><span class='id identifier rubyid_bbox'>bbox</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span><span class='rparen'>)</span> <span class='op'>/</span> <span class='lparen'>(</span><span class='id identifier rubyid_b'>b</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>-</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="lineclip-class_method">
+  
+    .<strong>lineclip</strong>(points, bbox, result = [])  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Cohen-Sutherland line clipping algorithm, adapted to efficiently handle polylines rather than just segments.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turf/lib/lineclip.rb', line 8</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_lineclip'>lineclip</span><span class='lparen'>(</span><span class='id identifier rubyid_points'>points</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='comma'>,</span> <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_len'>len</span> <span class='op'>=</span> <span class='id identifier rubyid_points'>points</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span>
+  <span class='id identifier rubyid_code_a'>code_a</span> <span class='op'>=</span> <span class='id identifier rubyid_bit_code'>bit_code</span><span class='lparen'>(</span><span class='id identifier rubyid_points'>points</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_part'>part</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_a'>a</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='id identifier rubyid_b'>b</span> <span class='op'>=</span> <span class='kw'>nil</span>
+
+  <span class='lparen'>(</span><span class='int'>1</span><span class='op'>...</span><span class='id identifier rubyid_len'>len</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+    <span class='id identifier rubyid_a'>a</span> <span class='op'>=</span> <span class='id identifier rubyid_points'>points</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>1</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_b'>b</span> <span class='op'>=</span> <span class='id identifier rubyid_points'>points</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_code_b'>code_b</span> <span class='op'>=</span> <span class='id identifier rubyid_last_code'>last_code</span> <span class='op'>=</span> <span class='id identifier rubyid_bit_code'>bit_code</span><span class='lparen'>(</span><span class='id identifier rubyid_b'>b</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='rparen'>)</span>
+
+    <span class='id identifier rubyid_loop'>loop</span> <span class='kw'>do</span>
+      <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_code_a'>code_a</span> <span class='op'>|</span> <span class='id identifier rubyid_code_b'>code_b</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_zero?'>zero?</span>
+        <span class='comment'># accept
+</span>        <span class='id identifier rubyid_part'>part</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_a'>a</span>
+
+        <span class='kw'>if</span> <span class='id identifier rubyid_code_b'>code_b</span> <span class='op'>!=</span> <span class='id identifier rubyid_last_code'>last_code</span>
+          <span class='comment'># segment went outside
+</span>          <span class='id identifier rubyid_part'>part</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_b'>b</span>
+
+          <span class='kw'>if</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_len'>len</span> <span class='op'>-</span> <span class='int'>1</span>
+            <span class='comment'># start a new line
+</span>            <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_part'>part</span>
+            <span class='id identifier rubyid_part'>part</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+          <span class='kw'>end</span>
+        <span class='kw'>elsif</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>==</span> <span class='id identifier rubyid_len'>len</span> <span class='op'>-</span> <span class='int'>1</span>
+          <span class='id identifier rubyid_part'>part</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_b'>b</span>
+        <span class='kw'>end</span>
+        <span class='kw'>break</span>
+      <span class='kw'>elsif</span> <span class='id identifier rubyid_code_a'>code_a</span><span class='period'>.</span><span class='id identifier rubyid_anybits?'>anybits?</span><span class='lparen'>(</span><span class='id identifier rubyid_code_b'>code_b</span><span class='rparen'>)</span>
+        <span class='comment'># trivial reject
+</span>        <span class='kw'>break</span>
+      <span class='kw'>elsif</span> <span class='id identifier rubyid_code_a'>code_a</span> <span class='op'>!=</span> <span class='int'>0</span>
+        <span class='comment'># a outside, intersect with clip edge
+</span>        <span class='id identifier rubyid_a'>a</span> <span class='op'>=</span> <span class='id identifier rubyid_intersect'>intersect</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='comma'>,</span> <span class='id identifier rubyid_b'>b</span><span class='comma'>,</span> <span class='id identifier rubyid_code_a'>code_a</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_code_a'>code_a</span> <span class='op'>=</span> <span class='id identifier rubyid_bit_code'>bit_code</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='comment'># b outside
+</span>        <span class='id identifier rubyid_b'>b</span> <span class='op'>=</span> <span class='id identifier rubyid_intersect'>intersect</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='comma'>,</span> <span class='id identifier rubyid_b'>b</span><span class='comma'>,</span> <span class='id identifier rubyid_code_b'>code_b</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_code_b'>code_b</span> <span class='op'>=</span> <span class='id identifier rubyid_bit_code'>bit_code</span><span class='lparen'>(</span><span class='id identifier rubyid_b'>b</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+
+    <span class='id identifier rubyid_code_a'>code_a</span> <span class='op'>=</span> <span class='id identifier rubyid_last_code'>last_code</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_part'>part</span> <span class='kw'>unless</span> <span class='id identifier rubyid_part'>part</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+
+  <span class='id identifier rubyid_result'>result</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="polygonclip-class_method">
+  
+    .<strong>polygonclip</strong>(points, bbox)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Sutherland-Hodgeman polygon clipping algorithm</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turf/lib/lineclip.rb', line 61</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_polygonclip'>polygonclip</span><span class='lparen'>(</span><span class='id identifier rubyid_points'>points</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_prev'>prev</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='id identifier rubyid_prev_inside'>prev_inside</span> <span class='op'>=</span> <span class='kw'>nil</span>
+
+  <span class='comment'># clip against each side of the clip rectangle
+</span>  <span class='lbracket'>[</span><span class='int'>8</span><span class='comma'>,</span> <span class='int'>4</span><span class='comma'>,</span> <span class='int'>2</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_edge'>edge</span><span class='op'>|</span>
+    <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_prev'>prev</span> <span class='op'>=</span> <span class='id identifier rubyid_points'>points</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span>
+    <span class='id identifier rubyid_prev_inside'>prev_inside</span> <span class='op'>=</span> <span class='id identifier rubyid_bit_code'>bit_code</span><span class='lparen'>(</span><span class='id identifier rubyid_prev'>prev</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nobits?'>nobits?</span><span class='lparen'>(</span><span class='id identifier rubyid_edge'>edge</span><span class='rparen'>)</span>
+
+    <span class='id identifier rubyid_points'>points</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_p'>p</span><span class='op'>|</span>
+      <span class='id identifier rubyid_inside'>inside</span> <span class='op'>=</span> <span class='id identifier rubyid_bit_code'>bit_code</span><span class='lparen'>(</span><span class='id identifier rubyid_p'>p</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nobits?'>nobits?</span><span class='lparen'>(</span><span class='id identifier rubyid_edge'>edge</span><span class='rparen'>)</span>
+
+      <span class='comment'># if segment goes through the clip window, add an intersection
+</span>      <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_intersect'>intersect</span><span class='lparen'>(</span><span class='id identifier rubyid_prev'>prev</span><span class='comma'>,</span> <span class='id identifier rubyid_p'>p</span><span class='comma'>,</span> <span class='id identifier rubyid_edge'>edge</span><span class='comma'>,</span> <span class='id identifier rubyid_bbox'>bbox</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_inside'>inside</span> <span class='op'>!=</span> <span class='id identifier rubyid_prev_inside'>prev_inside</span>
+
+      <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_p'>p</span> <span class='kw'>if</span> <span class='id identifier rubyid_inside'>inside</span> <span class='comment'># add a point if it&#39;s inside
+</span>
+      <span class='id identifier rubyid_prev'>prev</span> <span class='op'>=</span> <span class='id identifier rubyid_p'>p</span>
+      <span class='id identifier rubyid_prev_inside'>prev_inside</span> <span class='op'>=</span> <span class='id identifier rubyid_inside'>inside</span>
+    <span class='kw'>end</span>
+
+    <span class='id identifier rubyid_points'>points</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span>
+    <span class='kw'>break</span> <span class='kw'>if</span> <span class='id identifier rubyid_points'>points</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_result'>result</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Fri Apr 25 11:34:46 2025 by
+  <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.37 (ruby-3.4.3).
+</div>
+
+    </div>
+  </body>
+</html>
