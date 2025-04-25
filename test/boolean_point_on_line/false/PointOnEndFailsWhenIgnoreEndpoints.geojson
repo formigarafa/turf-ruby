@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "properties": {
-    "ignoreEndVertices": true
+    "ignore_end_vertices": true
   },
   "features": [
     {
@@ -9,7 +9,7 @@
       "properties": {},
       "geometry": {
         "type": "Point",
-        "coordinates": [0, 0]
+        "coordinates": [38.3203125, 5.965753671065536]
       }
     },
     {
