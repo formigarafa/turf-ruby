@@ -419,7 +419,7 @@ module Turf
           next
         end
 
-        segment = Turf.line_string([previous_coords, current_coord], feature[:properties])
+        segment = line_string([previous_coords, current_coord], feature[:properties])
         next unless yield(segment, feature_index, multi_feature_index, geometry_index, segment_index)
 
         segment_index += 1
