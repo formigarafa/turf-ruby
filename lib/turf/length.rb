@@ -18,7 +18,7 @@ module Turf
     segment_reduce(geojson, 0) do |previous_value, segment|
       previous_value ||= 0
       coords = segment.dig(:geometry, :coordinates)
-      previous_value + Turf.distance(coords[0], coords[1], options)
+      previous_value + distance(coords[0], coords[1], options)
     end
   end
 end
