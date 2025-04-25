@@ -192,8 +192,8 @@ This list should be updated from [https://github.com/Turfjs/turf/blob/master/doc
 - [x] geojson_type
 
 ### Booleans
-- [ ] boolean_clockwise
-- [ ] boolean_concave
+- [x] boolean_clockwise
+- [x] boolean_concave
 - [ ] boolean_contains
 - [ ] boolean_crosses
 - [ ] boolean_disjoint
@@ -202,7 +202,7 @@ This list should be updated from [https://github.com/Turfjs/turf/blob/master/doc
 - [ ] boolean_overlap
 - [ ] boolean_parallel
 - [x] boolean_point_in_polygon
-- [ ] boolean_point_on_line
+- [x] boolean_point_on_line
 - [ ] boolean_touches
 - [ ] boolean_within
 
