@@ -7,7 +7,7 @@ class TurfBooleanConcaveTest < Minitest::Test
     # True Fixtures
     Dir.glob(File.join(__dir__, "boolean_concave", "true", "*.geojson")).each do |filepath|
       name = File.basename(filepath, ".geojson")
-      geojson = JSON.parse(File.read(filepath))
+      geojson = JSON.parse(File.read(filepath), symbolize_names: true)
       feature = geojson[:features][0]
       assert(Turf.boolean_concave(feature), "[true] #{name}")
     end
@@ -15,7 +15,7 @@ class TurfBooleanConcaveTest < Minitest::Test
     # False Fixtures
     Dir.glob(File.join(__dir__, "boolean_concave", "false", "*.geojson")).each do |filepath|
       name = File.basename(filepath, ".geojson")
-      geojson = JSON.parse(File.read(filepath))
+      geojson = JSON.parse(File.read(filepath), symbolize_names: true)
       feature = geojson[:features][0]
       refute(Turf.boolean_concave(feature), "[false] #{name}")
     end
